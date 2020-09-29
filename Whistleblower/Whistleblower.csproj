@@ -166,6 +166,8 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Whistle.cshtml" />
+    <Content Include="Views\Home\Safebox.cshtml" />
+    <Content Include="Views\Home\popuptemp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

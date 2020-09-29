@@ -33,5 +33,16 @@ namespace Whistleblower.Controllers
 
             return View();
         }
+
+        public ActionResult Safebox()
+        {
+
+            return View();
+        }
+        public ActionResult popuptemp()
+        {
+
+            return View();
+        }
     }
 }
