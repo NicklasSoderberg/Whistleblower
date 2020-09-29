@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Safebox";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align:center;">Din Safebox</h2>
+<div id="wrapper" style="display:flex;">
+    <div id="MessageList" style="width:350px; overflow-y:scroll; max-height:500px; max-width:350; ">
+        @for (int i = 0; i < 15; i++)
+        {
+            <div class="column" style="background-color:#aaa; height:100px; border-color:black; border:medium;">
+                <p style="float:right;">Skickat</p>
+                <h4 style="font-weight:bold;">Ämne:</h4>
+                <p></p>
+            </div>
+        }
+    </div>
+    <div id="messageview" style=" width:700px; margin-left:10px; ">
+        <h3 style="text-align:center; position:page">Ärende Id: 776823</h3>
+        <div id="MessageWindow" style="border-style:solid; position:relative; border-width:2px; border-color:gray; height:60%;">
+            <p style="text-wrap:normal;">Lorem ipsum dolor sit amet, 
+            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ridiculus mus mauris vitae ultricies leo integer. Sodales ut etiam sit amet nisl purus in mollis. 
+            Volutpat lacus laoreet non curabitur gravida arcu ac tortor. Molestie at elementum eu facilisis sed odio morbi quis.
+            Morbi tincidunt augue interdum velit euismod in. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin nibh. 
+            Ultrices neque ornare aenean euismod elementum. Donec pretium vulputate sapien nec sagittis. Dolor sed viverra ipsum nunc aliquet.
+            Massa id neque aliquam vestibulum.
+            Condimentum id venenatis a condimentum vitae sapien. </p>
+        </div>
+        <div style=" width:100%;" > 
+            <a href="#SendMailForm">Svara</a>
+        </div>
+       
+    </div>
+
+</div>
+
+<div id="SendMailForm">
+    @using (Html.BeginForm("SendMail", "Mail"))
+    {
+        <h1 style=" text-align:center">Ditt meddelande:</h1>
+
+        <div class="form-group" >
+            <label for="message" style="position:absolute;"><b>Meddelande</b></label>
+            <input type="text" style="height:150px; width:1000px;" placeholder="Skriv ditt meddelande" name="message" required>
+        </div>
+        <button type="submit" class="btn">Skicka</button>
+       <button class="btn">Avbryt</button>
+
+    }
+</div>

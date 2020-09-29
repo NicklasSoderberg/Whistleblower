@@ -7068,7 +7068,32 @@ a.list-group-item-danger.active:focus {
     text-align: center;
 }
 
+
 .form-body{
     margin-left: 200px;
     margin-right: 200px;
 }
+
+#SendMailForm {
+    height: 380px;
+    width: 500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+    display: none;
+    border-radius: 10px;
+}
+
+    #SendMailForm:target, #SendMailForm:target + #cover {
+        display: block;
+        opacity: 2;
+        margin: 0 auto;
+        position: fixed;
+        left:0;
+        right:0;
+        top:250px;
+        bottom:0;
+        background-color:gray;
+        text-align:center;
+    }
+

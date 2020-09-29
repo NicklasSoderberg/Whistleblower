@@ -34,5 +34,16 @@ namespace Whistleblower.Controllers
             WhistleModel WM = new WhistleModel();
             return View(WM);
         }
+
+        public ActionResult Safebox()
+        {
+
+            return View();
+        }
+        public ActionResult popuptemp()
+        {
+
+            return View();
+        }
     }
 }
