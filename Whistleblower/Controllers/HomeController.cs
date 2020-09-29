@@ -34,6 +34,14 @@ namespace Whistleblower.Controllers
             WhistleModel WM = new WhistleModel();
             return View(WM);
         }
+        public ActionResult LoginAdmin()
+        {
+            return View();
+        }
+        public ActionResult LoginLawyer()
+        {
+            return View();
+        }
 
         public ActionResult Safebox()
         {

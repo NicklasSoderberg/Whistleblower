@@ -124,6 +124,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\LoginAdmin.cs" />
+    <Compile Include="Models\LoginLawyer.cs" />
     <Compile Include="Models\WhistleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -168,6 +170,8 @@
     <Content Include="Views\Home\Whistle.cshtml" />
     <Content Include="Views\Home\Safebox.cshtml" />
     <Content Include="Views\Home\popuptemp.cshtml" />
+    <Content Include="Views\Home\LoginAdmin.cshtml" />
+    <Content Include="Views\Home\LoginLawyer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
