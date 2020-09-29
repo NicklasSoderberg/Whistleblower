@@ -26,5 +26,12 @@ namespace Whistleblower.Controllers
 
             return View();
         }
+
+        public ActionResult Whistle()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
     }
 }

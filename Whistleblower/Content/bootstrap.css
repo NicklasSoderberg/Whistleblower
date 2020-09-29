@@ -1576,9 +1576,17 @@ pre code {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+  margin-top: 10px;
+  border: 1px solid;
+  border-color: gray;
+  border-radius: 20px;
+  background-color: white;
 }
-@media (min-width: 768px) {
-  .container {
+
+
+
+    @media (min-width: 768px) {
+        .container {
     width: 750px;
   }
 }
@@ -7048,4 +7056,13 @@ a.list-group-item-danger.active:focus {
 }
 .popover {
   color: #555555;
+}
+
+.form-horizontal {
+    margin: 0 auto;
+    align-content: center;
+}
+
+.form-titel{
+    text-align: center;
 }
