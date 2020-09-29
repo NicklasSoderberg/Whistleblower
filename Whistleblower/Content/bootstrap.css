@@ -7066,3 +7066,12 @@ a.list-group-item-danger.active:focus {
 .form-titel{
     text-align: center;
 }
+
+.img-container{
+    text-align: center;
+}
+.login-titel{
+    text-align: center;
+    margin-top: 50px;
+}
+
