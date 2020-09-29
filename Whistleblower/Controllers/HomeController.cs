@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Whistleblower.Models;
 
 namespace Whistleblower.Controllers
 {
@@ -30,6 +31,17 @@ namespace Whistleblower.Controllers
         public ActionResult Whistle()
         {
             ViewBag.Message = "Your contact page.";
+            WhistleModel WM = new WhistleModel();
+            return View(WM);
+        }
+
+        public ActionResult Safebox()
+        {
+
+            return View();
+        }
+        public ActionResult popuptemp()
+        {
 
             return View();
         }

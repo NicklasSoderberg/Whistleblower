@@ -1359,6 +1359,7 @@ a.text-warning:focus {
 }
 .text-danger {
   color: #ffffff;
+  display: block;
 }
 a.text-danger:hover,
 a.text-danger:focus {
@@ -1585,7 +1586,7 @@ pre code {
 
 
 
-    @media (min-width: 768px) {
+@media (min-width: 768px) {
         .container {
     width: 750px;
   }
@@ -2636,7 +2637,7 @@ textarea.form-control {
   }
 }
 .form-group {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 .radio,
 .checkbox {
@@ -7067,11 +7068,32 @@ a.list-group-item-danger.active:focus {
     text-align: center;
 }
 
-.img-container{
-    text-align: center;
+
+.form-body{
+    margin-left: 200px;
+    margin-right: 200px;
 }
-.login-titel{
-    text-align: center;
-    margin-top: 50px;
+
+#SendMailForm {
+    height: 380px;
+    width: 500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+    display: none;
+    border-radius: 10px;
 }
+
+    #SendMailForm:target, #SendMailForm:target + #cover {
+        display: block;
+        opacity: 2;
+        margin: 0 auto;
+        position: fixed;
+        left:0;
+        right:0;
+        top:250px;
+        bottom:0;
+        background-color:gray;
+        text-align:center;
+    }
 
