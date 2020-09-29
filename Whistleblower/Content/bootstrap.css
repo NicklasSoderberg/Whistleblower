@@ -1359,6 +1359,7 @@ a.text-warning:focus {
 }
 .text-danger {
   color: #ffffff;
+  display: block;
 }
 a.text-danger:hover,
 a.text-danger:focus {
@@ -1585,7 +1586,7 @@ pre code {
 
 
 
-    @media (min-width: 768px) {
+@media (min-width: 768px) {
         .container {
     width: 750px;
   }
@@ -2636,7 +2637,7 @@ textarea.form-control {
   }
 }
 .form-group {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 .radio,
 .checkbox {
@@ -7065,4 +7066,9 @@ a.list-group-item-danger.active:focus {
 
 .form-titel{
     text-align: center;
+}
+
+.form-body{
+    margin-left: 200px;
+    margin-right: 200px;
 }
