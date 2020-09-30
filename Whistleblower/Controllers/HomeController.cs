@@ -45,5 +45,16 @@ namespace Whistleblower.Controllers
 
             return View();
         }
+        public ActionResult UserLogin()
+        {
+            ViewBag.Message = "Login";
+            return View();
+        }
+
+        public ActionResult TempUserLogin()
+        {
+            ViewBag.Message = "Login";
+            return View();
+        }
     }
 }
