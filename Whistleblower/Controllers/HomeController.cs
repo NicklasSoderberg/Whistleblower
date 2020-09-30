@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using System.Windows.Input;
 using Whistleblower.Models;
 using Whistleblower.ViewModels;
@@ -63,6 +64,23 @@ namespace Whistleblower.Controllers
             ViewBag.Message = "Login";
             return View();
         }
+        [HttpPost]
+        public ActionResult UserLogin(LoginModel formModel)
+        {
+            LoginModel loginModel = new LoginModel();
+            if (ModelState.IsValid)
+            {
+                if (loginModel.UserName == formModel.UserName && loginModel.Password == formModel.Password)
+                {
+                    return RedirectToAction("ReportStatus");
+                }
+                else
+                {
+                    ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");                  
+                }
+            }
+            return View(formModel);
+        }
 
         public ActionResult TempUserLogin()
         {
@@ -76,6 +94,11 @@ namespace Whistleblower.Controllers
         }
 
         public ActionResult CheckLogIn()
+        {
+            return View();
+        }
+
+        public ActionResult ReportStatus()
         {
             return View();
         }

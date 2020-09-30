@@ -6,7 +6,7 @@
 }
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("UserLogin", "Home", FormMethod.Post ))
 {
     @Html.AntiForgeryToken()
 
@@ -33,22 +33,50 @@
                     -moz-appearance: textfield;
                 }
             </style>
-            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @type = "number", @onkeydown = "javascript: return event.keyCode === 8 ||event.keyCode === 46 ? true : !isNaN(Number(event.key))" } })
             @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
+        
         @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
-            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-        </div>
-    </div>
 
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @id = "password-input"} })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            <input type="checkbox" onclick="myFunction()"> Visa lösenord
+
+            <p id="text" style="display:none">WARNING! Caps lock is ON.</p>
+            <script>
+                var input = document.getElementById("password-input");
+                var text = document.getElementById("text");
+                input.addEventListener("keyup", function (event) {
+
+                    if (event.getModifierState("CapsLock")) {
+                        text.style.display = "block";
+                    } else {
+                        text.style.display = "none"
+                    }
+                });
+
+                function myFunction() {
+                    var x = document.getElementById("password-input");
+                    if (x.type === "password") {
+                        x.type = "text";
+                    } else {
+                        x.type = "password";
+                    }
+                }
+            </script>
+        </div>
+    </div>    
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Login" class="btn btn-default" />
+        </div>
+        <div class="form-titel">
+            @Html.ValidationMessage("LogOnError", new { @class = "text-danger" })            
         </div>
     </div>
 </div>
