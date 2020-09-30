@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -33,6 +33,14 @@ namespace Whistleblower.Controllers
             ViewBag.Message = "Your contact page.";
             WhistleModel WM = new WhistleModel();
             return View(WM);
+        }
+        public ActionResult LoginAdmin()
+        {
+            return View();
+        }
+        public ActionResult LoginLawyer()
+        {
+            return View();
         }
 
         public ActionResult Safebox()
