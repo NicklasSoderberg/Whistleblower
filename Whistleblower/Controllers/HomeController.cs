@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows.Input;
 using Whistleblower.Models;
+using Whistleblower.ViewModels;
 
 namespace Whistleblower.Controllers
 {
@@ -45,14 +48,16 @@ namespace Whistleblower.Controllers
 
         public ActionResult Safebox()
         {
-
-            return View();
+            SafeboxViewmodel viewmodel = new SafeboxViewmodel();
+            return View(viewmodel);
         }
-        public ActionResult popuptemp()
+        public void SelectMail(int MailId)
         {
-
-            return View();
+            SafeboxViewmodel viewmodel = new SafeboxViewmodel();
+            Mail SelectedMail = viewmodel.MailList.FirstOrDefault(m => m.MailId == MailId);
+            SafeboxViewmodel.SelectedMail = SelectedMail;
         }
+
         public ActionResult UserLogin()
         {
             ViewBag.Message = "Login";
@@ -64,5 +69,12 @@ namespace Whistleblower.Controllers
             ViewBag.Message = "Login";
             return View();
         }
+
+        public ActionResult MailSent()
+        {
+            return View();
+        }
+
+
     }
 }
