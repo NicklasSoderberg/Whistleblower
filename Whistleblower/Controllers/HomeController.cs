@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -51,6 +51,17 @@ namespace Whistleblower.Controllers
         public ActionResult popuptemp()
         {
 
+            return View();
+        }
+        public ActionResult UserLogin()
+        {
+            ViewBag.Message = "Login";
+            return View();
+        }
+
+        public ActionResult TempUserLogin()
+        {
+            ViewBag.Message = "Login";
             return View();
         }
     }
