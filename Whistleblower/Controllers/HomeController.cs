@@ -75,6 +75,9 @@ namespace Whistleblower.Controllers
             return View();
         }
 
-
+        public ActionResult CheckLogIn()
+        {
+            return View();
+        }
     }
 }
