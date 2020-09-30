@@ -14,7 +14,7 @@ namespace Whistleblower.ViewModels
         {
             MailList = new List<Mail>()
             {
-                new Mail{ReportId=1,SentBool=false,LawyerId=1,Message="Hello my friend what happened?"},
+                new Mail{ReportId=1, MailId= 1,SentBool=false,LawyerId=1,Message="Hello my friend what happened?"},
             };
         }
     }
