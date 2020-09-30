@@ -124,11 +124,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Mail.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\WhistleModel.cs" />
     <Compile Include="Models\LoginAdmin.cs" />
     <Compile Include="Models\LoginLawyer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\SafeboxViewmodel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -169,10 +171,8 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Whistle.cshtml" />
-    <Content Include="Views\Home\TempUserLogin.cshtml" />
-    <Content Include="Views\Home\UserLogin.cshtml" />
-    <Content Include="Views\Home\LoginAdmin.cshtml" />
-    <Content Include="Views\Home\LoginLawyer.cshtml" />
+    <Content Include="Views\Home\Safebox.cshtml" />
+    <Content Include="Views\Home\popuptemp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

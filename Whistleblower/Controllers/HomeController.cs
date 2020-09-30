@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Whistleblower.Models;
+using Whistleblower.ViewModels;
 
 namespace Whistleblower.Controllers
 {
@@ -45,8 +46,8 @@ namespace Whistleblower.Controllers
 
         public ActionResult Safebox()
         {
-
-            return View();
+            SafeboxViewmodel viewmodel = new SafeboxViewmodel();
+            return View(viewmodel);
         }
         public ActionResult popuptemp()
         {
@@ -64,5 +65,12 @@ namespace Whistleblower.Controllers
             ViewBag.Message = "Login";
             return View();
         }
+
+        public ActionResult MailSent()
+        {
+            return View();
+        }
+
+
     }
 }
