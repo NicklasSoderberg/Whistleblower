@@ -37,7 +37,13 @@ namespace Whistleblower.Controllers
             WhistleModel WM = new WhistleModel();
             return View(WM);
         }
-        
+
+        [HttpPost]
+        public ActionResult Whistle(WhistleModel formData)
+        {
+            return RedirectToAction("WhistleConfirm", "Home", formData);
+        }
+
         public ActionResult WhistleBack(WhistleModel formData)
         {
             ViewBag.Message = "Fyll i formuläret";
@@ -45,7 +51,7 @@ namespace Whistleblower.Controllers
         }
 
         [HttpPost]
-        public ActionResult Whistle(WhistleModel formData)
+        public ActionResult WhistleBack(WhistleModel formData, string button)
         {
             return RedirectToAction("WhistleConfirm", "Home", formData);
         }
