@@ -19,6 +19,7 @@ namespace Whistleblower.Models
 
         public LoginAdmin()
         {
+            //test
             Username = "1234";
             Password = "test";
         }
