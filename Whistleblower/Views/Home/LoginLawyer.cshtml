@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "LoginLawyer";
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm("LoginLawyer", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -32,25 +32,25 @@
 
                 <p id="text" style="display:none">VARNING! Caps lock är på.</p>
                 <script>
-                var input = document.getElementById("password-input");
-                var text = document.getElementById("text");
-                input.addEventListener("keyup", function (event) {
+                    var input = document.getElementById("password-input");
+                    var text = document.getElementById("text");
+                    input.addEventListener("keyup", function (event) {
 
-                    if (event.getModifierState("CapsLock")) {
-                        text.style.display = "block";
-                    } else {
-                        text.style.display = "none"
-                    }
-                });
+                        if (event.getModifierState("CapsLock")) {
+                            text.style.display = "block";
+                        } else {
+                            text.style.display = "none"
+                        }
+                    });
 
-                function myFunction() {
-                    var x = document.getElementById("password-input");
-                    if (x.type === "password") {
-                        x.type = "text";
-                    } else {
-                        x.type = "password";
+                    function myFunction() {
+                        var x = document.getElementById("password-input");
+                        if (x.type === "password") {
+                            x.type = "text";
+                        } else {
+                            x.type = "password";
+                        }
                     }
-                }
                 </script>
             </div>
         </div>

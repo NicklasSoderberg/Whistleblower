@@ -4,10 +4,10 @@
     ViewBag.Title = "LoginAdmin";
 }
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("LoginAdmin", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <div class="form-titel">
             <img src="~/images/omegapoint.png">
@@ -35,7 +35,8 @@
                 <script>
                     var input = document.getElementById("password-input");
                     var text = document.getElementById("text");
-                    input.addEventListener("keyup", function (event) {
+                    input.addEventListener("keyup", function (event)
+                    {
 
                         if (event.getModifierState("CapsLock")) {
                             text.style.display = "block";

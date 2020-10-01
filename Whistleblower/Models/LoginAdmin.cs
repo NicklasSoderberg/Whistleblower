@@ -16,5 +16,11 @@ namespace Whistleblower.Models
         [DataType(DataType.Password)]
         [Display(Name = "Lösenord*:")]
         public string Password { get; set; }
+
+        public LoginAdmin()
+        {
+            Username = "1234";
+            Password = "test";
+        }
     }
 }
