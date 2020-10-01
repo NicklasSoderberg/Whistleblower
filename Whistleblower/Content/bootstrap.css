@@ -1357,6 +1357,12 @@ a.text-warning:hover,
 a.text-warning:focus {
   color: #e6e6e6;
 }
+
+.required {
+    color: #ffffff;
+    display: block;
+}
+
 .text-danger {
   color: #ffffff;
   display: block;
@@ -7095,5 +7101,15 @@ a.list-group-item-danger.active:focus {
         bottom:0;
         background-color:gray;
         text-align:center;
+    }
+
+#MailButton {
+    width: 100%;
+    height: 80px;
+    background-color: lightgray;
+    margin-bottom:20px;
+}
+    #MailButton:hover {
+        background-color: lightblue;
     }
 

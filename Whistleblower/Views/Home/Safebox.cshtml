@@ -6,46 +6,60 @@
 
 <h2 style="text-align:center;">Din Safebox</h2>
 <div id="wrapper" style="display:flex;">
-    <div id="MessageList" style="width:350px; overflow-y:scroll; max-height:500px; max-width:350px; ">
-      <datalist >
+    <div id="MessageList" style="width:250px; overflow-y:scroll; max-height:500px; max-width:350px; border:solid; border-width:2px; ">
+        @foreach (Whistleblower.Models.Mail m in Model.MailList)
+        {
+        
+            <div id="MailButton" onclick="RespondButtonVisibilty(@m.SentBool.ToString().ToLower(),'@m.Message');">
+                @if (m.SentBool == true)
+                {
+                    <p>Skickat</p>
+                }
+                else
+                {
+                    <p>Mottagit</p>
+                }
+            </div>
+        
 
-      </datalist>
-    </div>
-    
-    <div id="messageview" style=" width:700px; margin-left:10px; ">
-        <h3 style="text-align:center; position:page">Ärende Id: 776823</h3>
-        <div id="MessageWindow" style="border-style:solid; position:relative; border-width:2px; border-color:gray; height:60%;">
-            <p style="text-wrap:normal;">
-                Lorem ipsum dolor sit amet,
-                consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Ridiculus mus mauris vitae ultricies leo integer. Sodales ut etiam sit amet nisl purus in mollis.
-                Volutpat lacus laoreet non curabitur gravida arcu ac tortor. Molestie at elementum eu facilisis sed odio morbi quis.
-                Morbi tincidunt augue interdum velit euismod in. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin nibh.
-                Ultrices neque ornare aenean euismod elementum. Donec pretium vulputate sapien nec sagittis. Dolor sed viverra ipsum nunc aliquet.
-                Massa id neque aliquam vestibulum.
-                Condimentum id venenatis a condimentum vitae sapien.
-            </p>
-        </div>
-        <div style=" width:100%;">
-            <input type="button" value="Svara" onclick="location.href='Safebox#SendMailForm'" />
-        </div>
-
+      }
     </div>
 
-</div>
+            <div id="messageview" style=" width:700px; margin-left:10px; ">
+                <div id="MessageWindow" style="border-style:solid; position:relative; border-width:2px; border-color:gray; height:400px;">
+                    <p id="MessageText" style="text-wrap:normal;">@Model.SelectedMail.Message </p>
+                </div>
+                <div style=" width:100%;">
+                    <input type="button" id="RespondBtn" value="Svara" onclick="location.href='Safebox#SendMailForm'" />
+                </div>
+
+            </div>
+
+        </div>
 
 <div id="SendMailForm">
-    @using (Html.BeginForm("SentMail", "Home"))
+    @using (Html.BeginForm("SendMail", "Home"))
     {
-        <h1 style=" text-align:center">Ditt meddelande:</h1>
+        <h1 style=" text-align:center">Svar</h1>
 
         <div class="form-group">
-            <label for="message" style="position:absolute;"><b>Meddelande</b></label>
-            <input type="text" style="height:150px; width:1000px;" placeholder="Skriv ditt meddelande" name="message" required>
+            @Html.LabelFor(m => m.Mail.Message)
+            @Html.TextBoxFor(m => m.Mail.Message, new { @class = "form-control", @style = "margin:0 auto; resize:none; height:200px;" })
         </div>
-        <button type="submit" class="btn">Skicka</button>
-        <input type="button" class="btn" value="Avbryt" onclick="location.href='Safebox#'" />
+        <input type="file" style="margin:0 auto;" multiple />
+        <button type="submit" class="btn btn-primary">Skicka</button>
+        <input type="button" class="btn btn-danger" value="Avbryt" onclick="location.href='Safebox#'" />
 
     }
 </div>
+<script>
+    function RespondButtonVisibilty(Visible,message) {
+        if (Visible == true) {
+            document.getElementById('RespondBtn').style.display = 'none';
+        } else {
+            document.getElementById('RespondBtn').style.display = 'block';
+        }
+        document.getElementById('MessageText').innerHTML = message;
+    }
 
+</script>
