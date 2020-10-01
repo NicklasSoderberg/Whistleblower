@@ -28,16 +28,47 @@ namespace Whistleblower.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
         public ActionResult Whistle()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Fyll i formuläret";
             WhistleModel WM = new WhistleModel();
             return View(WM);
         }
+        
+        public ActionResult WhistleBack(WhistleModel formData)
+        {
+            ViewBag.Message = "Fyll i formuläret";
+            return View("Whistle", formData);
+        }
+
+        [HttpPost]
+        public ActionResult Whistle(WhistleModel formData)
+        {
+            return RedirectToAction("WhistleConfirm", "Home", formData);
+        }
+
+        public ActionResult WhistleConfirm(WhistleModel whistleInput, string button)
+        {
+            switch (button?.ToLower())
+            {
+                case "tillbaka":
+                    return RedirectToAction("WhistleBack", "Home", whistleInput);
+
+                case "skicka":
+                    /*Bygg vidare härifrån när vi har DB*/
+                    break;
+
+                default:
+                    break;
+            }
+            ViewBag.Message = "Kontrollera din information";
+            WhistleModel WM = whistleInput;
+            return View(WM);
+        }
+
         public ActionResult LoginAdmin()
         {
             return View();

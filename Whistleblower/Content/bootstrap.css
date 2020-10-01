@@ -1357,6 +1357,12 @@ a.text-warning:hover,
 a.text-warning:focus {
   color: #e6e6e6;
 }
+
+.required {
+    color: #ffffff;
+    display: block;
+}
+
 .text-danger {
   color: #ffffff;
   display: block;
@@ -7096,4 +7102,3 @@ a.list-group-item-danger.active:focus {
         background-color:gray;
         text-align:center;
     }
-
