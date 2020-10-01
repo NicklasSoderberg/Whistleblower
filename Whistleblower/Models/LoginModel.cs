@@ -11,11 +11,17 @@ namespace Whistleblower.Models
     {
         [Required(ErrorMessage = "Ange ID")]
         [Display(Name = "Ange ID*")]
-        [RegularExpression(@"^[0-9]{10}", ErrorMessage = "Please enter a valid email address")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Lösenord är obligatoriskt")]
+        [DataType(DataType.Password)]
         [Display(Name = "Ange lösenord*")]
         public string Password { get; set; }
+
+        public LoginModel()
+        {
+            UserName = "1234";
+            Password = "test";
+        }
     }
 }
