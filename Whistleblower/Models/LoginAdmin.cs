@@ -9,11 +9,12 @@ namespace Whistleblower.Models
     public class LoginAdmin
     {
         [Required(ErrorMessage = "Var vänlig ange ett användarnamn")]
-        [Display(Name = "Användarnamn:")]
+        [Display(Name = "Användarnamn*:")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Var vänlig ange ett lösenord")]
-        [Display(Name = "Lösenord:")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Lösenord*:")]
         public string Password { get; set; }
     }
 }

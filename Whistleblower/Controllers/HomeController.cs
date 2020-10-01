@@ -71,10 +71,12 @@ namespace Whistleblower.Controllers
 
         public ActionResult LoginAdmin()
         {
+            //ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");  
             return View();
         }
         public ActionResult LoginLawyer()
         {
+            //ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");  
             return View();
         }
 
