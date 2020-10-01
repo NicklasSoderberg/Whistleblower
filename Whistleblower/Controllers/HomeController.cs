@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows;
 using System.Web.Services.Description;
 using System.Windows.Input;
 using Whistleblower.Models;
@@ -33,14 +35,14 @@ namespace Whistleblower.Controllers
 
         public ActionResult Whistle()
         {
-            ViewBag.Message = "Fyll i formuläret";
+            ViewBag.Message = "Fyll i formulï¿½ret";
             WhistleModel WM = new WhistleModel();
             return View(WM);
         }
         
         public ActionResult WhistleBack(WhistleModel formData)
         {
-            ViewBag.Message = "Fyll i formuläret";
+            ViewBag.Message = "Fyll i formulï¿½ret";
             return View("Whistle", formData);
         }
 
@@ -58,7 +60,7 @@ namespace Whistleblower.Controllers
                     return RedirectToAction("WhistleBack", "Home", whistleInput);
 
                 case "skicka":
-                    /*Bygg vidare härifrån när vi har DB*/
+                    /*Bygg vidare hï¿½rifrï¿½n nï¿½r vi har DB*/
                     break;
 
                 default:
@@ -81,14 +83,31 @@ namespace Whistleblower.Controllers
         public ActionResult Safebox()
         {
             SafeboxViewmodel viewmodel = new SafeboxViewmodel();
-            return View(viewmodel);
+           viewmodel.MailList = new List<Mail>()
+            {
+                new Mail{ReportId=1, MailId= 1,SentBool=false,LawyerId=1,Message="Hello my friend what happened?"},
+                new Mail{ReportId=1, MailId= 3,SentBool=true,LawyerId=1,Message="Very good friend."}
+            };
+            if(viewmodel.MailList.Count != 0) 
+            {
+                return View(viewmodel);
+            }
+            else
+            {
+                return RedirectToAction("");
+            }
+            
         }
-        public void SelectMail(int MailId)
+        [HttpPost]
+        public ActionResult SendMail(Mail mail)
         {
+
             SafeboxViewmodel viewmodel = new SafeboxViewmodel();
-            Mail SelectedMail = viewmodel.MailList.FirstOrDefault(m => m.MailId == MailId);
-            SafeboxViewmodel.SelectedMail = SelectedMail;
+            mail.SentBool = true;
+            //lï¿½gg till mailet i databasen
+            return RedirectToAction("Safebox");
         }
+
 
         public ActionResult UserLogin()
         {
@@ -107,7 +126,7 @@ namespace Whistleblower.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");                  
+                    ModelState.AddModelError("LogOnError", "ID eller lï¿½senord ï¿½r felaktigt");                  
                 }
             }
             return View(formModel);
