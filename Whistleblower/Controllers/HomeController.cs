@@ -64,7 +64,19 @@ namespace Whistleblower.Controllers
                     return RedirectToAction("WhistleBack", "Home", whistleInput);
 
                 case "skicka":
-                    /*Bygg vidare härifrån när vi har DB*/
+                    using (var db = new DB.DBEntity())
+                    {
+                        var whistle = db.Set<DB.Whistle>();
+                        whistle.Add(new DB.Whistle { UniqueID = 5, LawyerID = 0, About = whistleInput.About, 
+                                                                                C_When = whistleInput.When,
+                                                                                C_Where = whistleInput.Where, 
+                                                                                Description = whistleInput.Description,
+                                                                                Description_OtherEmployees = whistleInput.Description_OtherEmployees,
+                                                                                isActive = true,
+                                                                                UploadID = 2,
+                                                                                WhistleID = 0});
+                        db.SaveChanges();
+                    }
                     break;
 
                 default:
