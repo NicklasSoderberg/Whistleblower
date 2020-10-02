@@ -130,9 +130,7 @@ namespace Whistleblower.Controllers
             if(SafeboxViewmodel.MailList.Count == 0)
             {
                 Mail m1 = new Mail {  MailId = 1, SentBool = false,MailSenderType = SafeboxViewmodel.MailSenders.Lawyer,  Message = "Hello my friend what happened?" };       
-                Mail m2 = new Mail {  MailId = 2, SentBool = false,MailSenderType = SafeboxViewmodel.MailSenders.Lawyer,  Message = "Hello  what happened?" };       
                 SafeboxViewmodel.MailList.Add(m1);
-                SafeboxViewmodel.MailList.Add(m2);
             }
            
            
