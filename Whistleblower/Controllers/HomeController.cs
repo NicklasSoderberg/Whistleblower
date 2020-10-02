@@ -74,15 +74,49 @@ namespace Whistleblower.Controllers
             WhistleModel WM = whistleInput;
             return View(WM);
         }
-
         public ActionResult LoginAdmin()
         {
             return View();
+        }
+        [HttpPost]
+        public ActionResult LoginAdmin(LoginAdmin formAdmin)
+        {
+            LoginAdmin loginadmin = new LoginAdmin();
+            if (ModelState.IsValid)
+            {
+                if (loginadmin.Username == formAdmin.Username && loginadmin.Password == formAdmin.Password)
+                {
+                    return RedirectToAction("Safebox");
+                }
+                else
+                {
+                    ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
+                }
+            }
+            return View(formAdmin);
         }
         public ActionResult LoginLawyer()
         {
             return View();
         }
+        [HttpPost]
+        public ActionResult LoginLawyer(LoginLawyer formLawyer)
+        {
+            LoginLawyer loginlawyer = new LoginLawyer();
+            if (ModelState.IsValid)
+            {
+                if (loginlawyer.Username == formLawyer.Username && loginlawyer.Password == formLawyer.Password)
+                {
+                    return RedirectToAction("Safebox");
+                }
+                else
+                {
+                    ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
+                }
+            }
+            return View(formLawyer);
+        }
+
 
         public ActionResult Safebox()
         {
