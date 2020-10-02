@@ -210,5 +210,9 @@ namespace Whistleblower.Controllers
         {
             return View();
         }
+        public ActionResult LogOut()
+        {
+            return RedirectToAction("Whistle");
+        }
     }
 }
