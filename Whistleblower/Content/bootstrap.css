@@ -7155,4 +7155,8 @@ a.list-group-item-danger.active:focus {
     float: right;
     background-color: forestgreen;
 }
+#wrapper-safebox {
+    display:flex;
+    justify-content:center;
+}
 

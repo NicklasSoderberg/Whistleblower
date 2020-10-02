@@ -139,12 +139,13 @@ namespace Whistleblower.Controllers
             {
                  viewmodel = new SafeboxViewmodel();
             }
+
             if(SafeboxViewmodel.MailList.Count == 0)
             {
-                Mail m1 = new Mail {  MailId = 1, SentBool = false,MailSenderType = SafeboxViewmodel.MailSenders.Lawyer,  Message = "Hello my friend what happened?" };       
+                Mail m1 = new Mail {  MailId = 1,MailSenderType = SafeboxViewmodel.MailSenders.Lawyer,  Message = "Hello my friend what happened?" };       
                 SafeboxViewmodel.MailList.Add(m1);
             }
-           
+
            
             return View(viewmodel);
         }
@@ -159,10 +160,9 @@ namespace Whistleblower.Controllers
         {
             //current user
             mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
-            mail.SentBool = true;
-            mail.SenderMailId = SafeboxViewmodel._TempMailId;
-            SafeboxViewmodel.MailList.FirstOrDefault(m => m.MailId == SafeboxViewmodel._TempMailId).ResponedToMail = true;
+            //SafeboxViewmodel.MailList.FirstOrDefault(m => m.MailId == SafeboxViewmodel._TempMailId).ResponedToMail = true;
             SafeboxViewmodel.MailList.Add(mail);
+
             return RedirectToAction("Safebox");
         }
 
