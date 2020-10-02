@@ -10,7 +10,7 @@
             @foreach (Whistleblower.Models.Mail m in Model._MailList)
             {
 
-                <div class="safebox" onclick="RespondButtonVisibilty('@m.MailSenderType', '@m.Message',@m.ResponedToMail.ToString().ToLower(),@m.MailId);  ">
+                <div class="safebox" onclick="RespondButtonVisibilty('@m.MailSenderType', '@m.Message',@m.MailId);"*@>
                     <div id="@m.MailSenderType" class="safeboxmail">
 
                         @if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
@@ -62,14 +62,14 @@
 </div>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
-    function RespondButtonVisibilty(SenderType, message,RespondedToBool,id) {
+    function RespondButtonVisibilty(SenderType, message,id) {
                     if (SenderType == "Whistler" ) {
                         document.getElementById('RespondBtn').style.display = 'none';
-                    } else if (SenderType == "Lawyer" && RespondedToBool == false) {
+                    } else if (SenderType == "Lawyer" ) {
                         document.getElementById('RespondBtn').style.display = 'block';
-                    } else if (RespondedToBool == true){
-                        document.getElementById('RespondBtn').style.display = 'none';
-                    }
+                    }// else if (RespondedToBool == true){
+                    //    document.getElementById('RespondBtn').style.display = 'none';
+                    //}
                     document.getElementById('MessageText').innerHTML = message;
 
                     jQuery.ajax({

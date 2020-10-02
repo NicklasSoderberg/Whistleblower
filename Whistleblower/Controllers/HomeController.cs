@@ -147,7 +147,7 @@ namespace Whistleblower.Controllers
         {
             //current user
             mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
-            SafeboxViewmodel.MailList.FirstOrDefault(m => m.MailId == SafeboxViewmodel._TempMailId).ResponedToMail = true;
+            //SafeboxViewmodel.MailList.FirstOrDefault(m => m.MailId == SafeboxViewmodel._TempMailId).ResponedToMail = true;
             SafeboxViewmodel.MailList.Add(mail);
             return RedirectToAction("Safebox");
         }
