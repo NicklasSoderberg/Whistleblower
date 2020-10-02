@@ -10,6 +10,7 @@ using System.Web.Services.Description;
 using System.Windows.Input;
 using Whistleblower.Models;
 using Whistleblower.ViewModels;
+using System.Web.Services;
 
 namespace Whistleblower.Controllers
 {
@@ -80,31 +81,38 @@ namespace Whistleblower.Controllers
             return View();
         }
 
-        public ActionResult Safebox()
+        public ActionResult Safebox(SafeboxViewmodel viewmodel)
         {
-            SafeboxViewmodel viewmodel = new SafeboxViewmodel();
-           viewmodel.MailList = new List<Mail>()
+            if(viewmodel == null)
             {
-                new Mail{ReportId=1, MailId= 1,SentBool=false,LawyerId=1,Message="Hello my friend what happened?"},
-                new Mail{ReportId=1, MailId= 3,SentBool=true,LawyerId=1,Message="Very good friend."}
-            };
-            if(viewmodel.MailList.Count != 0) 
-            {
-                return View(viewmodel);
+                 viewmodel = new SafeboxViewmodel();
             }
-            else
+            if(SafeboxViewmodel.MailList.Count == 0)
             {
-                return RedirectToAction("");
+                Mail m1 = new Mail {  MailId = 1, SentBool = false,MailSenderType = SafeboxViewmodel.MailSenders.Lawyer,  Message = "Hello my friend what happened?" };       
+                Mail m2 = new Mail {  MailId = 2, SentBool = false,MailSenderType = SafeboxViewmodel.MailSenders.Lawyer,  Message = "Hello  what happened?" };       
+                SafeboxViewmodel.MailList.Add(m1);
+                SafeboxViewmodel.MailList.Add(m2);
             }
-            
+           
+           
+            return View(viewmodel);
+        }
+        [HttpPost]
+        public void SelectMail(int id)
+        {
+            SafeboxViewmodel._TempMailId = id;
+       
         }
         [HttpPost]
         public ActionResult SendMail(Mail mail)
         {
-
-            SafeboxViewmodel viewmodel = new SafeboxViewmodel();
+            //current user
+            mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
             mail.SentBool = true;
-            //l�gg till mailet i databasen
+            mail.SenderMailId = SafeboxViewmodel._TempMailId;
+            SafeboxViewmodel.MailList.FirstOrDefault(m => m.MailId == SafeboxViewmodel._TempMailId).ResponedToMail = true;
+            SafeboxViewmodel.MailList.Add(mail);
             return RedirectToAction("Safebox");
         }
 
