@@ -36,7 +36,7 @@ namespace Whistleblower.Controllers
 
         public ActionResult Whistle()
         {
-            ViewBag.Message = "Fyll i formul�ret";
+            ViewBag.Message = "Fyll i formulï¿½ret";
             WhistleModel WM = new WhistleModel();
             return View(WM);
         }
@@ -49,7 +49,7 @@ namespace Whistleblower.Controllers
 
         public ActionResult WhistleBack(WhistleModel formData)
         {
-            ViewBag.Message = "Fyll i formul�ret";
+            ViewBag.Message = "Fyll i formulï¿½ret";
             return View("Whistle", formData);
         }
 
@@ -67,7 +67,19 @@ namespace Whistleblower.Controllers
                     return RedirectToAction("WhistleBack", "Home", whistleInput);
 
                 case "skicka":
-                    /*Bygg vidare h�rifr�n n�r vi har DB*/
+                    using (var db = new DB.DBEntity())
+                    {
+                        var whistle = db.Set<DB.Whistle>();
+                        whistle.Add(new DB.Whistle { UniqueID = 5, LawyerID = 0, About = whistleInput.About, 
+                                                                                C_When = whistleInput.When,
+                                                                                C_Where = whistleInput.Where, 
+                                                                                Description = whistleInput.Description,
+                                                                                Description_OtherEmployees = whistleInput.Description_OtherEmployees,
+                                                                                isActive = true,
+                                                                                UploadID = 2,
+                                                                                WhistleID = 0});
+                        db.SaveChanges();
+                    }
                     break;
 
                 default:
@@ -93,7 +105,7 @@ namespace Whistleblower.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("LogOnError", "Anv�ndarnamn och/eller l�senord matchar inte");
+                    ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
                 }
             }
             return View(formAdmin);
@@ -114,7 +126,7 @@ namespace Whistleblower.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("LogOnError", "Anv�ndarnamn och/eller l�senord matchar inte");
+                    ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
                 }
             }
             return View(formLawyer);
@@ -172,7 +184,7 @@ namespace Whistleblower.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("LogOnError", "ID eller l�senord �r felaktigt");                  
+                    ModelState.AddModelError("LogOnError", "ID eller lï¿½senord ï¿½r felaktigt");                  
                 }
             }
             return View(formModel);
