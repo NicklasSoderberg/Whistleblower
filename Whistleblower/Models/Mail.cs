@@ -12,11 +12,9 @@ namespace Whistleblower.Models
         public int MailId { get; set; }
         public int ConversationId { get; set; }
         public SafeboxViewmodel.MailSenders MailSenderType { get; set; }
-        public bool SentBool { get; set; }
-        public int SenderMailId { get; set; }
         public bool ResponedToMail { get; set; }
         [Required]
-        [StringLength(255)]
+        [StringLength(180)]
         public string Message { get; set; }
         public Mail()
         {
