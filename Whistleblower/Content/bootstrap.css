@@ -121,10 +121,16 @@ input,
 optgroup,
 select,
 textarea {
-  color: inherit;
-  font: inherit;
-  margin: 0;
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    resize: none;
 }
+
+textarea{
+    width: 100%;
+}
+
 button {
   overflow: visible;
 }
@@ -177,9 +183,7 @@ legend {
   border: 0;
   padding: 0;
 }
-textarea {
-  overflow: auto;
-}
+
 optgroup {
   font-weight: bold;
 }
@@ -1090,6 +1094,7 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  overflow: auto;
 }
 a {
   color: #158cba;
@@ -2644,7 +2649,13 @@ textarea.form-control {
 }
 .form-group {
     margin-bottom: 15px;
+    width: auto;
 }
+
+.form-whistle{
+
+}
+
 .radio,
 .checkbox {
   position: relative;
@@ -7074,10 +7085,14 @@ a.list-group-item-danger.active:focus {
     text-align: center;
 }
 
+.form-holder {
+    width: 100%
+}
 
-.form-body{
-    margin-left: 200px;
-    margin-right: 200px;
+.form-body {
+    display: table;
+    margin: auto;
+    width: auto;
 }
 
 #SendMailForm {
