@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows;
 using System.Web.Services.Description;
 using System.Windows.Input;
 using Whistleblower.Models;
 using Whistleblower.ViewModels;
+using System.Web.Services;
 
 namespace Whistleblower.Controllers
 {
@@ -33,7 +36,7 @@ namespace Whistleblower.Controllers
 
         public ActionResult Whistle()
         {
-            ViewBag.Message = "Fyll i formuläret";
+            ViewBag.Message = "Fyll i formulï¿½ret";
             WhistleModel WM = new WhistleModel();
             return View(WM);
         }
@@ -46,7 +49,7 @@ namespace Whistleblower.Controllers
 
         public ActionResult WhistleBack(WhistleModel formData)
         {
-            ViewBag.Message = "Fyll i formuläret";
+            ViewBag.Message = "Fyll i formulï¿½ret";
             return View("Whistle", formData);
         }
 
@@ -64,7 +67,7 @@ namespace Whistleblower.Controllers
                     return RedirectToAction("WhistleBack", "Home", whistleInput);
 
                 case "skicka":
-                    /*Bygg vidare härifrån när vi har DB*/
+                    /*Bygg vidare hï¿½rifrï¿½n nï¿½r vi har DB*/
                     break;
 
                 default:
@@ -74,27 +77,83 @@ namespace Whistleblower.Controllers
             WhistleModel WM = whistleInput;
             return View(WM);
         }
-
         public ActionResult LoginAdmin()
         {
             return View();
+        }
+        [HttpPost]
+        public ActionResult LoginAdmin(LoginAdmin formAdmin)
+        {
+            LoginAdmin loginadmin = new LoginAdmin();
+            if (ModelState.IsValid)
+            {
+                if (loginadmin.Username == formAdmin.Username && loginadmin.Password == formAdmin.Password)
+                {
+                    return RedirectToAction("Safebox");
+                }
+                else
+                {
+                    ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
+                }
+            }
+            return View(formAdmin);
         }
         public ActionResult LoginLawyer()
         {
             return View();
         }
-
-        public ActionResult Safebox()
+        [HttpPost]
+        public ActionResult LoginLawyer(LoginLawyer formLawyer)
         {
-            SafeboxViewmodel viewmodel = new SafeboxViewmodel();
+            LoginLawyer loginlawyer = new LoginLawyer();
+            if (ModelState.IsValid)
+            {
+                if (loginlawyer.Username == formLawyer.Username && loginlawyer.Password == formLawyer.Password)
+                {
+                    return RedirectToAction("Safebox");
+                }
+                else
+                {
+                    ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
+                }
+            }
+            return View(formLawyer);
+        }
+
+
+        public ActionResult Safebox(SafeboxViewmodel viewmodel)
+        {
+            if(viewmodel == null)
+            {
+                 viewmodel = new SafeboxViewmodel();
+            }
+            if(SafeboxViewmodel.MailList.Count == 0)
+            {
+                Mail m1 = new Mail {  MailId = 1, SentBool = false,MailSenderType = SafeboxViewmodel.MailSenders.Lawyer,  Message = "Hello my friend what happened?" };       
+                SafeboxViewmodel.MailList.Add(m1);
+            }
+           
+           
             return View(viewmodel);
         }
-        public void SelectMail(int MailId)
+        [HttpPost]
+        public void SelectMail(int id)
         {
-            SafeboxViewmodel viewmodel = new SafeboxViewmodel();
-            Mail SelectedMail = viewmodel.MailList.FirstOrDefault(m => m.MailId == MailId);
-            SafeboxViewmodel.SelectedMail = SelectedMail;
+            SafeboxViewmodel._TempMailId = id;
+       
         }
+        [HttpPost]
+        public ActionResult SendMail(Mail mail)
+        {
+            //current user
+            mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
+            mail.SentBool = true;
+            mail.SenderMailId = SafeboxViewmodel._TempMailId;
+            SafeboxViewmodel.MailList.FirstOrDefault(m => m.MailId == SafeboxViewmodel._TempMailId).ResponedToMail = true;
+            SafeboxViewmodel.MailList.Add(mail);
+            return RedirectToAction("Safebox");
+        }
+
 
         public ActionResult UserLogin()
         {
@@ -113,7 +172,7 @@ namespace Whistleblower.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");                  
+                    ModelState.AddModelError("LogOnError", "ID eller lï¿½senord ï¿½r felaktigt");                  
                 }
             }
             return View(formModel);
