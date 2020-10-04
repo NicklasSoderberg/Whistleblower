@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Whistleblower.Models;
 using Whistleblower.ViewModels;
 using System.Web.Services;
+using Whistleblower.Custom;
 
 namespace Whistleblower.Controllers
 {
@@ -67,19 +68,19 @@ namespace Whistleblower.Controllers
                     return RedirectToAction("WhistleBack", "Home", whistleInput);
 
                 case "skicka":
-                    using (var db = new DB.DBEntity())
+                    DBHandler.Post(new DB.Whistle
                     {
-                        var whistle = db.Set<DB.Whistle>();
-                        whistle.Add(new DB.Whistle { UniqueID = 5, LawyerID = 0, About = whistleInput.About, 
-                                                                                C_When = whistleInput.When,
-                                                                                C_Where = whistleInput.Where, 
-                                                                                Description = whistleInput.Description,
-                                                                                Description_OtherEmployees = whistleInput.Description_OtherEmployees,
-                                                                                isActive = true,
-                                                                                UploadID = 2,
-                                                                                WhistleID = 0});
-                        db.SaveChanges();
-                    }
+                        UniqueID = 5,
+                        LawyerID = 0,
+                        About = whistleInput.About,
+                        C_When = whistleInput.When,
+                        C_Where = whistleInput.Where,
+                        Description = whistleInput.Description,
+                        Description_OtherEmployees = whistleInput.Description_OtherEmployees,
+                        isActive = true,
+                        UploadID = 2,
+                        WhistleID = 0
+                    });
                     break;
 
                 default:
