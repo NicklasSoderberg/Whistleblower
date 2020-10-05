@@ -17,6 +17,12 @@ namespace Whistleblower.Controllers
 {
     public class WhistleController : Controller
     {
+        public ActionResult Index()
+        {
+            ViewBag.Message = "Whistleblower";
+            return View();
+        }
+
         public ActionResult Whistle()
         {
             ViewBag.Message = "Fyll i formulï¿½ret";

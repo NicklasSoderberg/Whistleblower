@@ -257,6 +257,7 @@
     <Content Include="Views\Safebox\MailSent.cshtml" />
     <Content Include="Views\Safebox\Safebox.cshtml" />
     <Content Include="Views\Safebox\SentMail.cshtml" />
+    <Content Include="Views\Whistle\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
