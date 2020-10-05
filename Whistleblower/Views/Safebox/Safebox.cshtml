@@ -1,0 +1,90 @@
+﻿@model Whistleblower.ViewModels.SafeboxViewmodel
+@{
+    ViewBag.Title = "Safebox";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align:center;"><b>Din Safebox</b></h2>
+    <div id="wrapper-safebox">
+        <div id="MessageList" style="width:500px; overflow-y:scroll; max-height:500px; max-width:350px; border:solid; border-width:2px; ">
+            @foreach (Whistleblower.Models.Mail m in Model._MailList)
+            {
+
+                <div class="safebox" onclick="RespondButtonVisibilty('@m.MailSenderType', '@m.Message',@m.MailId);"*@>
+                    <div id="@m.MailSenderType" class="safeboxmail">
+
+                        @if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
+                        {
+                            <p>Skickat</p>
+                        }
+                        else if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer)
+                        {
+                            <p>Mottagit</p>
+                        }
+                        else
+                        {
+                            <p>Fil</p>
+                        }
+                    </div>
+                </div>
+
+
+
+            }
+        </div>
+
+        <div id="messageview" style=" width:700px; margin-left:10px; ">
+            <div id="MessageWindow" style="border-style:solid; position:relative; border-width:2px; border-color:gray; height:400px;">
+                <p id="MessageText" style="text-wrap:normal;"></p>
+            </div>
+            <div style=" width:100%;">
+                <input type="button" id="RespondBtn" style="display:none;" value="Svara" onclick="location.href='Safebox#SendMailForm'" />
+            </div>
+
+        </div>
+
+    </div>
+
+<div id="SendMailForm">
+    @using (Html.BeginForm("SendMail", "Safebox"))
+    {
+        <h1 style=" text-align:center">Svar</h1>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Mail.Message)
+            @Html.TextAreaFor(m => m.Mail.Message, new { @class = "form-control", @required = "required", @style = "margin:0 auto; resize:none; height:200px;" })
+        </div>
+        <input type="file" style="margin:0 auto;" multiple />
+        <button type="submit" class="btn btn-primary">Skicka</button>
+        <input type="button" class="btn btn-danger" value="Avbryt" onclick="location.href='Safebox#'" />
+
+    }
+</div>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    function RespondButtonVisibilty(SenderType, message,id) {
+                    if (SenderType == "Whistler" ) {
+                        document.getElementById('RespondBtn').style.display = 'none';
+                    } else if (SenderType == "Lawyer" ) {
+                        document.getElementById('RespondBtn').style.display = 'block';
+                    }// else if (RespondedToBool == true){
+                    //    document.getElementById('RespondBtn').style.display = 'none';
+                    //}
+                    document.getElementById('MessageText').innerHTML = message;
+
+                    jQuery.ajax({
+                    type: "POST",
+            url: "@Url.Action("SelectMail")",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ id }),
+            success: function (data) {
+                            alert(data);
+                        },
+            failure: function (errMsg) {
+                            alert(errMsg);
+                        }
+                    });
+    }
+</script>
+
