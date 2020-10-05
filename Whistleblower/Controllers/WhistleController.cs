@@ -58,7 +58,6 @@ namespace Whistleblower.Controllers
                 case "skicka":
                     DBHandler.Post(new DB.Whistle
                     {
-                        UniqueID = 5,
                         LawyerID = 0,
                         About = whistleInput.About,
                         C_When = whistleInput.When,
@@ -69,7 +68,7 @@ namespace Whistleblower.Controllers
                         UploadID = 2,
                         WhistleID = 0
                     });
-                    break;
+                    return RedirectToAction("UserLogin", "Login");
 
                 default:
                     break;

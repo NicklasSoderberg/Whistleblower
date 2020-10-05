@@ -16,5 +16,6 @@ namespace DB
     {
         public string UniqueID { get; set; }
         public string Password { get; set; }
+        public int WhistleID { get; set; }
     }
 }

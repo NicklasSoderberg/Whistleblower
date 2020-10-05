@@ -61,17 +61,25 @@
 
                     <br>Inom 10 dagar kan du läsa en eventuell följdfråga eller ett svar från oss.
                 </p>
-                <input type="button" class="btn btn-success" value="Skapa ärende" style="display:block; margin-top: 30px; margin-left:auto; margin-right:auto" />
-                <input type="button" class="btn btn-info" value="Följ upp ärende" style="display: block; margin-top: 20px; margin-left:auto; margin-right:auto" />
+                <input type="button" class="btn btn-success navtowhistle" value="Skapa ärende" style="display:block; margin-top: 30px; margin-left:auto; margin-right:auto" />
+                <input type="button" class="btn btn-info navtofollowup" value="Följ upp ärende" style="display: block; margin-top: 20px; margin-left:auto; margin-right:auto" />
+
+
 
                 <p style="margin-top: 30px;">Tack för ditt engagemang!</p>
             </div>
-     </div>
- </div>
+        </div>
+    </div>
 }
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
 
-
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(".navtowhistle").click(function () {
+        window.location.href = '@Url.Action("Whistle", "Whistle")'
+    });
+    $(".navtofollowup").click(function () {
+        window.location.href = '@Url.Action("UserLogin", "Login")'
+    });
+</script>
 }
