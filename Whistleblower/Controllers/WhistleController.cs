@@ -18,6 +18,12 @@ namespace Whistleblower.Controllers
 {
     public class WhistleController : Controller
     {
+        public ActionResult Index()
+        {
+            ViewBag.Message = "Whistleblower";
+            return View();
+        }
+
         public ActionResult Whistle()
         {
             ViewBag.Message = "Fyll i formulï¿½ret";
@@ -69,7 +75,7 @@ namespace Whistleblower.Controllers
                         Password = AutoGenerateID(true),
                         WhistleID = result.WhistleID
                     });
-                    break;
+                    return RedirectToAction("UserLogin", "Login");
 
                 default:
                     break;

@@ -92,6 +92,13 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
     [MessageConversation].[ConversationID] AS [ConversationID]
     FROM [dbo].[MessageConversation] AS [MessageConversation]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="User" EntityType="Self.User" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [User].[UniqueID] AS [UniqueID], 
+    [User].[Password] AS [Password], 
+    [User].[WhistleID] AS [WhistleID]
+    FROM [dbo].[User] AS [User]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
