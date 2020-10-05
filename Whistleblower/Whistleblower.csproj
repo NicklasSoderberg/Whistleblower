@@ -258,6 +258,7 @@
     <Content Include="Views\Safebox\MailSent.cshtml" />
     <Content Include="Views\Safebox\Safebox.cshtml" />
     <Content Include="Views\Safebox\SentMail.cshtml" />
+    <Content Include="Views\Whistle\Index.cshtml" />
     <Content Include="Views\Lawyer\WhistleHandler.cshtml" />
     <Content Include="Views\Lawyer\Whistle.cshtml" />
   </ItemGroup>
