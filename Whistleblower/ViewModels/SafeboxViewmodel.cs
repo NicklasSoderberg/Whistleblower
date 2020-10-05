@@ -14,6 +14,8 @@ namespace Whistleblower.ViewModels
         public static int _TempMailId { get; set; }
         public enum MailSenders { Whistler = 0, File = 1, Lawyer = 2 };
         public List<Mail> _MailList { get { return MailList; } set { MailList = value; } }
+
+        public int WhistleId { get; set; }
         public SafeboxViewmodel()
         { 
 

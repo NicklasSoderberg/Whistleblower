@@ -17,12 +17,10 @@ namespace Whistleblower.Controllers
 {
     public class SafeboxController : Controller
     {
-        public ActionResult Safebox(SafeboxViewmodel viewmodel)
+        public ActionResult Safebox(int Id)
         {
-            if(viewmodel == null)
-            {
-                 viewmodel = new SafeboxViewmodel();
-            }
+             SafeboxViewmodel viewmodel = new SafeboxViewmodel();
+            viewmodel.WhistleId = Id;
 
             if(SafeboxViewmodel.MailList.Count == 0)
             {
@@ -39,15 +37,17 @@ namespace Whistleblower.Controllers
             SafeboxViewmodel._TempMailId = id;
        
         }
+
+       
         [HttpPost]
-        public ActionResult SendMail(Mail mail)
+        public ActionResult SendMail(Mail mail, int id)
         {
             //current user
             mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
             //SafeboxViewmodel.MailList.FirstOrDefault(m => m.MailId == SafeboxViewmodel._TempMailId).ResponedToMail = true;
             SafeboxViewmodel.MailList.Add(mail);
 
-            return RedirectToAction("Safebox", "Safebox");
+            return RedirectToAction($"Safebox/{id}", "Safebox");
         }
 
         public ActionResult MailSent()
