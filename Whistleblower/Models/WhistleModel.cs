@@ -47,8 +47,7 @@ namespace Whistleblower.Models
             "Hälsa, säkerhet & miljö",
             "Penningtvätt",
             "Personal",
-            "Annat" };
-            user = new User();
+            "Annat" };            
         }
     }
 }
