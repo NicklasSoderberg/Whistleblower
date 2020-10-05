@@ -55,15 +55,12 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Property Name="MessageID" Type="int" Nullable="false" />
           <Property Name="ConversationID" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'WhistleDB.dbo.User' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="User">
           <Key>
-            <PropertyRef Name="UniqueID" />
-            <PropertyRef Name="Password" />
-            <PropertyRef Name="WhistleID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="UniqueID" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UniqueID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="WhistleID" Type="int" Nullable="false" />
         </EntityType>
@@ -87,6 +84,7 @@ warning 6002: The table/view 'WhistleDB.dbo.User' does not have a primary key de
           <EntitySet Name="File" EntityType="Self.File" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lawyer" EntityType="Self.Lawyer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Message" EntityType="Self.Message" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Whistle" EntityType="Self.Whistle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MessageConversation" EntityType="Self.MessageConversation" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -170,13 +168,12 @@ warning 6002: The table/view 'WhistleDB.dbo.User' does not have a primary key de
         </EntityType>
         <EntityType Name="User">
           <Key>
-            <PropertyRef Name="UniqueID" />
-            <PropertyRef Name="Password" />
-            <PropertyRef Name="WhistleID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="UniqueID" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="UniqueID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="WhistleID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityContainer Name="DBEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Admin" EntityType="Self.Admin" />
@@ -265,6 +262,7 @@ warning 6002: The table/view 'WhistleDB.dbo.User' does not have a primary key de
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="WhistleDBModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="WhistleID" ColumnName="WhistleID" />
                 <ScalarProperty Name="UniqueID" ColumnName="UniqueID" />
                 <ScalarProperty Name="Password" ColumnName="Password" />

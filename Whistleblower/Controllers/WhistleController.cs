@@ -12,6 +12,7 @@ using Whistleblower.Models;
 using Whistleblower.ViewModels;
 using System.Web.Services;
 using Whistleblower.Custom;
+using System.Xml.XPath;
 
 namespace Whistleblower.Controllers
 {
@@ -55,9 +56,10 @@ namespace Whistleblower.Controllers
                 case "tillbaka":
                     return RedirectToAction("WhistleBack", "Whistle", whistleInput);
 
-                case "skicka":
-                    DBHandler.Post(new DB.Whistle
-                    {
+                case "skicka":  
+                    
+                    var result = DBHandler.PostWhistle(new DB.Whistle
+                    {                        
                         LawyerID = 0,
                         About = whistleInput.About,
                         C_When = whistleInput.When,
@@ -65,8 +67,13 @@ namespace Whistleblower.Controllers
                         Description = whistleInput.Description,
                         Description_OtherEmployees = whistleInput.Description_OtherEmployees,
                         isActive = true,
-                        UploadID = 2,
-                        WhistleID = 0
+                        UploadID = 2
+                    });
+                    DBHandler.PostUser(new DB.User
+                    {                        
+                        UniqueID = AutoGenerateID(false),
+                        Password = AutoGenerateID(true),
+                        WhistleID = result.WhistleID
                     });
                     return RedirectToAction("UserLogin", "Login");
 
@@ -76,6 +83,36 @@ namespace Whistleblower.Controllers
             ViewBag.Message = "Kontrollera din information";
             WhistleModel WM = whistleInput;
             return View(WM);
+        }
+        public string AutoGenerateID(bool isPassword)
+        {
+            Random r = new Random();
+            string generatedID = "";
+
+            for (int i = 0; i < 9; i++)
+            {
+                if (i == 3 || i == 4 || i == 8)
+                {
+                    char c = Convert.ToChar(r.Next(65, 90));
+                    generatedID += c;
+                }
+                else
+                {
+                    generatedID += r.Next(0, 9).ToString();
+                }
+            }
+            if (!isPassword)
+            {
+                using (var db = new DB.DBEntity())
+                {
+                    var test = db.User.Where(X => X.UniqueID == generatedID);
+                    if (test.Count() != 0)
+                    {
+                        AutoGenerateID(false);
+                    }
+                }
+            }
+            return generatedID;
         }
     }
 }
