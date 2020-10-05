@@ -24,5 +24,6 @@ namespace DB
         public string Description_OtherEmployees { get; set; }
         public Nullable<int> UploadID { get; set; }
         public bool isActive { get; set; }
+        public string CurrentStatus { get; set; }
     }
 }

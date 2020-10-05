@@ -8,6 +8,7 @@ namespace Whistleblower.Models
 {
     public class WhistleModel
     {
+        public int WhistleID { get; set; }
         [Required(ErrorMessage = "Var vänlig välj ett alternativ")]
         [Display(Name = "Vad gäller ärendet?")]
         public string About { get; set; }
@@ -31,6 +32,7 @@ namespace Whistleblower.Models
         [Display(Name = "Är andra anställda medvetna om detta?")]
         [StringLength(280, ErrorMessage = "Max 280 tecken")]
         public string Description_OtherEmployees { get; set; }
+        public string CurrentStatus { get; set; }
 
         public List<string> Subjects;
         

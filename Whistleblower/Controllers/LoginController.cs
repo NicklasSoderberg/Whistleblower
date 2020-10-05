@@ -38,27 +38,6 @@ namespace Whistleblower.Controllers
             }
             return View(formAdmin);
         }
-        public ActionResult LoginLawyer()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult LoginLawyer(LoginLawyer formLawyer)
-        {
-            LoginLawyer loginlawyer = new LoginLawyer();
-            if (ModelState.IsValid)
-            {
-                if (loginlawyer.Username == formLawyer.Username && loginlawyer.Password == formLawyer.Password)
-                {
-                    return RedirectToAction("Safebox");
-                }
-                else
-                {
-                    ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
-                }
-            }
-            return View(formLawyer);
-        }
 
         public ActionResult UserLogin()
         {

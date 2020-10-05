@@ -1,0 +1,55 @@
+﻿@model Whistleblower.Models.LawyerModel
+@{
+    ViewBag.Title = "Whistle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="form-titel">
+    <img src="~/images/omegapoint.png">
+    <h2 style="text-align:center;">Ärende: @Model.SelectedWhistle.WhistleID</h2>
+</div>
+<div style="text-align:center;">
+    <h4>Status</h4>
+    @Html.DropDownListFor(m => m.SelectedWhistle.CurrentStatus, new SelectList(Model.WhistleStatuses), new { @onchange = "alert('Ärendet har uppdaterats'); ", @id = "StatusDropDown" })
+</div>
+<div style="text-align:center;">
+    <div>
+        @Html.LabelFor(m => m.SelectedWhistle.About)
+    </div>
+    <div>
+        <label>@Model.SelectedWhistle.About</label>
+    </div>
+    <div>
+        @Html.LabelFor(m => m.SelectedWhistle.Description)
+    </div>
+    <div>
+        <label>@Model.SelectedWhistle.Description</label>
+    </div>
+    <div>
+        @Html.LabelFor(m => m.SelectedWhistle.When)
+    </div>
+    <div>
+        <label>@Model.SelectedWhistle.When</label>
+    </div>
+    <div>
+        @Html.LabelFor(m => m.SelectedWhistle.Where)
+    </div>
+    <div>
+        <label>@Model.SelectedWhistle.Where</label>
+    </div>
+    <div class="form-group">
+        <a class="btn btn-danger" href="@Url.Action("WhistleHandler")">Gå tillbaka</a>
+        <a class="btn btn-primary" href="@Url.Action("Safebox" + "/" + Model.SelectedWhistle.WhistleID,"Safebox")">Gå till Safeboxen</a>
+    </div>
+
+</div>
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    <script>
+        $("#StatusDropDown").change(function () {
+        window.location.href = '@Url.Action("test" + "/" + Model.SelectedWhistle.WhistleID)'
+        console.log("test")
+    });
+    </script>
+}
