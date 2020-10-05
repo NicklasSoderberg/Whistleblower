@@ -1,0 +1,50 @@
+﻿@{ 
+    ViewBag.Title = "ReportStatus"; 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <div class="text-right">
+        <button type="button" class="btn btn-danger text-right">Logout</button>
+
+    </div>
+</div>
+
+<div class="form-titel">
+    <img src="~/images/omegapoint.png">
+
+
+
+</div>
+<hr />
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Status</th>
+            <th scope="col">Ärende</th>
+            <th scope="col">Typ</th>
+            <th scope="col">Datum</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="table-active">
+            <th scope="row">Aktiv</th>
+            <td>Ärende</td>
+            <td>Pengatvätt</td>
+            <td>20/05/12</td>
+        </tr>
+</table>
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+
+    <script>
+        $(".btn").click(function () {
+        window.location.href = '@Url.Action("LogOut", "Login")'
+        console.log("test")
+    });
+    </script>
+}

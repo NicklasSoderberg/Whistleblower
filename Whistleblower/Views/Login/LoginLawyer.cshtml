@@ -1,19 +1,17 @@
-﻿@model Whistleblower.Models.LoginAdmin
+﻿@model Whistleblower.Models.LoginLawyer
 
 @{
-    ViewBag.Title = "LoginAdmin";
+    ViewBag.Title = "LoginLawyer";
 }
-
-@using (Html.BeginForm("LoginAdmin", "Home", FormMethod.Post))
+@using (Html.BeginForm("LoginLawyer", "Login", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
         <div class="form-titel">
             <img src="~/images/omegapoint.png">
-            <h4>Login Admin</h4>
+            <h4>Login Lawyer</h4>
         </div>
-
         <hr />
         <div class="form-holder">
             <div class="form-body">
@@ -33,7 +31,7 @@
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                         <input type="checkbox" onclick="myFunction()"> Visa lösenord
 
-                        <p id="text" class="text-danger" style="display:none">WARNING! Caps lock is ON.</p>
+                        <p id="text" style="display:none">VARNING! Caps lock är på.</p>
                         <script>
                             var input = document.getElementById("password-input");
                             var text = document.getElementById("text");
@@ -57,23 +55,20 @@
                         </script>
                     </div>
                 </div>
-            <div class="col-md-offset-2 col-md-10">
-              <input type="submit" value="Logga in" class="btn btn-default" />
-               <div class="form-titel">
-                @Html.ValidationMessage("LogOnError", new { @class = "text-danger" })
+
+            <div class="form-group">
+               <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Logga in" class="btn btn-default" />
+                    <div class="form-titel">
+                            @Html.ValidationMessage("LogOnError", new { @class = "text-danger" })
+                    </div>
                </div>
             </div>
-                
         </div>
     </div>
  </div>
 }
 
-<div>
-@Html.ActionLink("Back to List", "Index")
-</div>
-
-@section Scripts 
-{
-   @Scripts.Render("~/bundles/jqueryval")
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 }
