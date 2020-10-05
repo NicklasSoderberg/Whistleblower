@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DB;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -33,6 +34,8 @@ namespace Whistleblower.Models
         public string Description_OtherEmployees { get; set; }
 
         public List<string> Subjects;
+
+        public User user { get; set; }
         
         public WhistleModel()
         {
@@ -45,6 +48,7 @@ namespace Whistleblower.Models
             "Penningtvätt",
             "Personal",
             "Annat" };
+            user = new User();
         }
     }
 }
