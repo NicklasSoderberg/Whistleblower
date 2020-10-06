@@ -73,6 +73,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Property Name="About" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="_When" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="_Where" Type="nvarchar" MaxLength="280" Nullable="false" />
+          <Property Name="CurrentStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="Description_OtherEmployees" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="UploadID" Type="int" />
@@ -150,6 +151,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Property Name="Description_OtherEmployees" Type="String" MaxLength="280" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UploadID" Type="Int32" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="CurrentStatus" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="MessageConversation">
           <Key>
@@ -241,6 +243,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
                 <ScalarProperty Name="Description_OtherEmployees" ColumnName="Description_OtherEmployees" />
                 <ScalarProperty Name="UploadID" ColumnName="UploadID" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="CurrentStatus" ColumnName="CurrentStatus" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
