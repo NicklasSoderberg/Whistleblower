@@ -56,19 +56,7 @@ namespace Whistleblower.Custom
         {
             using (var db = new DB.DBEntity())
             {
-
-                switch (AddObject?.GetType().Name.ToLower())
-                {
-                    case "whistle":
-                        db.Whistle.FirstOrDefault(m => m.WhistleID == ((WhistleModel)AddObject).WhistleID).CurrentStatus = ((WhistleModel)AddObject).CurrentStatus;
-                        db.SaveChanges();
-                        break;
-
-
-                    default:
-                        return false;
-                }
-
+                db.Whistle.FirstOrDefault(m => m.WhistleID == ((WhistleModel)AddObject).WhistleID).CurrentStatus = ((WhistleModel)AddObject).CurrentStatus;
                 db.SaveChanges();
                 return true;
             }

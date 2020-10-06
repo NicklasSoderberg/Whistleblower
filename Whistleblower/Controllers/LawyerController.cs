@@ -50,11 +50,11 @@ namespace Whistleblower.Controllers
         model.SelectedWhistle = model.Whistles.FirstOrDefault(m => m.WhistleID == int.Parse(id));
             return View(model);
         }
-        public ActionResult test(string id)
+        [HttpPost]
+        public ActionResult test(string id, LawyerModel model)
         {
-            LawyerModel model = new LawyerModel();
-            var currentWhistle = model.Whistles.FirstOrDefault(m => m.WhistleID == int.Parse(id));
-            DBHandler.Put(currentWhistle);
+            model.SelectedWhistle.WhistleID = int.Parse(id);
+            DBHandler.Put(model.SelectedWhistle);
             return RedirectToAction("Whistle" + "/" + id);
         }
     }
