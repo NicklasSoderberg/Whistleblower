@@ -67,6 +67,7 @@ namespace Whistleblower.Controllers
                         Description = whistleInput.Description,
                         Description_OtherEmployees = whistleInput.Description_OtherEmployees,
                         isActive = true,
+                        CurrentStatus = "Aktiv",
                         UploadID = 2
                     });
                     UWM.user = DBHandler.PostUser(new DB.User
