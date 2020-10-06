@@ -55,6 +55,7 @@ namespace Whistleblower.Controllers
                 if (s.UniqueID == formModel.UserName && s.Password == formModel.Password)
                 {
                     correctLogin = true;
+                    TempData["whistleId"] = s.WhistleID;
                 }
             }
 
@@ -79,7 +80,17 @@ namespace Whistleblower.Controllers
 
         public ActionResult ReportStatus()
         {
-            return View();
+            int id = (int)TempData["whistleId"];
+            var WM = DBHandler.GetWhistle(id);
+            WhistleModel whistleModel = new WhistleModel()
+            {
+                WhistleID = WM.WhistleID,
+                CurrentStatus = WM.CurrentStatus,
+                About = WM.About,
+                Description = WM.Description,
+                When = WM.C_When
+            };
+            return View(whistleModel);
         }
     }
 }

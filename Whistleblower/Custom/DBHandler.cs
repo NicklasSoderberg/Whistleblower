@@ -78,5 +78,12 @@ namespace Whistleblower.Custom
                 return db.User.ToList();
             }
         }
+        public static DB.Whistle GetWhistle(int id)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                return db.Whistle.FirstOrDefault(x => x.WhistleID == id);
+            }
+        }
     }
 }
