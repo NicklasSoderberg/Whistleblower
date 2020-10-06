@@ -35,7 +35,7 @@
                             -moz-appearance: textfield;
                         }
                     </style>
-                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @type = "number", @onkeydown = "javascript: return event.keyCode === 8 ||event.keyCode === 46 ? true : !isNaN(Number(event.key))" } })
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                 </div>
             </div>
