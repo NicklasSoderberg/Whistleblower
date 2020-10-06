@@ -71,6 +71,12 @@ namespace Whistleblower.Custom
                 return true;
             }
         }
-
+        public static List<DB.User> GetUser()
+        {               
+            using (var db = new DB.DBEntity())
+            {                
+                return db.User.ToList();
+            }
+        }
     }
 }
