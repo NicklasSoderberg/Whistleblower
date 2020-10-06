@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Whistleblower.Custom;
 using Whistleblower.Models;
 
 namespace Whistleblower.Controllers
 {
     public class LawyerController : Controller
     {
+
+        public static string currentUser { get; set; }
         // GET: Lawyer
         public ActionResult Login()
         {
@@ -22,6 +25,7 @@ namespace Whistleblower.Controllers
             {
                 if (loginlawyer.Username == formLawyer.Username && loginlawyer.Password == formLawyer.Password)
                 {
+                    currentUser = "Lawyer";
                     return RedirectToAction("WhistleHandler");
                 }
                 else
@@ -48,7 +52,9 @@ namespace Whistleblower.Controllers
         }
         public ActionResult test(string id)
         {
-
+            LawyerModel model = new LawyerModel();
+            var currentWhistle = model.Whistles.FirstOrDefault(m => m.WhistleID == int.Parse(id));
+            DBHandler.Put(currentWhistle);
             return RedirectToAction("Whistle" + "/" + id);
         }
     }

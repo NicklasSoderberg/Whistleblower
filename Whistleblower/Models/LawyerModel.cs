@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Whistleblower.Custom;
 
 namespace Whistleblower.Models
 {
@@ -34,14 +35,7 @@ namespace Whistleblower.Models
                 "Hanteras",
                 "Avslutad"
             };
-            Whistles = new List<WhistleModel>
-            {
-                new WhistleModel{Description="Skanne säljer glass på kontoret", About="Bedrägeri", WhistleID = 1, CurrentStatus = "Aktiv" },
-                new WhistleModel{Description="Skanne säljer glass på kontoret", About="Bedrägeri", WhistleID = 5, CurrentStatus = "Hanteras" },
-                new WhistleModel{Description="Skanne säljer glass på kontoret", About="Bedrägeri", WhistleID = 4, CurrentStatus = "Aktiv" },
-                new WhistleModel{Description="Skanne säljer glass på kontoret", About="Bedrägeri", WhistleID = 3, CurrentStatus = "Hanteras" },
-                new WhistleModel{Description="Skanne säljer glass på kontoret", About="Bedrägeri", WhistleID = 2, CurrentStatus = "Avslutad" }
-            };
+            Whistles = DBHandler.GetWhistles();
         }
     }
 }
