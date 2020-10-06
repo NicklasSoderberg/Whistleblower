@@ -47,16 +47,26 @@ namespace Whistleblower.Controllers
         [HttpPost]
         public ActionResult UserLogin(LoginModel formModel)
         {
-            LoginModel loginModel = new LoginModel();
-            if (ModelState.IsValid)
+            var users = DBHandler.GetUser();
+            bool correctLogin = false;
+
+            foreach (var s in users)
             {
-                if (loginModel.UserName == formModel.UserName && loginModel.Password == formModel.Password)
+                if (s.UniqueID == formModel.UserName && s.Password == formModel.Password)
+                {
+                    correctLogin = true;
+                }
+            }
+
+            if (ModelState.IsValid)
+            {                
+                if (correctLogin)
                 {
                     return RedirectToAction("ReportStatus");
                 }
                 else
                 {
-                    ModelState.AddModelError("LogOnError", "ID eller lï¿½senord ï¿½r felaktigt");                  
+                    ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");                  
                 }
             }
             return View(formModel);
