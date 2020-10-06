@@ -56,8 +56,8 @@ namespace Whistleblower.Controllers
                 case "tillbaka":
                     return RedirectToAction("WhistleBack", "Whistle", whistleInput);
 
-                case "skicka":  
-                    
+                case "skicka":
+                    WhistleModel UWM = whistleInput;
                     var result = DBHandler.PostWhistle(new DB.Whistle
                     {                        
                         LawyerID = 0,
@@ -69,13 +69,15 @@ namespace Whistleblower.Controllers
                         isActive = true,
                         UploadID = 2
                     });
-                    DBHandler.PostUser(new DB.User
+                    UWM.user = DBHandler.PostUser(new DB.User
                     {                        
                         UniqueID = AutoGenerateID(false),
                         Password = AutoGenerateID(true),
                         WhistleID = result.WhistleID
+
                     });
-                    return RedirectToAction("UserLogin", "Login");
+                    
+                    return View(UWM);
 
                 default:
                     break;
@@ -114,6 +116,5 @@ namespace Whistleblower.Controllers
             }
             return generatedID;
         }
-
     }
 }
