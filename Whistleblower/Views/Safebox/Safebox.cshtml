@@ -38,7 +38,7 @@
                 <p id="MessageText" style="text-wrap:normal;"></p>
             </div>
             <div style=" width:100%;">
-                <input type="button" id="RespondBtn" style="display:none;" value="Svara" onclick="location.href='Safebox#SendMailForm'" />
+                <input type="button" id="RespondBtn" style="display:none;" value="Svara" onclick="location.href='#SendMailForm'" />
             </div>
 
         </div>
@@ -46,7 +46,7 @@
     </div>
 
 <div id="SendMailForm">
-    @using (Html.BeginForm("SendMail", "Safebox"))
+    @using (Html.BeginForm("SendMail" + "/" + Model.WhistleId, "Safebox"))
     {
         <h1 style=" text-align:center">Svar</h1>
 
@@ -56,7 +56,7 @@
         </div>
         <input type="file" style="margin:0 auto;" multiple />
         <button type="submit" class="btn btn-primary">Skicka</button>
-        <input type="button" class="btn btn-danger" value="Avbryt" onclick="location.href='Safebox#'" />
+        <input type="button" class="btn btn-danger" value="Avbryt" onclick="location.href='#'" />
 
     }
 </div>

@@ -1,9 +1,9 @@
-﻿@model Whistleblower.Models.LoginLawyer
+﻿@model Whistleblower.Models.LawyerModel
 
 @{
     ViewBag.Title = "LoginLawyer";
 }
-@using (Html.BeginForm("LoginLawyer", "Login", FormMethod.Post))
+@using (Html.BeginForm("Login", "Lawyer", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 

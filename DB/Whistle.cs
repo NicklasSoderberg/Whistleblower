@@ -15,7 +15,6 @@ namespace DB
     public partial class Whistle
     {
         public int WhistleID { get; set; }
-        public int UniqueID { get; set; }
         public int LawyerID { get; set; }
         public string About { get; set; }
         public string C_When { get; set; }
@@ -24,5 +23,6 @@ namespace DB
         public string Description_OtherEmployees { get; set; }
         public Nullable<int> UploadID { get; set; }
         public bool isActive { get; set; }
+        public string CurrentStatus { get; set; }
     }
 }

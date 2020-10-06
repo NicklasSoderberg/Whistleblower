@@ -197,6 +197,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\LawyerController.cs" />
     <Compile Include="Controllers\SafeboxController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\WhistleController.cs" />
@@ -209,7 +210,7 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\WhistleModel.cs" />
     <Compile Include="Models\LoginAdmin.cs" />
-    <Compile Include="Models\LoginLawyer.cs" />
+    <Compile Include="Models\LawyerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\SafeboxViewmodel.cs" />
   </ItemGroup>
@@ -250,13 +251,16 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Login\ReportStatus.cshtml" />
     <Content Include="Views\Login\LoginAdmin.cshtml" />
-    <Content Include="Views\Login\LoginLawyer.cshtml" />
+    <Content Include="Views\Lawyer\Login.cshtml" />
     <Content Include="Views\Login\UserLogin.cshtml" />
     <Content Include="Views\Whistle\Whistle.cshtml" />
     <Content Include="Views\Whistle\WhistleConfirm.cshtml" />
     <Content Include="Views\Safebox\MailSent.cshtml" />
     <Content Include="Views\Safebox\Safebox.cshtml" />
     <Content Include="Views\Safebox\SentMail.cshtml" />
+    <Content Include="Views\Whistle\Index.cshtml" />
+    <Content Include="Views\Lawyer\WhistleHandler.cshtml" />
+    <Content Include="Views\Lawyer\Whistle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
