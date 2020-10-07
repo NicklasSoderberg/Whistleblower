@@ -8,7 +8,7 @@ namespace Whistleblower.ViewModels
 {
     public class SafeboxViewmodel
     {
-       
+        public string CurrentUser { get; set; }
         public Mail Mail { get; set; }
         public static List<Mail> MailList { get; set; } = new List<Mail>();
         public static int _TempMailId { get; set; }

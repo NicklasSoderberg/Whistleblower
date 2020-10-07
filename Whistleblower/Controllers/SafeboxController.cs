@@ -17,9 +17,18 @@ namespace Whistleblower.Controllers
 {
     public class SafeboxController : Controller
     {
+        
         public ActionResult Safebox(int Id)
         {
-             SafeboxViewmodel viewmodel = new SafeboxViewmodel();
+            SafeboxViewmodel viewmodel = new SafeboxViewmodel();
+            if (LawyerController.currentUser == "Lawyer")
+            {
+                viewmodel.CurrentUser = "Lawyer";
+            }else 
+            {
+                viewmodel.CurrentUser = "Whistler";
+            }
+            
             viewmodel.WhistleId = Id;
 
             if(SafeboxViewmodel.MailList.Count == 0)
