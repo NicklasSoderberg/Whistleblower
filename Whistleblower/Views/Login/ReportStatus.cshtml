@@ -19,21 +19,65 @@
 </div>
 <hr />
 
+@*<table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Status</th>
+                <th scope="col">Ärende</th>
+                <th scope="col">Typ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">@Html.DisplayFor(model => model.Whistle.CurrentStatus)</th>
+                <td>@Html.DisplayFor(model => model.Whistle.About)</td>
+                <td>@Html.DisplayFor(model => model.Whistle.Description)</td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" id="goToSafeBox">Safepostbox</button>*@
 <div class="form-body">
-
-    <div class="alert alert-dismissible alert-success">
-        <strong>Ditt ärende är hantera</strong> You successfully read <a href="#" class="alert-link">Du har ett nytt medelande, gå vidare till safe post box</a>.
+    <div class="form-group">
+        @Html.LabelFor(m => m.Whistle.About, new { @class = "h5", style = "font-weight: bold" })
+        <div>@Html.DisplayFor(model => model.Whistle.About)</div>
     </div>
 
-    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Tooltip on bottom">Här kan du gå vidare till safepostboxen där du får svar på ditt ärende.</button>
-</div>
-@section Scripts{
-    @Scripts.Render("~/bundles/jquery")
 
-    <script>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Whistle.Description, new { @class = "h5", style = "font-weight: bold" })
+        <div>@Html.DisplayFor(model => model.Whistle.Description)</div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Whistle.When, new { @class = "h5", style = "font-weight: bold" })
+        <div>@Html.DisplayFor(model => model.Whistle.When)</div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Whistle.Where, new { @class = "h5", style = "font-weight: bold" })
+        <div>@Html.DisplayFor(model => model.Whistle.Where)</div>
+    </div>
+    <button type="button" class="btn btn-primary" id="goToSafeBox">Safepostbox</button>
+</div>
+
+    
+
+    @section Scripts{
+        @Scripts.Render("~/bundles/jquery")
+
+        <script>
         $(".btn").click(function () {
         window.location.href = '@Url.Action("LogOut", "Login")'
         console.log("test")
     });
-    </script>
-}
+        </script>
+
+        <script>
+        $("#goToSafeBox").click(function () {
+        window.location.href = '@Url.Action("Safebox" + "/" + Model.Whistle.WhistleID, "Safebox")'
+        console.log("test")
+    });
+        </script>
+    }
