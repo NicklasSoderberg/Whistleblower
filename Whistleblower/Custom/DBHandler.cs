@@ -103,8 +103,15 @@ namespace Whistleblower.Custom
             Names.Remove(removeThis);
             return Names;
         }
-    }
-  
+
+        public static List<DB.Whistle> GetAllWhistles()
+        {
+            using (var db = new DB.DBEntity())
+            {
+                return db.Whistle.ToList();
+            }
+        }
+
         public static List<WhistleModel> GetWhistles()
         {
             using(var db = new DB.DBEntity())

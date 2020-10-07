@@ -20,7 +20,7 @@ namespace Whistleblower.Controllers
     {
         public ActionResult Dashboard(string SortBy)
         {
-            List<DB.Whistle> Whistles = DBHandler.GetWhistles();
+            List<DB.Whistle> Whistles = DBHandler.GetAllWhistles();
             switch (SortBy?.ToLower())
             {
                 case "lawyer":
