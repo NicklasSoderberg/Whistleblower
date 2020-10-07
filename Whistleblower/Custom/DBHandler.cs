@@ -49,14 +49,6 @@ namespace Whistleblower.Custom
             }
         }
 
-        public static List<DB.Whistle> GetWhistles()
-        {
-            using (var db = new DB.DBEntity())
-            {
-                return db.Whistle.ToList();
-            }
-        }
-
         public static string LawyerNameByID(int id)
         {
             using (var db = new DB.DBEntity())
