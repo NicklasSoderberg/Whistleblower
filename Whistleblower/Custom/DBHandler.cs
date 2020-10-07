@@ -9,29 +9,6 @@ namespace Whistleblower.Custom
 {
     public class DBHandler
     {
-        public static bool Post(Object AddObject)
-        { 
-            using (var db = new DB.DBEntity())
-            {
-
-                switch (AddObject?.GetType().Name.ToLower())
-                {
-                    case "whistle":
-                        db.Whistle.Add((DB.Whistle)AddObject);
-                        break;
-
-                    case "user":
-                        db.User.Add((DB.User)AddObject);
-                        break;
-
-                    default:
-                        return false;
-                }
-
-                db.SaveChanges();
-                return true;
-            }
-        }
         public static DB.Whistle PostWhistle(DB.Whistle whistle)
         {
             using (var db = new DB.DBEntity())
@@ -72,5 +49,77 @@ namespace Whistleblower.Custom
             }
         }
 
+        public static List<DB.Whistle> GetWhistles()
+        {
+            using (var db = new DB.DBEntity())
+            {
+                return db.Whistle.ToList();
+            }
+        }
+
+        public static string LawyerNameByID(int id)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                DB.Lawyer lawyer = db.Lawyer.Where(L => L.LawyerID == id).FirstOrDefault();
+                return lawyer.Username;
+            }
+        }
+
+        public static List<DB.Lawyer> GetLawyers()
+        {
+            using (var db = new DB.DBEntity())
+            {
+                return db.Lawyer.ToList();
+            }
+        }
+
+        public static void UpdateAdminWhistle(DB.Whistle UpdateWhistle)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                var result = db.Whistle.SingleOrDefault(b => b.WhistleID == UpdateWhistle.WhistleID);
+                if (result != null)
+                {
+                    result.About = UpdateWhistle.About;
+                    result.LawyerID = UpdateWhistle.LawyerID;
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        public static List<string> GetSubjectList()
+        {
+            return new List<string> {
+            "Mutor, korruption & förfalskning",
+            "Dataskydd och brott mot IT-säkerhet",
+            "Diskriminering, trakasserier och andra arbetsrelaterade lagproblem",
+            "Bedrägeri, missbruk och stöld",
+            "Hälsa, säkerhet & miljö",
+            "Penningtvätt",
+            "Personal",
+            "Annat" };
+        }
+
+        public static List<string> GetLawyerList()
+        {
+            List<DB.Lawyer> lawyers = GetLawyers();
+            List<string> Names = new List<string>();
+            foreach (DB.Lawyer L in lawyers)
+                Names.Add(L.Username);
+
+            return Names;
+        }
+
+        public static List<string> GetLawyerList(string removeThis)
+        {
+            List<DB.Lawyer> lawyers = GetLawyers();
+            List<string> Names = new List<string>();
+            foreach (DB.Lawyer L in lawyers)
+                Names.Add(L.Username);
+
+            Names.Remove(removeThis);
+            return Names;
+        }
     }
 }
