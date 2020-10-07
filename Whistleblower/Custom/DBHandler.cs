@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DB;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -54,21 +56,32 @@ namespace Whistleblower.Custom
         {
             using (var db = new DB.DBEntity())
             {
-
-                switch (AddObject?.GetType().Name.ToLower())
-                {
-                    case "whistle":
-                        db.Whistle.FirstOrDefault(m => m.WhistleID == ((WhistleModel)AddObject).WhistleID).CurrentStatus = ((WhistleModel)AddObject).CurrentStatus;
-                        db.SaveChanges();
-                        break;
-
-
-                    default:
-                        return false;
-                }
-
+                db.Whistle.FirstOrDefault(m => m.WhistleID == ((WhistleModel)AddObject).WhistleID).CurrentStatus = ((WhistleModel)AddObject).CurrentStatus;
                 db.SaveChanges();
                 return true;
+            }
+        }
+        public static List<WhistleModel> GetWhistles()
+        {
+            using(var db = new DB.DBEntity())
+            {
+                List<WhistleModel> WhistleList = new List<WhistleModel>();
+                List<DB.Whistle> templist = db.Whistle.ToList();
+                foreach(DB.Whistle w in templist)
+                {
+                    WhistleModel whistle = new WhistleModel
+                    {
+                        About = w.About,
+                        CurrentStatus = w.CurrentStatus,
+                        Description = w.Description,
+                        Description_OtherEmployees = w.Description_OtherEmployees,
+                        When = w.C_When,
+                        Where = w.C_Where,
+                        WhistleID = w.WhistleID
+                    };
+                    WhistleList.Add(whistle);
+                }
+                return WhistleList;
             }
         }
         public static List<DB.User> GetUser()
@@ -76,13 +89,6 @@ namespace Whistleblower.Custom
             using (var db = new DB.DBEntity())
             {                
                 return db.User.ToList();
-            }
-        }
-        public static DB.Whistle GetWhistle(int id)
-        {
-            using (var db = new DB.DBEntity())
-            {
-                return db.Whistle.FirstOrDefault(x => x.WhistleID == id);
             }
         }
     }
