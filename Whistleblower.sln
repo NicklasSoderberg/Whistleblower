@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whistleblower", "Whistleblower\Whistleblower.csproj", "{F380E1E8-D9DE-468C-AA53-59DE1D5D1AA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB", "DB\DB.csproj", "{F4819F43-BEC4-4DC8-AE87-C99FB972ABA9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F380E1E8-D9DE-468C-AA53-59DE1D5D1AA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F380E1E8-D9DE-468C-AA53-59DE1D5D1AA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F380E1E8-D9DE-468C-AA53-59DE1D5D1AA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F380E1E8-D9DE-468C-AA53-59DE1D5D1AA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4819F43-BEC4-4DC8-AE87-C99FB972ABA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4819F43-BEC4-4DC8-AE87-C99FB972ABA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4819F43-BEC4-4DC8-AE87-C99FB972ABA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4819F43-BEC4-4DC8-AE87-C99FB972ABA9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F619CAF0-A8D6-4031-BF12-6365C5A02C33}
+	EndGlobalSection
+EndGlobal

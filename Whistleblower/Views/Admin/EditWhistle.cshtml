@@ -1,0 +1,82 @@
+﻿@model DB.Whistle
+
+@{
+    ViewBag.Title = "UserLogin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <div class="form-titel">
+        <img src="~/images/omegapoint.png">
+    </div>
+    <hr />
+    <div class="form-body">
+        @using (Html.BeginForm("EditWhistle", "Admin", Model))
+        {
+            @Html.LabelFor(model => model.LawyerID, htmlAttributes: new { @class = "" })
+            <div class="form-group">
+                <div class="col-md-12">
+                    @if (Model.LawyerID > 0)
+                    {
+                        @Html.DropDownListFor(m => m.LawyerID, new SelectList(DBHandler.GetLawyerList(DBHandler.LawyerNameByID(Model.LawyerID))), DBHandler.LawyerNameByID(Model.LawyerID), new { htmlAttributes = new { @class = "combobox" } })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.LawyerID, new SelectList(DBHandler.GetLawyerList()), "", new { htmlAttributes = new { @class = "combobox" } })
+                    }
+                    @Html.ValidationMessageFor(model => model.LawyerID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @Html.LabelFor(model => model.About, htmlAttributes: new { @class = "" })
+            <div class="form-group">
+                <div class="col-md-12">
+                    @Html.DropDownListFor(m => m.About, new SelectList(DBHandler.GetSubjectList()), "", new { htmlAttributes = new { @class = "combobox" } })
+                    @Html.ValidationMessageFor(model => model.About, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @Html.LabelFor(model => model.C_When, htmlAttributes: new { @class = "" })
+            <div class="form-group">
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.C_When, new { htmlAttributes = new { @class = "form-control", disabled = "true" } })
+                    @Html.ValidationMessageFor(model => model.C_When, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @Html.LabelFor(model => model.C_Where, htmlAttributes: new { @class = "" })
+            <div class="form-group">
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.C_Where, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.C_Where, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "" })
+            <div class="form-group">
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @Html.LabelFor(model => model.Description_OtherEmployees, htmlAttributes: new { @class = "" })
+            <div class="form-group">
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Description_OtherEmployees, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Description_OtherEmployees, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" name="button" value="Tillbaka" class="btn btn-default" />
+                    <input type="submit" name="button" value="Spara" class="btn btn-default" />
+                </div>
+            </div>
+        }
+    </div>
+</div>

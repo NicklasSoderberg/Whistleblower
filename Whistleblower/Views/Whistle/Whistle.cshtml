@@ -1,0 +1,87 @@
+﻿@model Whistleblower.Models.WhistleModel
+
+@{
+    ViewBag.Title = "Whistle";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="form-titel">
+            <img src="~/images/omegapoint.png">
+            <h4>Beskriv ditt ärende</h4>
+            <p>Tänk på att beskriva ditt ärende så noggrant som möjligt för att underlätta vår utredning.</p>
+        </div>
+        <hr />
+        <div class="form-holder">
+            <div class="form-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @using (Html.BeginForm("Whistle", "Home", FormMethod.Post))
+                {
+                    @Html.RequiredLabelFor(model => model.About, htmlAttributes: new { @class = "" })
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(m => m.About, new SelectList(Model.Subjects), "", new { htmlAttributes = new { @class = "combobox" } })
+                            @Html.ValidationMessageFor(model => model.About, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @Html.RequiredLabelFor(model => model.When, htmlAttributes: new { @class = "" })
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.When, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.When, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @Html.RequiredLabelFor(model => model.Where, htmlAttributes: new { @class = "" })
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Where, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Where, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @Html.RequiredLabelFor(model => model.Description, htmlAttributes: new { @class = "" })
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @Html.RequiredLabelFor(model => model.Description_OtherEmployees, htmlAttributes: new { @class = "" })
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Description_OtherEmployees, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Description_OtherEmployees, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="file" name="files" multiple />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-5">
+                            <input type="submit" name="button" value="Nästa" class="btn btn-default" />
+                        </div>
+                    </div>
+
+                }
+            </div>
+            </div>
+    </div>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

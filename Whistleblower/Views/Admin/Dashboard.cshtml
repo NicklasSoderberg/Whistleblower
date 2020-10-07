@@ -1,0 +1,65 @@
+﻿@model IEnumerable<DB.Whistle>
+
+@{
+    ViewBag.Title = "UserLogin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <div class="form-titel">
+        <img src="~/images/omegapoint.png">
+    </div>
+    <hr />
+    <div class="form-holder">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.ActionLink("Whistle ID", "Dashboard", "Admin", new { SortBy = "whistleid" }, null)
+                    </th>
+                    <th>
+                        @Html.ActionLink("About", "Dashboard", "Admin", new { SortBy = "about" }, null)
+                    </th>
+                    <th>
+                        @Html.ActionLink("Lawyer", "Dashboard", "Admin", new { SortBy = "lawyer"}, null)
+                    </th>
+                    <th>
+                        @Html.ActionLink("Status", "Dashboard", "Admin", new { SortBy = "status" }, null)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.WhistleID)
+                        </td>
+                        <td>
+                            @Html.ActionLink(item.About, "EditWhistle", "Admin", item, null)
+                        </td>
+                        <td>
+                            @if (item.LawyerID > 0)
+                            {
+                                @DBHandler.LawyerNameByID(item.LawyerID)
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Add Lawyer", "EditWhistle", "Admin", item, null)
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.isActive)
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
