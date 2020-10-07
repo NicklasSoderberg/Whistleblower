@@ -12,6 +12,7 @@ using Whistleblower.Models;
 using Whistleblower.ViewModels;
 using System.Web.Services;
 using Whistleblower.Custom;
+using DB;
 
 namespace Whistleblower.Controllers
 {
@@ -80,17 +81,12 @@ namespace Whistleblower.Controllers
 
         public ActionResult ReportStatus()
         {
-            int id = (int)TempData["whistleId"];
-            var WM = DBHandler.GetWhistle(id);
-            WhistleModel whistleModel = new WhistleModel()
-            {
-                WhistleID = WM.WhistleID,
-                CurrentStatus = WM.CurrentStatus,
-                About = WM.About,
-                Description = WM.Description,
-                When = WM.C_When
-            };
-            return View(whistleModel);
+            var id = (int)TempData["whistleId"];
+            ReportStatusViewModel reportStatusViewModel = new ReportStatusViewModel();
+            
+            reportStatusViewModel.Whistle = DBHandler.GetWhistles().FirstOrDefault(x => x.WhistleID == id);
+            reportStatusViewModel.Conversation = DBHandler.GetConversation().FirstOrDefault(x => x.WhistleID == id);
+            return View(reportStatusViewModel);
         }
     }
 }

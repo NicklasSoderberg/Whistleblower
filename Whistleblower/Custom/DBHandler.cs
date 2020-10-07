@@ -91,5 +91,12 @@ namespace Whistleblower.Custom
                 return db.User.ToList();
             }
         }
+        public static List<DB.Conversation> GetConversation()
+        {
+            using (var db = new DB.DBEntity())
+            {
+                return db.Conversation.ToList();
+            }
+        }
     }
 }

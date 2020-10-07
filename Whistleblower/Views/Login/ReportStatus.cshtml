@@ -1,4 +1,4 @@
-﻿@model Whistleblower.Models.WhistleModel
+﻿@model Whistleblower.ViewModels.ReportStatusViewModel
 
 @{
     ViewBag.Title = "ReportStatus";
@@ -16,15 +16,16 @@
 
 <div class="form-titel">
     <img src="~/images/omegapoint.png">
-
-
-
 </div>
 <hr />
 
+<div class="form-body">
 
-<div class="alert alert-dismissible alert-success">
-    <strong>Ditt ärende är hantera</strong> You successfully read <a href="#" class="alert-link">Du har ett nytt medelande, gå vidare till safe post box</a>.
+    <div class="alert alert-dismissible alert-success">
+        <strong>Ditt ärende är hantera</strong> You successfully read <a href="#" class="alert-link">Du har ett nytt medelande, gå vidare till safe post box</a>.
+    </div>
+
+    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Tooltip on bottom">Här kan du gå vidare till safepostboxen där du får svar på ditt ärende.</button>
 </div>
 @section Scripts{
     @Scripts.Render("~/bundles/jquery")
