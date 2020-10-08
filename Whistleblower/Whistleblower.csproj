@@ -198,6 +198,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\LawyerController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\SafeboxController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\WhistleController.cs" />
@@ -262,6 +263,8 @@
     <Content Include="Views\Whistle\Index.cshtml" />
     <Content Include="Views\Lawyer\WhistleHandler.cshtml" />
     <Content Include="Views\Lawyer\Whistle.cshtml" />
+    <Content Include="Views\Admin\Dashboard.cshtml" />
+    <Content Include="Views\Admin\EditWhistle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
