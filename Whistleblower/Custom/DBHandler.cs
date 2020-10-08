@@ -39,6 +39,7 @@ namespace Whistleblower.Custom
             }
         }
 
+
         public static string LawyerNameByID(int id)
         {
             using (var db = new DB.DBEntity())
@@ -111,7 +112,6 @@ namespace Whistleblower.Custom
                 return db.Whistle.ToList();
             }
         }
-
         public static List<WhistleModel> GetWhistles()
         {
             using(var db = new DB.DBEntity())
@@ -142,5 +142,24 @@ namespace Whistleblower.Custom
                 return db.User.ToList();
             }
         }
+
+        public static List<DB.Conversation> GetConversation()
+        {
+            using (var db = new DB.DBEntity())
+            {
+                return db.Conversation.ToList();
+            }
+        }
+
+        public static DB.Conversation CreateConversation(DB.Conversation conversation)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                db.Conversation.Add(conversation);
+                db.SaveChanges();
+                return conversation;
+            }
+        }
+
     }
 }

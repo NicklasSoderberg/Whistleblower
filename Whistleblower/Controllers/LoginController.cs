@@ -12,6 +12,7 @@ using Whistleblower.Models;
 using Whistleblower.ViewModels;
 using System.Web.Services;
 using Whistleblower.Custom;
+using DB;
 
 namespace Whistleblower.Controllers
 {
@@ -55,6 +56,7 @@ namespace Whistleblower.Controllers
                 if (s.UniqueID == formModel.UserName && s.Password == formModel.Password)
                 {
                     correctLogin = true;
+                    TempData["whistleId"] = s.WhistleID;
                 }
             }
 
@@ -79,7 +81,12 @@ namespace Whistleblower.Controllers
 
         public ActionResult ReportStatus()
         {
-            return View();
+            var id = (int)TempData["whistleId"];
+            ReportStatusViewModel reportStatusViewModel = new ReportStatusViewModel();
+            
+            reportStatusViewModel.Whistle = DBHandler.GetWhistles().FirstOrDefault(x => x.WhistleID == id);
+            reportStatusViewModel.Conversation = DBHandler.GetConversation().FirstOrDefault(x => x.WhistleID == id);
+            return View(reportStatusViewModel);
         }
     }
 }
