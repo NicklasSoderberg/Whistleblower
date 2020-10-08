@@ -82,7 +82,6 @@ namespace Whistleblower.Controllers
                         UniqueID = AutoGenerateID(false),
                         Password = AutoGenerateID(true),
                         WhistleID = result.WhistleID
-
                     });
                     
                     return View(UWM);
