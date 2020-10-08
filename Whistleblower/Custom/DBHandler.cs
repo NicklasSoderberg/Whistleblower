@@ -98,5 +98,15 @@ namespace Whistleblower.Custom
                 return db.Conversation.ToList();
             }
         }
+
+        public static DB.Conversation CreateConversation(DB.Conversation conversation)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                db.Conversation.Add(conversation);
+                db.SaveChanges();
+                return conversation;
+            }
+        }
     }
 }

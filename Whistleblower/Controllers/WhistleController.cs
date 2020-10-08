@@ -70,6 +70,13 @@ namespace Whistleblower.Controllers
                         CurrentStatus = "Aktiv",
                         UploadID = 2
                     });
+
+                    DBHandler.CreateConversation(
+                        new DB.Conversation
+                        {
+                            WhistleID = result.WhistleID
+
+                        });
                     UWM.user = DBHandler.PostUser(new DB.User
                     {                        
                         UniqueID = AutoGenerateID(false),
