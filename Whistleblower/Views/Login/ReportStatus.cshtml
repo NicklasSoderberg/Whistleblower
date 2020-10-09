@@ -1,6 +1,6 @@
 ﻿@model Whistleblower.ViewModels.ReportStatusViewModel
-@{ 
-    
+@{
+
 }
 @{
     ViewBag.Title = "ReportStatus";
@@ -61,28 +61,29 @@
         @Html.LabelFor(m => m.Whistle.Where, new { @class = "h5", style = "font-weight: bold" })
         <div>@Html.DisplayFor(model => model.Whistle.Where)</div>
     </div>
-    <button type="button" class="btn btn-primary" id="goToSafeBox">Safepostbox</button>    
+    <button type="button" class="btn btn-primary" id="goToSafeBox">Safepostbox</button>
 </div>
 
-    
 
-    @section Scripts{
-        @Scripts.Render("~/bundles/jquery")
 
-        <script>
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+
+    <script>
         $(".btn").click(function () {
         window.location.href = '@Url.Action("LogOut", "Login")'
         console.log("test")
     });
-        </script>
+    </script>
 
-        <script>
+    <script>
         $("#goToSafeBox").click(function () {
         window.location.href = '@Url.Action("Safebox" + "/" + Model.Whistle.WhistleID, "Safebox")'
         console.log("test")
-        });
+    });
+    </script>
 
-            <script>
+    <script>
                 var button = document.getElementById("goToSafeBox");
 
                 if (@Model.Conversation.ConversationID == 0) {
@@ -90,6 +91,5 @@
                 } else {
                     document.getElementById("goToSafeBox").style.display = "block";
                 }
-        </script>
-        </script>       
-    }
+    </script>
+}
