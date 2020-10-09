@@ -1,5 +1,7 @@
 ﻿@model Whistleblower.ViewModels.ReportStatusViewModel
-
+@{ 
+    
+}
 @{
     ViewBag.Title = "ReportStatus";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -59,7 +61,7 @@
         @Html.LabelFor(m => m.Whistle.Where, new { @class = "h5", style = "font-weight: bold" })
         <div>@Html.DisplayFor(model => model.Whistle.Where)</div>
     </div>
-    <button type="button" class="btn btn-primary" id="goToSafeBox" style="display:none">Safepostbox</button>
+    <button type="button" class="btn btn-primary" id="goToSafeBox">Safepostbox</button>    
 </div>
 
     
@@ -78,12 +80,16 @@
         $("#goToSafeBox").click(function () {
         window.location.href = '@Url.Action("Safebox" + "/" + Model.Whistle.WhistleID, "Safebox")'
         console.log("test")
-    });
-        </script>
+        });
 
-        <script>
-            if (@Model.Conversation != null) {
-                $("#goToSafeBox").show();
-            }
+            <script>
+                var button = document.getElementById("goToSafeBox");
+
+                if (@Model.Conversation.ConversationID == 0) {
+                    document.getElementById("goToSafeBox").style.display = "none";
+                } else {
+                    document.getElementById("goToSafeBox").style.display = "block";
+                }
         </script>
+        </script>       
     }

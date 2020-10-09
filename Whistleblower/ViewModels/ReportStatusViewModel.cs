@@ -11,5 +11,10 @@ namespace Whistleblower.ViewModels
     {
         public WhistleModel Whistle { get; set; }
         public Conversation Conversation { get; set; }
+        public ReportStatusViewModel()
+        {
+            Conversation conversation = new Conversation();
+            WhistleModel whistleModel = new WhistleModel();
+        }
     }
 }

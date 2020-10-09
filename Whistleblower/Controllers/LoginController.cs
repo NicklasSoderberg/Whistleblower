@@ -85,7 +85,16 @@ namespace Whistleblower.Controllers
             ReportStatusViewModel reportStatusViewModel = new ReportStatusViewModel();
             
             reportStatusViewModel.Whistle = DBHandler.GetWhistles().FirstOrDefault(x => x.WhistleID == id);
+            
             reportStatusViewModel.Conversation = DBHandler.GetConversation().FirstOrDefault(x => x.WhistleID == id);
+            if (reportStatusViewModel.Conversation == null)
+            {
+                reportStatusViewModel.Conversation = new Conversation()
+                {
+                    ConversationID = 0,
+                    WhistleID = 0
+                };
+            }
             return View(reportStatusViewModel);
         }
     }
