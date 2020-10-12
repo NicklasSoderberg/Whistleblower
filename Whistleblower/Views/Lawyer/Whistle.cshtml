@@ -1,8 +1,11 @@
-﻿@model Whistleblower.Models.LawyerModel
+﻿@model Whistleblower.ViewModels.LawyerViewmodel
 @{ ViewBag.Title = "Whistle";
                 Layout = "~/Views/Shared/_Layout.cshtml"; }
 
-
+@if(Model.SelectedWhistle.WhistleID == 0)
+{
+    Url.Action("WhistleHandler");
+}
 <div class="form-titel">
     <img src="~/images/omegapoint.png">
     <h2 style="text-align:center;">Ärende: @Model.SelectedWhistle.WhistleID</h2>
