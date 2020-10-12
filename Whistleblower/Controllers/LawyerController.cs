@@ -75,8 +75,9 @@ namespace Whistleblower.Controllers
                 return RedirectToAction("Login");
             }
         }
+
         [HttpPost]
-        public ActionResult test(string id, LawyerViewmodel model)
+        public ActionResult HandleWhistleChange(string id, LawyerViewmodel model)
         {
             model.SelectedWhistle.WhistleID = int.Parse(id);
             DBHandler.Put(model.SelectedWhistle);
