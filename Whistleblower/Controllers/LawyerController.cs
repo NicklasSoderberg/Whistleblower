@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Whistleblower.Custom;
 using Whistleblower.Models;
+using Whistleblower.ViewModels;
 
 namespace Whistleblower.Controllers
 {
@@ -89,10 +90,6 @@ namespace Whistleblower.Controllers
             {
               return  RedirectToAction("Login");
             }
-            else
-            {
-              return  RedirectToAction("Login");
-            }
         }
 
 
@@ -106,10 +103,6 @@ namespace Whistleblower.Controllers
 
                 model.SelectedWhistle = model.Whistles.FirstOrDefault(m => m.WhistleID == int.Parse(id));
                 return View(model);
-            }
-            else
-            {
-                return RedirectToAction("Login");
             }
             else
             {
