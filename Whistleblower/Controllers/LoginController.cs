@@ -73,48 +73,48 @@ namespace Whistleblower.Controllers
             Session.Remove("UserID");
             return RedirectToAction("LoginAdmin");
         }
+
+
+        public ActionResult LogOutUser()
+        {
+            Session.Remove("UserID");
+            return RedirectToAction("UserLogin");
+        }
+
         public ActionResult UserLogin()
         {
-            ViewBag.Message = "Login";
+            if (Session["UserID"] != null)
+            {
+                return RedirectToAction("ReportStatus");
+            }
             return View();
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult UserLogin(LoginModel formModel)
         {
-            var users = DBHandler.GetUser();
-            bool correctLogin = false;
-
-            foreach (var s in users)
-            {
-                if (s.UniqueID == formModel.UserName && s.Password == formModel.Password)
-                {
-                    correctLogin = true;
-                    TempData["whistleId"] = s.WhistleID;
-                }
-            }
-
             if (ModelState.IsValid)
-            {                
-                if (correctLogin)
+            {
+                using (var db = new DB.DBEntity())
                 {
-                    return RedirectToAction("ReportStatus");
-                }
-                else
-                {
-                    ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");                  
+                    var obj = db.User.Where(a => a.UniqueID.Equals(formModel.UserName) && a.Password.Equals(formModel.Password)).FirstOrDefault();
+                    if (obj != null)
+                    {
+                        Session["UserID"] = obj.ID.ToString();
+                        Session["UserName"] = obj.UniqueID;
+                        Session["WhistleId"] = obj.WhistleID;
+                        return RedirectToAction("ReportStatus");
+                    }
                 }
             }
+            ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");
             return View(formModel);
-        }
-
-        public ActionResult CheckLogIn()
-        {
-            return View();
         }
 
         public ActionResult ReportStatus()
         {
-            var id = (int)TempData["whistleId"];
+            var id = (int)Session["WhistleId"];
             ReportStatusViewModel reportStatusViewModel = new ReportStatusViewModel();
             
             reportStatusViewModel.Whistle = DBHandler.GetWhistles(false).FirstOrDefault(x => x.WhistleID == id);
