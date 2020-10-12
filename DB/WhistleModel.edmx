@@ -36,6 +36,7 @@
           <Property Name="LawyerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -59,10 +60,10 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UniqueID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UniqueID" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="WhistleID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Whistle">
           <Key>
@@ -73,10 +74,10 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Property Name="About" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="_When" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="_Where" Type="nvarchar" MaxLength="280" Nullable="false" />
-          <Property Name="CurrentStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="Description_OtherEmployees" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="UploadID" Type="int" />
+          <Property Name="CurrentStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="isActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityContainer Name="WhistleDBModelStoreContainer">
@@ -129,6 +130,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Property Name="LawyerID" Type="Int32" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -151,7 +153,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Property Name="Description_OtherEmployees" Type="String" MaxLength="280" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UploadID" Type="Int32" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
-          <Property Name="CurrentStatus" Type="String" Nullable="false" />
+          <Property Name="CurrentStatus" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
         </EntityType>
         <EntityType Name="MessageConversation">
           <Key>
@@ -165,7 +167,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="UniqueID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UniqueID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="WhistleID" Type="Int32" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
@@ -216,6 +218,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <EntitySetMapping Name="Lawyer">
             <EntityTypeMapping TypeName="WhistleDBModel.Lawyer">
               <MappingFragment StoreEntitySet="Lawyer">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="LawyerID" ColumnName="LawyerID" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Password" ColumnName="Password" />

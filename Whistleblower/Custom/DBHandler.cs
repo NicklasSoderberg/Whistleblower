@@ -46,7 +46,7 @@ namespace Whistleblower.Custom
             using (var db = new DB.DBEntity())
             {
                 DB.Lawyer lawyer = db.Lawyer.Where(L => L.LawyerID == id).FirstOrDefault();
-                return lawyer.Username;
+                return lawyer.Name;
             }
         }
 
@@ -90,7 +90,7 @@ namespace Whistleblower.Custom
             List<DB.Lawyer> lawyers = GetLawyers();
             List<string> Names = new List<string>();
             foreach (DB.Lawyer L in lawyers)
-                Names.Add(L.Username);
+                Names.Add(L.Name);
 
             return Names;
         }
@@ -100,7 +100,7 @@ namespace Whistleblower.Custom
             List<DB.Lawyer> lawyers = GetLawyers();
             List<string> Names = new List<string>();
             foreach (DB.Lawyer L in lawyers)
-                Names.Add(L.Username);
+                Names.Add(L.Name);
 
             Names.Remove(removeThis);
             return Names;
@@ -120,7 +120,7 @@ namespace Whistleblower.Custom
                 List<WhistleModel> WhistleList = new List<WhistleModel>();
                 if (lawyer)
                 {
-                    List<DB.Whistle> templist = db.Whistle.Where(w => w.LawyerID == LawyerViewmodel.LoggedinLawyer.LawyerID).ToList();
+                    List<DB.Whistle> templist = db.Whistle.Where(w => w.LawyerID == LawyerViewmodel.LoggedinID).ToList();
                     foreach (DB.Whistle w in templist)
                     {
                         WhistleModel whistle = new WhistleModel

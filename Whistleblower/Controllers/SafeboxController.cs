@@ -21,7 +21,7 @@ namespace Whistleblower.Controllers
         public ActionResult Safebox(int Id)
         {
             SafeboxViewmodel viewmodel = new SafeboxViewmodel(Id);
-            if (LawyerViewmodel.LoggedinLawyer != null)
+            if (LawyerViewmodel.LoggedinID > 0)
             {
                 viewmodel.CurrentUser = "Lawyer";
             }else 
@@ -45,7 +45,7 @@ namespace Whistleblower.Controllers
         public ActionResult SendMail(Mail mail, int id)
         {
             //current user
-            if(LawyerViewmodel.LoggedinLawyer == null)
+            if(LawyerViewmodel.LoggedinID > 0)
             {
                 mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
             }
