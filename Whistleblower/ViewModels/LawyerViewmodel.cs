@@ -17,6 +17,24 @@ namespace Whistleblower.ViewModels
         public List<WhistleModel> Whistles { get; set; }
         public WhistleModel SelectedWhistle { get; set; }
         public static int LoggedinID { get; set; }
+        public LawyerViewmodel()
+        {
+            WhistleStatuses = new List<string>
+            {
+                "Aktiv",
+                "Hanteras",
+                "Avslutad"
+            };
+            if (LoggedinID > 0)
+            {
+                Whistles = DBHandler.GetWhistles(true);
+            }
+            else
+            {
+                Whistles = new List<WhistleModel>();
+
+            }
+        }
         public LawyerViewmodel(string sortBy)
         {
             WhistleStatuses = new List<string>
