@@ -11,11 +11,6 @@ namespace Whistleblower.Controllers
 {
     public class LawyerController : Controller
     {
-
-
-        public static string currentUser { get; set; }
-        // GET: Lawyer
-
         public ActionResult Login()
         {
             if (Session["UserID"] != null)
@@ -36,7 +31,7 @@ namespace Whistleblower.Controllers
                     if (obj != null)
                     {
                         Session["UserID"] = obj.LawyerID.ToString();
-                        Session["UserName"] = obj.Username;
+                        LawyerViewmodel.LoggedinID = obj.LawyerID;
                         return RedirectToAction("WhistleHandler");
                     }
                 }
@@ -48,40 +43,13 @@ namespace Whistleblower.Controllers
         public ActionResult Logout()
         {
             Session.Remove("UserID");
+            LawyerViewmodel.LoggedinID = 0;
             return RedirectToAction("Login");
         }
-        //public ActionResult UserDashBoard()
-        //{
-        //    if (Session["UserID"] != null)
-        //    {
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Login");
-        //    }
-        //}
-        //public ActionResult Login(LawyerModel formLawyer)
-        //{
-        //    LawyerModel loginlawyer = new LawyerModel();
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (loginlawyer.Username == formLawyer.Username && loginlawyer.Password == formLawyer.Password)
-        //        {
-        //            currentUser = "Lawyer";
-        //            return RedirectToAction("WhistleHandler");
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
-        //        }
-        //    }
-        //    return View(formLawyer);
-        //}
 
         public ActionResult WhistleHandler(string sortBy)
         {
-            if(LawyerViewmodel.LoggedinLawyer != null)
+            if(LawyerViewmodel.LoggedinID > 0)
             {
             LawyerViewmodel model = new LawyerViewmodel(sortBy);
             return View(model);
@@ -92,11 +60,9 @@ namespace Whistleblower.Controllers
             }
         }
 
-
-
         public ActionResult Whistle(string id)
         {
-            if (LawyerViewmodel.LoggedinLawyer != null && id != null)
+            if (LawyerViewmodel.LoggedinID > 0 && id != null)
             {
 
                 LawyerViewmodel model = new LawyerViewmodel("");

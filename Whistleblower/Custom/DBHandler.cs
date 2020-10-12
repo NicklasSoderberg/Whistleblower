@@ -120,7 +120,7 @@ namespace Whistleblower.Custom
                 List<WhistleModel> WhistleList = new List<WhistleModel>();
                 if (lawyer)
                 {
-                    List<DB.Whistle> templist = db.Whistle.Where(w => w.LawyerID == LawyerViewmodel.LoggedinLawyer.LawyerID).ToList();
+                    List<DB.Whistle> templist = db.Whistle.Where(w => w.LawyerID == LawyerViewmodel.LoggedinID).ToList();
                     foreach (DB.Whistle w in templist)
                     {
                         WhistleModel whistle = new WhistleModel
