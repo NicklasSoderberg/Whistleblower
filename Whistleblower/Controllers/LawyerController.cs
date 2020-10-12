@@ -5,41 +5,78 @@ using System.Web;
 using System.Web.Mvc;
 using Whistleblower.Custom;
 using Whistleblower.Models;
-using Whistleblower.ViewModels;
 
 namespace Whistleblower.Controllers
 {
     public class LawyerController : Controller
     {
 
+
         public static string currentUser { get; set; }
         // GET: Lawyer
+
         public ActionResult Login()
         {
+            if (Session["UserID"] != null)
+            {
+                return RedirectToAction("WhistleHandler");
+            }
             return View();
         }
         [HttpPost]
-        public ActionResult Login(LawyerModel formLawyer)
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LawyerModel objUser)
         {
             if (ModelState.IsValid)
             {
                 using (var db = new DB.DBEntity())
                 {
-                    if (db.Lawyer.FirstOrDefault(l => l.Username == formLawyer.Username && l.Password == formLawyer.Password) != null)
+                    var obj = db.Lawyer.Where(a => a.Username.Equals(objUser.Username) && a.Password.Equals(objUser.Password)).FirstOrDefault();
+                    if (obj != null)
                     {
-                        currentUser = "Lawyer";
-
-                        LawyerViewmodel.LoggedinLawyer = db.Lawyer.FirstOrDefault(l => l.Username == formLawyer.Username);
+                        Session["UserID"] = obj.LawyerID.ToString();
+                        Session["UserName"] = obj.Username;
                         return RedirectToAction("WhistleHandler");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
                     }
                 }
             }
-            return View(formLawyer);
+            ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
+            return View(objUser);
         }
+        [HttpPost]
+        public ActionResult Logout()
+        {
+            Session.Remove("UserID");
+            return RedirectToAction("Login");
+        }
+        //public ActionResult UserDashBoard()
+        //{
+        //    if (Session["UserID"] != null)
+        //    {
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login");
+        //    }
+        //}
+        //public ActionResult Login(LawyerModel formLawyer)
+        //{
+        //    LawyerModel loginlawyer = new LawyerModel();
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (loginlawyer.Username == formLawyer.Username && loginlawyer.Password == formLawyer.Password)
+        //        {
+        //            currentUser = "Lawyer";
+        //            return RedirectToAction("WhistleHandler");
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
+        //        }
+        //    }
+        //    return View(formLawyer);
+        //}
 
         public ActionResult WhistleHandler()
         {

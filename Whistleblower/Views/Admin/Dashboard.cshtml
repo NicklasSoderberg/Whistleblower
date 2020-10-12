@@ -7,7 +7,12 @@
 
 
 @Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <div class="text-right">
+        <button type="button" class="btn btn-danger text-right">Logout</button>
 
+    </div>
+</div>
 <div class="form-horizontal">
     <div class="form-titel">
         <img src="~/images/omegapoint.png">
@@ -24,7 +29,7 @@
                         @Html.ActionLink("About", "Dashboard", "Admin", new { SortBy = "about" }, null)
                     </th>
                     <th>
-                        @Html.ActionLink("Lawyer", "Dashboard", "Admin", new { SortBy = "lawyer"}, null)
+                        @Html.ActionLink("Lawyer", "Dashboard", "Admin", new { SortBy = "lawyer" }, null)
                     </th>
                     <th>
                         @Html.ActionLink("Status", "Dashboard", "Admin", new { SortBy = "status" }, null)
@@ -63,3 +68,22 @@
 
     </div>
 </div>
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+
+    <script>
+                    $(".btn").click(function () {
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("Logout", "Login")',
+                            success: function (res) {
+                                window.location.href = '@Url.Action("LoginAdmin", "Login")'
+                            }
+
+
+                        });
+                    
+        console.log("test")
+    });
+    </script>
+}
