@@ -213,6 +213,7 @@
     <Compile Include="Models\LoginAdmin.cs" />
     <Compile Include="Models\LawyerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\LawyerViewmodel.cs" />
     <Compile Include="ViewModels\ReportStatusViewModel.cs" />
     <Compile Include="ViewModels\SafeboxViewmodel.cs" />
   </ItemGroup>
