@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using Whistleblower.Custom;
 using Whistleblower.Models;
 
-
 namespace Whistleblower.Controllers
 {
     public class LawyerController : Controller
@@ -81,20 +80,37 @@ namespace Whistleblower.Controllers
 
         public ActionResult WhistleHandler()
         {
-            LawyerModel model = new LawyerModel();
+            if(LawyerViewmodel.LoggedinLawyer != null)
+            {
+
+            
+            LawyerViewmodel model = new LawyerViewmodel();
 
             return View(model);
+            }
+            else
+            {
+              return  RedirectToAction("Login");
+            }
         }
         
         public ActionResult Whistle(string id)
         {
-            LawyerModel model = new LawyerModel();
+            if (LawyerViewmodel.LoggedinLawyer != null && id != null)
+            {
 
-        model.SelectedWhistle = model.Whistles.FirstOrDefault(m => m.WhistleID == int.Parse(id));
-            return View(model);
+                LawyerViewmodel model = new LawyerViewmodel();
+
+                model.SelectedWhistle = model.Whistles.FirstOrDefault(m => m.WhistleID == int.Parse(id));
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
         [HttpPost]
-        public ActionResult test(string id, LawyerModel model)
+        public ActionResult test(string id, LawyerViewmodel model)
         {
             model.SelectedWhistle.WhistleID = int.Parse(id);
             DBHandler.Put(model.SelectedWhistle);

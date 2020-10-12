@@ -117,7 +117,7 @@ namespace Whistleblower.Custom
             using(var db = new DB.DBEntity())
             {
                 List<WhistleModel> WhistleList = new List<WhistleModel>();
-                List<DB.Whistle> templist = db.Whistle.ToList();
+                List<DB.Whistle> templist = db.Whistle.Where(w => w.LawyerID == LawyerId).ToList();
                 foreach(DB.Whistle w in templist)
                 {
                     WhistleModel whistle = new WhistleModel
