@@ -117,7 +117,7 @@ namespace Whistleblower.Controllers
             var id = (int)TempData["whistleId"];
             ReportStatusViewModel reportStatusViewModel = new ReportStatusViewModel();
             
-            reportStatusViewModel.Whistle = DBHandler.GetWhistles().FirstOrDefault(x => x.WhistleID == id);
+            reportStatusViewModel.Whistle = DBHandler.GetWhistles(false).FirstOrDefault(x => x.WhistleID == id);
             
             reportStatusViewModel.Conversation = DBHandler.GetConversation().FirstOrDefault(x => x.WhistleID == id);
             if (reportStatusViewModel.Conversation == null)
