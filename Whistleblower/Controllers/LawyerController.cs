@@ -11,11 +11,6 @@ namespace Whistleblower.Controllers
 {
     public class LawyerController : Controller
     {
-
-
-        public static string currentUser { get; set; }
-        // GET: Lawyer
-
         public ActionResult Login()
         {
             if (Session["UserID"] != null)
@@ -36,7 +31,6 @@ namespace Whistleblower.Controllers
                     if (obj != null)
                     {
                         Session["UserID"] = obj.LawyerID.ToString();
-                        Session["UserName"] = obj.Username;
                         LawyerViewmodel.LoggedinLawyer = obj;
                         return RedirectToAction("WhistleHandler");
                     }
@@ -49,38 +43,9 @@ namespace Whistleblower.Controllers
         public ActionResult Logout()
         {
             Session.Remove("UserID");
-            Session.Remove("UserName");
             LawyerViewmodel.LoggedinLawyer = null;
             return RedirectToAction("Login");
         }
-        //public ActionResult UserDashBoard()
-        //{
-        //    if (Session["UserID"] != null)
-        //    {
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Login");
-        //    }
-        //}
-        //public ActionResult Login(LawyerModel formLawyer)
-        //{
-        //    LawyerModel loginlawyer = new LawyerModel();
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (loginlawyer.Username == formLawyer.Username && loginlawyer.Password == formLawyer.Password)
-        //        {
-        //            currentUser = "Lawyer";
-        //            return RedirectToAction("WhistleHandler");
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
-        //        }
-        //    }
-        //    return View(formLawyer);
-        //}
 
         public ActionResult WhistleHandler(string sortBy)
         {
@@ -94,8 +59,6 @@ namespace Whistleblower.Controllers
               return  RedirectToAction("Login");
             }
         }
-
-
 
         public ActionResult Whistle(string id)
         {
