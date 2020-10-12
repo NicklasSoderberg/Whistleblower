@@ -26,7 +26,7 @@ namespace Whistleblower.ViewModels
                 "Avslutad"
             };
             if(LoggedinLawyer != null) { 
-            Whistles = DBHandler.GetWhistles();
+            Whistles = DBHandler.GetWhistles(true);
                 switch (sortBy?.ToLower())
                 {
                     case "currentstatus":

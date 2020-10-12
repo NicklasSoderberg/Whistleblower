@@ -113,26 +113,47 @@ namespace Whistleblower.Custom
                 return db.Whistle.ToList();
             }
         }
-        public static List<WhistleModel> GetWhistles()
+        public static List<WhistleModel> GetWhistles(bool lawyer)
         {
             using(var db = new DB.DBEntity())
             {
                 List<WhistleModel> WhistleList = new List<WhistleModel>();
-                List<DB.Whistle> templist = db.Whistle.Where(w => w.LawyerID == LawyerViewmodel.LoggedinLawyer.LawyerID).ToList();
-                foreach(DB.Whistle w in templist)
+                if (lawyer)
                 {
-                    WhistleModel whistle = new WhistleModel
+                    List<DB.Whistle> templist = db.Whistle.Where(w => w.LawyerID == LawyerViewmodel.LoggedinLawyer.LawyerID).ToList();
+                    foreach (DB.Whistle w in templist)
                     {
-                        About = w.About,
-                        CurrentStatus = w.CurrentStatus,
-                        Description = w.Description,
-                        Description_OtherEmployees = w.Description_OtherEmployees,
-                        When = w.C_When,
-                        Where = w.C_Where,
-                        WhistleID = w.WhistleID
-                    };
-                    WhistleList.Add(whistle);
+                        WhistleModel whistle = new WhistleModel
+                        {
+                            About = w.About,
+                            CurrentStatus = w.CurrentStatus,
+                            Description = w.Description,
+                            Description_OtherEmployees = w.Description_OtherEmployees,
+                            When = w.C_When,
+                            Where = w.C_Where,
+                            WhistleID = w.WhistleID
+                        };
+                        WhistleList.Add(whistle);
+                    }
                 }
+                else
+                {
+                    List<DB.Whistle> templist = db.Whistle.ToList();
+                    foreach (DB.Whistle w in templist)
+                    {
+                        WhistleModel whistle = new WhistleModel
+                        {
+                            About = w.About,
+                            CurrentStatus = w.CurrentStatus,
+                            Description = w.Description,
+                            Description_OtherEmployees = w.Description_OtherEmployees,
+                            When = w.C_When,
+                            Where = w.C_Where,
+                            WhistleID = w.WhistleID
+                        };
+                        WhistleList.Add(whistle);
+                    }
+                }                
                 return WhistleList;
             }
         }
