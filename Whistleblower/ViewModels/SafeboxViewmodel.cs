@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Whistleblower.Custom;
 using Whistleblower.Models;
 
 namespace Whistleblower.ViewModels
@@ -16,9 +17,9 @@ namespace Whistleblower.ViewModels
         public List<Mail> _MailList { get { return MailList; } set { MailList = value; } }
 
         public int WhistleId { get; set; }
-        public SafeboxViewmodel()
-        { 
-
+        public SafeboxViewmodel(int Id)
+        {
+            _MailList = DBHandler.GetMessages(Id);
         }
     }
 }

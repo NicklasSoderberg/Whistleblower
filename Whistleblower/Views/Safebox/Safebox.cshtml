@@ -39,6 +39,10 @@
             </div>
             <div style=" width:100%;">
                 <input type="button" id="RespondBtn" style="display:none;" value="Svara" onclick="location.href='#SendMailForm'" />
+                @if (Whistleblower.ViewModels.LawyerViewmodel.LoggedinLawyer != null)
+                {
+                    <input type="button" id="RespondBtn" value="Skapa meddelande" onclick="location.href='#SendMailForm'" />
+                }
                 <input type="button" id="RespondBtn" style="display:none;" value="Svara" onclick="" />
             </div>
 

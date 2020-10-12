@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Whistleblower.Models;
+using Whistleblower.ViewModels;
 
 namespace Whistleblower.Custom
 {
@@ -117,7 +118,7 @@ namespace Whistleblower.Custom
             using(var db = new DB.DBEntity())
             {
                 List<WhistleModel> WhistleList = new List<WhistleModel>();
-                List<DB.Whistle> templist = db.Whistle.Where(w => w.LawyerID == LawyerId).ToList();
+                List<DB.Whistle> templist = db.Whistle.Where(w => w.LawyerID == LawyerViewmodel.LoggedinLawyer.LawyerID).ToList();
                 foreach(DB.Whistle w in templist)
                 {
                     WhistleModel whistle = new WhistleModel
@@ -161,5 +162,60 @@ namespace Whistleblower.Custom
             }
         }
 
+
+        public static void PostMail(Mail mail,int whistleId)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                int sender = 0;
+                if (mail.MailSenderType == SafeboxViewmodel.MailSenders.Lawyer)
+                {
+                    sender = 2;
+                }else if(mail.MailSenderType == SafeboxViewmodel.MailSenders.Whistler)
+                {
+                    sender = 0;
+                }
+                DB.Message Message = new Message {MessageID = mail.MailId,Message1 = mail.Message, Sender = sender };
+                db.Message.Add(Message);
+                var conversation = db.Conversation.FirstOrDefault(m => m.WhistleID == whistleId);
+                MessageConversation messageCon = new MessageConversation { ConversationID = conversation.ConversationID, MessageID = Message.MessageID };
+                db.MessageConversation.Add(messageCon);
+                //System.Data.Entity.Infrastructure.DbUpdateException: 
+                //'Unable to update the EntitySet 'MessageConversation' because it has a DefiningQuery and no <InsertFunction>
+                  //  element exists in the <ModificationFunctionMapping> element to support the current operation.'
+
+                db.SaveChanges();
+            }
+        }
+        public static List<Mail> GetMessages(int whistleId)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                List<Mail> MailList = new List<Mail>();
+                List<DB.Message> DbMessages = new List<Message>();
+              var conversation =  db.Conversation.FirstOrDefault(c => c.WhistleID == whistleId);
+                List<DB.MessageConversation> messageConversations = db.MessageConversation.Where(m => m.ConversationID == conversation.ConversationID).ToList();
+                foreach(MessageConversation m in messageConversations)
+                {
+                    var mail = db.Message.FirstOrDefault(c => c.MessageID == m.MessageID);
+                    DbMessages.Add(mail);
+                }
+                foreach (DB.Message w in DbMessages)
+                {
+                    SafeboxViewmodel.MailSenders sender = SafeboxViewmodel.MailSenders.Lawyer;
+                    if(w.Sender == 2)
+                    {
+                        sender = SafeboxViewmodel.MailSenders.Lawyer;
+                    }else if(w.Sender == 0)
+                    {
+                        sender = SafeboxViewmodel.MailSenders.Whistler;
+
+                    }
+                    Mail mail = new Mail {MailId = w.MessageID,Message = w.Message1,MailSenderType = sender};
+                    MailList.Add(mail);
+                }
+                return MailList;
+            }
+        }
     }
 }
