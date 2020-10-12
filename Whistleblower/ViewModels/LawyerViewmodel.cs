@@ -16,7 +16,7 @@ namespace Whistleblower.ViewModels
 
         public List<WhistleModel> Whistles { get; set; }
         public WhistleModel SelectedWhistle { get; set; }
-        public static Lawyer LoggedinLawyer { get; set; }
+        public static int LoggedinID { get; set; }
         public LawyerViewmodel(string sortBy)
         {
             WhistleStatuses = new List<string>
@@ -25,7 +25,7 @@ namespace Whistleblower.ViewModels
                 "Hanteras",
                 "Avslutad"
             };
-            if(LoggedinLawyer != null) { 
+            if(LoggedinID > 0) { 
             Whistles = DBHandler.GetWhistles(true);
                 switch (sortBy?.ToLower())
                 {

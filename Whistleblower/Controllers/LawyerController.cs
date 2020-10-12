@@ -31,7 +31,7 @@ namespace Whistleblower.Controllers
                     if (obj != null)
                     {
                         Session["UserID"] = obj.LawyerID.ToString();
-                        LawyerViewmodel.LoggedinLawyer = obj;
+                        LawyerViewmodel.LoggedinID = obj.LawyerID;
                         return RedirectToAction("WhistleHandler");
                     }
                 }
@@ -43,13 +43,13 @@ namespace Whistleblower.Controllers
         public ActionResult Logout()
         {
             Session.Remove("UserID");
-            LawyerViewmodel.LoggedinLawyer = null;
+            LawyerViewmodel.LoggedinID = 0;
             return RedirectToAction("Login");
         }
 
         public ActionResult WhistleHandler(string sortBy)
         {
-            if(LawyerViewmodel.LoggedinLawyer != null)
+            if(LawyerViewmodel.LoggedinID > 0)
             {
             LawyerViewmodel model = new LawyerViewmodel(sortBy);
             return View(model);
@@ -62,7 +62,7 @@ namespace Whistleblower.Controllers
 
         public ActionResult Whistle(string id)
         {
-            if (LawyerViewmodel.LoggedinLawyer != null && id != null)
+            if (LawyerViewmodel.LoggedinID > 0 && id != null)
             {
 
                 LawyerViewmodel model = new LawyerViewmodel("");
