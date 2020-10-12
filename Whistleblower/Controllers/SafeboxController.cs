@@ -20,22 +20,15 @@ namespace Whistleblower.Controllers
         
         public ActionResult Safebox(int Id)
         {
-            SafeboxViewmodel viewmodel = new SafeboxViewmodel();
-            if (LawyerController.currentUser == "Lawyer")
-            {
-                viewmodel.CurrentUser = "Lawyer";
-            }else 
-            {
-                viewmodel.CurrentUser = "Whistler";
+            SafeboxViewmodel viewmodel = new SafeboxViewmodel(Id);
+            if (LawyerViewmodel.LoggedinLawyer != null)
+            {
+                viewmodel.CurrentUser = "Lawyer";
+            }else 
+            {
+                viewmodel.CurrentUser = "Whistler";
             }
-            
             viewmodel.WhistleId = Id;
-
-            if(SafeboxViewmodel.MailList.Count == 0)
-            {
-                Mail m1 = new Mail {  MailId = 1,MailSenderType = SafeboxViewmodel.MailSenders.Lawyer,  Message = "Hello my friend what happened?" };       
-                SafeboxViewmodel.MailList.Add(m1);
-            }
 
            
             return View(viewmodel);
@@ -52,16 +45,17 @@ namespace Whistleblower.Controllers
         public ActionResult SendMail(Mail mail, int id)
         {
             //current user
-            mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
-            //SafeboxViewmodel.MailList.FirstOrDefault(m => m.MailId == SafeboxViewmodel._TempMailId).ResponedToMail = true;
-            SafeboxViewmodel.MailList.Add(mail);
+            if(LawyerViewmodel.LoggedinLawyer == null)
+            {
+                mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
+            }
+            else
+            {
+                mail.MailSenderType = SafeboxViewmodel.MailSenders.Lawyer;
+            }
+            DBHandler.PostMail(mail,id);
 
             return RedirectToAction($"Safebox/{id}", "Safebox");
-        }
-
-        public ActionResult MailSent()
-        {
-            return View();
         }
     }
 }
