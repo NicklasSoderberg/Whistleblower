@@ -99,12 +99,17 @@ namespace Whistleblower.Controllers
                 using (var db = new DB.DBEntity())
                 {
                     var obj = db.User.Where(a => a.UniqueID.Equals(formModel.UserName) && a.Password.Equals(formModel.Password)).FirstOrDefault();
-                    if (obj != null)
+                    var whistleobj = db.Whistle.Where(w => w.WhistleID == obj.WhistleID).FirstOrDefault();
+                    if (obj != null && whistleobj.isActive == true)
                     {
                         Session["UserID"] = obj.ID.ToString();
                         Session["UserName"] = obj.UniqueID;
                         Session["WhistleId"] = obj.WhistleID;
                         return RedirectToAction("ReportStatus");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("LogOnError", "Ärendet för denna inloggningen är tyvär avslutad och fungerar inte mer.");
                     }
                 }
             }
