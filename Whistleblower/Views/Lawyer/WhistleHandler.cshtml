@@ -7,7 +7,7 @@
 @Html.AntiForgeryToken()
 <div class="form-horizontal">
     <div class="text-right">
-        <button type="button" class="btn btn-danger text-right">Logout</button>
+        <button type="button" id="logout" class="btn btn-danger text-right">Logout</button>
 
     </div>
 </div>
@@ -15,8 +15,6 @@
 <div class="form-titel">
     <img src="~/images/omegapoint.png">
     <h2>Ärenden:</h2>
-
-
 </div>
 <hr />
 
@@ -24,9 +22,9 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th scope="col">Status</th>
-            <th scope="col">Ärende</th>
-            <th scope="col">Typ</th>
+            <th scope="col">@Html.ActionLink("Status","WhistleHandler", new { Sortby = "CurrentStatus" })</th>
+            <th scope="col">@Html.ActionLink("Ärende", "WhistleHandler", new { Sortby = "Description" })</th>
+            <th scope="col">@Html.ActionLink("Typ", "WhistleHandler", new { Sortby = "About" })</th>
         </tr>
     </thead>
     <tbody>
@@ -65,8 +63,8 @@
                 @Scripts.Render("~/bundles/jquery")
 
                 <script>
-        $(".btn").click(function () {
-                    window.location.href = '@Url.Action("LogOut", "Login")'
+        $("#logout").click(function () {
+                    window.location.href = '@Url.Action("LogOut", "Lawyer")'
         console.log("test")
     });
     </script>
