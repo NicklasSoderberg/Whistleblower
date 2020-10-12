@@ -63,8 +63,16 @@
                 @Scripts.Render("~/bundles/jquery")
 
                 <script>
-        $("#logout").click(function () {
-                    window.location.href = '@Url.Action("LogOut", "Lawyer")'
+                    $(".btn").click(function () {
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("Logout", "Lawyer")',
+                            success: function (res) {
+                                window.location.href = '@Url.Action("Login", "Lawyer")'
+                            }
+
+                        });
+                    
         console.log("test")
     });
     </script>

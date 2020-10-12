@@ -18,28 +18,61 @@ namespace Whistleblower.Controllers
 {
     public class LoginController : Controller
     {
+        //public ActionResult LoginAdmin()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //public ActionResult LoginAdmin(LoginAdmin formAdmin)
+        //{
+        //    LoginAdmin loginadmin = new LoginAdmin();
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (loginadmin.Username == formAdmin.Username && loginadmin.Password == formAdmin.Password)
+        //        {
+        //            return RedirectToAction("Safebox");
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
+        //        }
+        //    }
+        //    return View(formAdmin);
+        //}
         public ActionResult LoginAdmin()
         {
+            if (Session["UserID"] != null)
+            {
+                return RedirectToAction("Dashboard", "Admin");
+            }
             return View();
         }
         [HttpPost]
-        public ActionResult LoginAdmin(LoginAdmin formAdmin)
+        [ValidateAntiForgeryToken]
+        public ActionResult LoginAdmin(LoginAdmin objUser)
         {
-            LoginAdmin loginadmin = new LoginAdmin();
             if (ModelState.IsValid)
             {
-                if (loginadmin.Username == formAdmin.Username && loginadmin.Password == formAdmin.Password)
+                using (var db = new DB.DBEntity())
                 {
-                    return RedirectToAction("Safebox");
-                }
-                else
-                {
-                    ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
+                    var obj = db.Admin.Where(a => a.Username.Equals(objUser.Username) && a.Password.Equals(objUser.Password)).FirstOrDefault();
+                    if (obj != null)
+                    {
+                        Session["UserID"] = obj.AdminID.ToString();
+                        Session["UserName"] = obj.Username;
+                        return RedirectToAction("Dashboard", "Admin");
+                    }
                 }
             }
-            return View(formAdmin);
+            ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
+            return View(objUser);
         }
-
+        [HttpPost]
+        public ActionResult Logout()
+        {
+            Session.Remove("UserID");
+            return RedirectToAction("LoginAdmin");
+        }
         public ActionResult UserLogin()
         {
             ViewBag.Message = "Login";
