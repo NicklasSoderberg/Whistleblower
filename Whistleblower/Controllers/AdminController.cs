@@ -74,6 +74,18 @@ namespace Whistleblower.Controllers
                         TempData["SortBy"] = SortBy;
                     }
                     break;
+                case "date":
+                    if ((string)TempData["SortBy"] == "date")
+                    {
+                        Whistles = Whistles.OrderBy(l => l.DateCreated).ToList();
+                        TempData["SortBy"] = "";
+                    }
+                    else
+                    {
+                        Whistles = Whistles.OrderByDescending(l => l.DateCreated).ToList();
+                        TempData["SortBy"] = SortBy;
+                    }
+                    break;
 
                 default:
                     break;
