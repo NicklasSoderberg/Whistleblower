@@ -13,6 +13,8 @@
         <EntityTypeShape EntityType="WhistleDBModel.Whistle" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WhistleDBModel.MessageConversation" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WhistleDBModel.User" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <AssociationConnector Association="WhistleDBModel.FK_MessageConversation_Conversation" />
+        <AssociationConnector Association="WhistleDBModel.FK_MessageConversation_Message" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

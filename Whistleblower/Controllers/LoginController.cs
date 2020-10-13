@@ -78,6 +78,7 @@ namespace Whistleblower.Controllers
         public ActionResult LogOutUser()
         {
             Session.Remove("UserID");
+            Session.Remove("LoggedInAsLawyer");
             return RedirectToAction("UserLogin");
         }
 
@@ -105,6 +106,7 @@ namespace Whistleblower.Controllers
                         Session["UserID"] = obj.ID.ToString();
                         Session["UserName"] = obj.UniqueID;
                         Session["WhistleId"] = obj.WhistleID;
+                        Session["LoggedInAsLawyer"] = "0";
                         return RedirectToAction("ReportStatus");
                     }
                     else
