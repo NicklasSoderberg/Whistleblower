@@ -77,7 +77,6 @@ namespace Whistleblower.Custom
                 {
                     result.About = W.About;
                     result.LawyerID = DBHandler.LawyerIDByName(W.CurrentStatus);
-                    W.CurrentStatus = "";
                     db.SaveChanges();
                 }
             }
