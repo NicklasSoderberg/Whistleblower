@@ -1583,19 +1583,13 @@ pre code {
   max-height: 340px;
   overflow-y: scroll;
 }
+
 .container {
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-  margin-top: 10px;
-  border: 1px solid;
-  border-color: gray;
-  border-radius: 20px;
-  background-color: white;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
 }
-
-
 
 @media (min-width: 768px) {
         .container {
