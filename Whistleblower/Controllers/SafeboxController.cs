@@ -21,12 +21,21 @@ namespace Whistleblower.Controllers
         public ActionResult Safebox(int Id)
         {
             SafeboxViewmodel viewmodel = new SafeboxViewmodel(Id);
-            if (LawyerViewmodel.LoggedinID > 0)
-            {
-                viewmodel.CurrentUser = "Lawyer";
-            }else 
-            {
-                viewmodel.CurrentUser = "Whistler";
+            using (var db = new DB.DBEntity())
+            {
+                if (db.Lawyer.FirstOrDefault(l => l.LawyerID == LawyerViewmodel.LoggedinID) != null)
+
+                {
+
+                    viewmodel.CurrentUser = "Lawyer";
+
+                }
+                else
+                {
+
+                    viewmodel.CurrentUser = "Whistler";
+
+                }
             }
             viewmodel.WhistleId = Id;
 
@@ -45,13 +54,23 @@ namespace Whistleblower.Controllers
         public ActionResult SendMail(Mail mail, int id)
         {
             //current user
-            if(LawyerViewmodel.LoggedinID > 0)
-            {
-                mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
-            }
-            else
-            {
-                mail.MailSenderType = SafeboxViewmodel.MailSenders.Lawyer;
+            using (var db = new DB.DBEntity())
+            {
+                if (Session["LoggedInAsLawyer"].ToString() == "1")
+
+                {
+
+                    mail.MailSenderType = SafeboxViewmodel.MailSenders.Lawyer;
+
+                }
+
+                else
+
+                {
+
+                    mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
+
+                }
             }
             DBHandler.PostMail(mail,id);
 
