@@ -88,6 +88,7 @@ namespace Whistleblower.Controllers
                     break;
 
                 default:
+                    Whistles = Whistles.OrderBy(l => l.LawyerID).ToList(); // Default sort by whistles which doesnt have a lawyer
                     break;
             }
 

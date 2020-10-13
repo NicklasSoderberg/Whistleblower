@@ -33,7 +33,7 @@
             <label>About</label>
             <div class="form-group">
                 <div class="col-md-12">
-                    @Html.DropDownListFor(m => m.About, new SelectList(DBHandler.GetSubjectList()), "", new { htmlAttributes = new { @class = "combobox" } })
+                    @Html.DropDownListFor(m => m.About, new SelectList(DBHandler.GetSubjectList()), new { htmlAttributes = new { @class = "combobox" } })
                 </div>
             </div>
 
