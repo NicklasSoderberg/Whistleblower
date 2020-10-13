@@ -45,6 +45,7 @@
           <Property Name="MessageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Sender" Type="int" Nullable="false" />
+          <Property Name="DateSent" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="MessageConversation">
           <Key>
@@ -77,6 +78,7 @@
           <Property Name="UploadID" Type="int" />
           <Property Name="CurrentStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK_MessageConversation_Conversation">
           <End Role="Conversation" Type="Self.Conversation" Multiplicity="1" />
@@ -166,6 +168,7 @@
           <Property Name="Message1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Sender" Type="Int32" Nullable="false" />
           <NavigationProperty Name="MessageConversation" Relationship="WhistleDBModel.FK_MessageConversation_Message" FromRole="Message" ToRole="MessageConversation" />
+          <Property Name="DateSent" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="Whistle">
           <Key>
@@ -181,6 +184,7 @@
           <Property Name="UploadID" Type="Int32" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
           <Property Name="CurrentStatus" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="MessageConversation">
           <Key>
@@ -289,6 +293,7 @@
           <EntitySetMapping Name="Message">
             <EntityTypeMapping TypeName="WhistleDBModel.Message">
               <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="DateSent" ColumnName="DateSent" />
                 <ScalarProperty Name="MessageID" ColumnName="MessageID" />
                 <ScalarProperty Name="Message1" ColumnName="Message" />
                 <ScalarProperty Name="Sender" ColumnName="Sender" />
@@ -298,6 +303,7 @@
           <EntitySetMapping Name="Whistle">
             <EntityTypeMapping TypeName="WhistleDBModel.Whistle">
               <MappingFragment StoreEntitySet="Whistle">
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="WhistleID" ColumnName="WhistleID" />
                 <ScalarProperty Name="LawyerID" ColumnName="LawyerID" />
                 <ScalarProperty Name="About" ColumnName="About" />
