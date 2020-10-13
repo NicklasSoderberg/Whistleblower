@@ -63,7 +63,7 @@
                 @Scripts.Render("~/bundles/jquery")
 
                 <script>
-                    $(".btn").click(function () {
+                    $("logout").click(function () {
                         $.ajax({
                             type: "POST",
                             url: '@Url.Action("Logout", "Lawyer")',

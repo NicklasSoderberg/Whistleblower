@@ -10,6 +10,6 @@ namespace Whistleblower.ViewModels
     public class ReportStatusViewModel
     {
         public WhistleModel Whistle { get; set; }
-        public Conversation Conversation { get; set; }
+        public bool SafeBox { get; set; }
     }
 }
