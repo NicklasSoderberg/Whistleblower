@@ -23,9 +23,6 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.ActionLink("Whistle ID", "Dashboard", "Admin", new { SortBy = "whistleid" }, null)
-                    </th>
-                    <th>
                         @Html.ActionLink("About", "Dashboard", "Admin", new { SortBy = "about" }, null)
                     </th>
                     <th>
@@ -44,9 +41,6 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.WhistleID)
-                        </td>
                         <td>
                             @Html.ActionLink(item.About, "EditWhistle", "Admin", item, null)
                         </td>
