@@ -11,7 +11,7 @@
 @Html.AntiForgeryToken()
 <div class="form-horizontal">
     <div class="text-right">
-        <button type="button" class="btn btn-danger text-right">Logout</button>
+        <button type="button" class="btn btn-danger text-right" id="LogOut">Logout</button>
 
     </div>
 </div>
@@ -79,9 +79,8 @@
     @Scripts.Render("~/bundles/jquery")
 
     <script>
-        $(".btn").click(function () {
-        window.location.href = '@Url.Action("LogOut", "Login")'
-        console.log("test")
+        $("#LogOut").click(function () {
+        window.location.href = '@Url.Action("LogOutUser", "Login")'
     });
     </script>
 
