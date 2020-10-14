@@ -7,76 +7,102 @@
 
 
 @Html.AntiForgeryToken()
-<div class="form-horizontal">
-    <div class="text-right">
-        <button type="button" class="btn btn-danger text-right">Logout</button>
 
-    </div>
-</div>
 <div class="form-horizontal">
     <div class="form-titel">
         <img src="~/images/omegapoint.png">
     </div>
     <hr />
-    <div class="form-holder">
-        <input type="text" id="myInput" onkeyup="filterFunc()" placeholder="Search..">
-        <table class="table" id="myTable">
-            <thead>
-                <tr>
-                    <th onclick="sortTableText(0)">About</th>
-                    <th onclick="sortTableText(1)">Lawyer</th>
-                    <th onclick="sortTableText(2)">Date created</th>
-                    <th onclick="sortTableHTML(3)">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.ActionLink(item.About, "EditWhistle", "Admin", item, null)
-                        </td>
-                        <td>
-                            @if (item.LawyerID > 0)
-                            {
-                                @DBHandler.LawyerNameByID(item.LawyerID)
-                            }
-                            else
-                            {
-                                @Html.ActionLink("Add Lawyer", "EditWhistle", "Admin", item, null)
-                            }
-                        </td>
-                        <td>
-                            @item.DateCreated.ToString("dddd, dd MMMM yyyy, HH:mm:ss")
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.isActive)
-                        </td>
+    <div class="container">
+        <div class="row">
+            <div class="center-block">
+                <div class="row">
+                    <button type="button" class="btn logout btn-primary pull-right">Logout</button>
+                    <input type="text" class="pull-left" id="myInput" onkeyup="filterFunc()" placeholder="Search..">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addLawyerModal" aria-label="Left Align"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> New lawyer</button>
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addSubjectModal"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> New subject</button>
+                    </div>
+                </div>
+                <table class="table table-striped table-hover" id="myTable">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTableText(0)" class="btn-default">About</th>
+                            <th onclick="sortTableText(1)" class="btn-default">Lawyer</th>
+                            <th onclick="sortTableText(2)" class="btn-default">Date created</th>
+                            <th onclick="sortTableHTML(3)" class="btn-default">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(item.About, "EditWhistle", "Admin", item, null)
+                                </td>
+                                <td>
+                                    @if (item.LawyerID > 0)
+                                    {
+                                        @DBHandler.LawyerNameByID(item.LawyerID)
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink("Add Lawyer", "EditWhistle", "Admin", item, null)
+                                    }
+                                </td>
+                                <td>
+                                    @item.DateCreated.ToString("dddd, dd MMMM yyyy, HH:mm:ss")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.isActive)
+                                </td>
 
-                    </tr>
-                }
-            </tbody>
-        </table>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
 
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lawyer Modal -->
+<div class="modal" id="addLawyerModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"></button>
+                <h4 class="modal-title text-center">New lawyer</h4>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default center-block" data-dismiss="modal">Dashboard</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Subject Modal -->
+<div class="modal" id="addSubjectModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"></button>
+                <h4 class="modal-title text-center">New subject</h4>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default center-block" data-dismiss="modal">Dashboard</button>
+            </div>
+        </div>
     </div>
 </div>
 @section Scripts{
     @Scripts.Render("~/bundles/jquery")
 
-    <script>
-                    $(".btn").click(function () {
-                        $.ajax({
-                            type: "POST",
-                            url: '@Url.Action("Logout", "Login")',
-                            success: function (res) {
-                                window.location.href = '@Url.Action("LoginAdmin", "Login")'
-                            }
-
-
-                        });
-        console.log("test")
-    });
-    </script>
     <script>
         function filterFunc() {
             var input, filter, table, tr, td, i, txtValue;
