@@ -20,64 +20,7 @@ namespace Whistleblower.Controllers
     {
         public ActionResult Dashboard(string SortBy)
         {
-            List<DB.Whistle> Whistles = DBHandler.GetAllWhistles();
-            switch (SortBy?.ToLower())
-            {
-                case "lawyer":
-                    if ((string)TempData["SortBy"] == "lawyer")
-                    {
-                        Whistles = Whistles.OrderBy(l => l.LawyerID).ToList();
-                        TempData["SortBy"] = "";
-                    }
-                    else
-                    {
-                        Whistles = Whistles.OrderByDescending(l => l.LawyerID).ToList();
-                        TempData["SortBy"] = SortBy;
-                    }
-                    break;
-
-                case "status":
-                    if ((string)TempData["SortBy"] == "status")
-                    {
-                        Whistles = Whistles.OrderBy(l => l.isActive).ToList();
-                        TempData["SortBy"] = "";
-                    }
-                    else
-                    {
-                        Whistles = Whistles.OrderByDescending(l => l.isActive).ToList();
-                        TempData["SortBy"] = SortBy;
-                    }
-                    break;
-                case "about":
-                    if ((string)TempData["SortBy"] == "about")
-                    {
-                        Whistles = Whistles.OrderBy(l => l.About).ToList();
-                        TempData["SortBy"] = "";
-                    }
-                    else
-                    {
-                        Whistles = Whistles.OrderByDescending(l => l.About).ToList();
-                        TempData["SortBy"] = SortBy;
-                    }
-                    break;
-                case "date":
-                    if ((string)TempData["SortBy"] == "date")
-                    {
-                        Whistles = Whistles.OrderBy(l => l.DateCreated).ToList();
-                        TempData["SortBy"] = "";
-                    }
-                    else
-                    {
-                        Whistles = Whistles.OrderByDescending(l => l.DateCreated).ToList();
-                        TempData["SortBy"] = SortBy;
-                    }
-                    break;
-
-                default:
-                    Whistles = Whistles.OrderBy(l => l.LawyerID).ToList(); // Default sort by whistles which doesnt have a lawyer
-                    break;
-            }
-
+            List<DB.Whistle> Whistles = DBHandler.GetAllWhistles().OrderBy(l => l.LawyerID).ToList(); ;
             return View(Whistles);
         }
         public ActionResult EditWhistle(DB.Whistle EditWhistle, string button)
@@ -88,7 +31,6 @@ namespace Whistleblower.Controllers
                     return RedirectToAction("Dashboard", "Admin");
 
                 case "spara":
-                    //UPPDATERAR INTE LAWYER ID, GÖR DETTA I VIEWMODEL I SPRINT 2
                     DBHandler.UpdateAdminWhistle(EditWhistle);
                     return RedirectToAction("Dashboard", "Admin");
 

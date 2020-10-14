@@ -19,22 +19,14 @@
     </div>
     <hr />
     <div class="form-holder">
-        <table class="table">
+        <input type="text" id="myInput" onkeyup="filterFunc()" placeholder="Search..">
+        <table class="table" id="myTable">
             <thead>
                 <tr>
-                    <th>
-                        @Html.ActionLink("About", "Dashboard", "Admin", new { SortBy = "about" }, null)
-                    </th>
-                    <th>
-                        @Html.ActionLink("Lawyer", "Dashboard", "Admin", new { SortBy = "lawyer" }, null)
-                    </th>
-                    <th>
-                        @Html.ActionLink("Date created", "Dashboard", "Admin", new { SortBy = "date" }, null)
-                    </th>
-                    <th>
-                        @Html.ActionLink("Status", "Dashboard", "Admin", new { SortBy = "status" }, null)
-                    </th>
-                    <th></th>
+                    <th onclick="sortTableText(0)">About</th>
+                    <th onclick="sortTableText(1)">Lawyer</th>
+                    <th onclick="sortTableText(2)">Date created</th>
+                    <th onclick="sortTableHTML(3)">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,8 +74,108 @@
 
 
                         });
-
         console.log("test")
     });
+    </script>
+    <script>
+        function filterFunc() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                for (ii = 0; ii < 3; ii++) {
+                    td = tr[i].getElementsByTagName("td")[ii];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                            break;
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+
+            }
+        }
+    </script>
+    <script>
+        function sortTableText(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("myTable");
+            switching = true;
+            dir = "asc";
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (dir == "asc") {
+                        if (x.innerText.toLowerCase() > y.innerText.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerText.toLowerCase() < y.innerText.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        function sortTableHTML(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("myTable");
+            switching = true;
+            dir = "asc";
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
     </script>
 }
