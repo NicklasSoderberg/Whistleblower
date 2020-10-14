@@ -48,20 +48,6 @@ namespace Whistleblower.Controllers
                         TempData["SortBy"] = SortBy;
                     }
                     break;
-
-                case "whistleid":
-                    if ((string)TempData["SortBy"] == "whistleid")
-                    {
-                        Whistles = Whistles.OrderBy(l => l.WhistleID).ToList();
-                        TempData["SortBy"] = "";
-                    }
-                    else
-                    {
-                        Whistles = Whistles.OrderByDescending(l => l.WhistleID).ToList();
-                        TempData["SortBy"] = SortBy;
-                    }
-                    break;
-
                 case "about":
                     if ((string)TempData["SortBy"] == "about")
                     {
@@ -88,6 +74,7 @@ namespace Whistleblower.Controllers
                     break;
 
                 default:
+                    Whistles = Whistles.OrderBy(l => l.LawyerID).ToList(); // Default sort by whistles which doesnt have a lawyer
                     break;
             }
 

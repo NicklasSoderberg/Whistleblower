@@ -55,7 +55,7 @@ namespace Whistleblower.Custom
             using (var db = new DB.DBEntity())
             {
                 DB.Lawyer lawyer = db.Lawyer.Where(L => L.Name == Name).FirstOrDefault();
-                return lawyer.LawyerID;
+                return (lawyer != null) ? lawyer.LawyerID : 0;
             }
         }
 

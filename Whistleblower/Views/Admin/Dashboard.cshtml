@@ -23,9 +23,6 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.ActionLink("Whistle ID", "Dashboard", "Admin", new { SortBy = "whistleid" }, null)
-                    </th>
-                    <th>
                         @Html.ActionLink("About", "Dashboard", "Admin", new { SortBy = "about" }, null)
                     </th>
                     <th>
@@ -43,31 +40,28 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.WhistleID)
-                    </td>
-                    <td>
-                        @Html.ActionLink(item.About, "EditWhistle", "Admin", item, null)
-                    </td>
-                    <td>
-                        @if (item.LawyerID > 0)
-                        {
-                            @DBHandler.LawyerNameByID(item.LawyerID)
-                        }
-                        else
-                        {
-                            @Html.ActionLink("Add Lawyer", "EditWhistle", "Admin", item, null)
-                        }
-                    </td>
-                    <td>
-                        @item.DateCreated.ToString("dddd, dd MMMM yyyy, HH:mm:ss")
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.isActive)
-                    </td>
+                    <tr>
+                        <td>
+                            @Html.ActionLink(item.About, "EditWhistle", "Admin", item, null)
+                        </td>
+                        <td>
+                            @if (item.LawyerID > 0)
+                            {
+                                @DBHandler.LawyerNameByID(item.LawyerID)
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Add Lawyer", "EditWhistle", "Admin", item, null)
+                            }
+                        </td>
+                        <td>
+                            @item.DateCreated.ToString("dddd, dd MMMM yyyy, HH:mm:ss")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.isActive)
+                        </td>
 
-                </tr>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -88,7 +82,7 @@
 
 
                         });
-                    
+
         console.log("test")
     });
     </script>
