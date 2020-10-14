@@ -100,19 +100,22 @@ namespace Whistleblower.Controllers
                 using (var db = new DB.DBEntity())
                 {
                     var obj = db.User.Where(a => a.UniqueID.Equals(formModel.UserName) && a.Password.Equals(formModel.Password)).FirstOrDefault();
-                    var whistleobj = db.Whistle.Where(w => w.WhistleID == obj.WhistleID).FirstOrDefault();
-                    if (obj != null && whistleobj.isActive == true)
+                    if (obj != null)
                     {
-                        Session["UserID"] = obj.ID.ToString();
-                        Session["UserName"] = obj.UniqueID;
-                        Session["WhistleId"] = obj.WhistleID;
-                        Session["LoggedInAsLawyer"] = "0";
-                        return RedirectToAction("ReportStatus");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("LogOnError", "Ärendet för denna inloggningen är tyvär avslutad och fungerar inte mer.");
-                    }
+                        var whistleobj = db.Whistle.Where(w => w.WhistleID == obj.WhistleID).FirstOrDefault();
+                        if (whistleobj.isActive == true)
+                        {
+                            Session["UserID"] = obj.ID.ToString();
+                            Session["UserName"] = obj.UniqueID;
+                            Session["WhistleId"] = obj.WhistleID;
+                            Session["LoggedInAsLawyer"] = "0";
+                            return RedirectToAction("ReportStatus");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("LogOnError", "Ärendet är avslutat.");
+                        }
+                    }                    
                 }
             }
             ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");
@@ -133,7 +136,7 @@ namespace Whistleblower.Controllers
             }
             else
             {
-                reportStatusViewModel.SafeBox = false;
+                reportStatusViewModel.SafeBox = true;
             }
             return View(reportStatusViewModel);
         }
