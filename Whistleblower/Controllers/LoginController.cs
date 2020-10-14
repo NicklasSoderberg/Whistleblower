@@ -111,7 +111,7 @@ namespace Whistleblower.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("LogOnError", "Ärendet för denna inloggningen är tyvär avslutad och fungerar inte mer.");
+                        ModelState.AddModelError("LogOnError", "Ärendet är avslutat.");
                     }
                 }
             }
@@ -133,7 +133,7 @@ namespace Whistleblower.Controllers
             }
             else
             {
-                reportStatusViewModel.SafeBox = false;
+                reportStatusViewModel.SafeBox = true;
             }
             return View(reportStatusViewModel);
         }
