@@ -5,25 +5,42 @@
 }
 
 <h2 style="text-align:center;"><b>Din Safebox</b></h2>
-    <div id="wrapper-safebox">
-        <div id="MessageList" style="width:500px; overflow-y:scroll; max-height:500px; max-width:350px; border:solid; border-width:2px; ">
+    <div id="wrapper-safebox" style="display:block;">
+        <div id="MessageList" style="margin:0 auto; width:1100px; overflow-y:scroll; height:500px; max-width:1100px; border:solid; border-width:2px; ">
             @foreach (Whistleblower.Models.Mail m in Model._MailList)
             {
-
-                <div class="safebox" onclick="RespondButtonVisibilty('@m.MailSenderType', '@m.Message',@m.MailId);"*@>
+              
+                <div class="safebox"@*onclick="RespondButtonVisibilty('@m.MailSenderType', '@m.Message',@m.MailId);"*@>
                     <div id="@m.MailSenderType" class="safeboxmail">
-
-                        @if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
+                        @if(Session["LoggedInAsLawyer"].ToString() == "1") { 
+                        if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
                         {
-                            <p>Skickat</p>
+                            <p>Mottagit</p>
+                            <p>Meddelande:</p>
+                            <p>@m.Message</p>
                         }
                         else if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer)
                         {
-                            <p>Mottagit</p>
+                            <p><b>Skickat</b></p>
+                            <p>Meddelande:</p>
+                            <p>@m.Message</p>
                         }
-                        else
+
+                        }else if(Session["LoggedInAsLawyer"].ToString() == "0")
                         {
-                            <p>Fil</p>
+                             if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
+                        {
+                            <p>Skickat</p>
+                            <p>Meddelande:</p>
+                            <p>@m.Message</p>
+                        }
+                        else if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer)
+                        {
+                            <p><b>Mottagit</b></p>
+                            <p>Meddelande:</p>
+                            <p>@m.Message</p>
+                         
+                        }
                         }
                     </div>
                 </div>
@@ -31,24 +48,17 @@
 
 
             }
+            
         </div>
-
-        <div id="messageview" style=" width:700px; margin-left:10px; ">
-            <div id="MessageWindow" style="border-style:solid; position:relative; border-width:2px; border-color:gray; height:400px;">
-                <p id="MessageText" style="text-wrap:normal;"></p>
-            </div>
             <div style=" width:100%;">
-                <input type="button" id="RespondBtn" style="display:none;" value="Svara" onclick="location.href='#SendMailForm'" />
-                @if (Whistleblower.ViewModels.LawyerViewmodel.LoggedinLawyer != null)
+                @*<input type="button" id="RespondBtn" style="display:none;" value="Svara" onclick="location.href='#SendMailForm'" />*@
+                @if (Session["LoggedInAsLawyer"].ToString() == "1" ||  Whistleblower.ViewModels.SafeboxViewmodel.LastMessageType == 1)
                 {
                     <input type="button" id="RespondBtn" value="Skapa meddelande" onclick="location.href='#SendMailForm'" />
                 }
                 <input type="button" id="RespondBtn" style="display:none;" value="Svara" onclick="" />
             </div>
-
         </div>
-
-    </div>
 
 <div id="SendMailForm">
     @using (Html.BeginForm("SendMail" + "/" + Model.WhistleId, "Safebox"))
@@ -65,6 +75,7 @@
 
     }
 </div>
+
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
     function RespondButtonVisibilty(SenderType, message,id) {
@@ -72,10 +83,7 @@
                         document.getElementById('RespondBtn').style.display = 'none';
                     } else if (SenderType == "Lawyer" ) {
                         document.getElementById('RespondBtn').style.display = 'block';
-                    }// else if (RespondedToBool == true){
-                    //    document.getElementById('RespondBtn').style.display = 'none';
-                    //}
-                    document.getElementById('MessageText').innerHTML = message;
+                    }
 
                     jQuery.ajax({
                     type: "POST",

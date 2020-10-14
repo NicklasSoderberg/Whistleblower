@@ -7112,42 +7112,29 @@ a.list-group-item-danger.active:focus {
         text-align:center;
     }
 
-#MailButton {
-    width: 50%;
-    height: 80px;
-    background-color: lightgray;
-    margin-bottom:20px;
-    text-align:right;
-}
-    #MailButton:hover {
-        background-color: lightblue;
-    }
 .safebox {
     width: 100%;
     height: 20px;
     margin-bottom: 20px;
 }
 .safeboxmail {
-    width: 50%;
-    height: 40px;
+    width: 30%;
+    max-height: 60px;
     margin-bottom: 20px;
-    border-color:black;
-    border-radius:15px;
-    border:thin;
-    border-width:2px;
-    font-weight:bold;
-    color:black;
+    border-color: black;
+    border-radius: 15px;
+    border-style:solid;
+    border-width: 1px;
+    font-weight: bold;
+    color: black;
 }
-    .safeboxmail:hover {
-        background-color: lightblue;
-    }
 #Lawyer {
+
     float: left;
-    background-color:dodgerblue;
 }
 #Whistler {
+
     float: right;
-    background-color: forestgreen;
 }
 #wrapper-safebox {
     display:flex;

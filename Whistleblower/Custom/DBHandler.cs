@@ -50,6 +50,15 @@ namespace Whistleblower.Custom
             }
         }
 
+        public static int LawyerIDByName(string Name)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                DB.Lawyer lawyer = db.Lawyer.Where(L => L.Name == Name).FirstOrDefault();
+                return (lawyer != null) ? lawyer.LawyerID : 0;
+            }
+        }
+
         public static List<DB.Lawyer> GetLawyers()
         {
             using (var db = new DB.DBEntity())
@@ -60,13 +69,14 @@ namespace Whistleblower.Custom
 
         public static void UpdateAdminWhistle(DB.Whistle UpdateWhistle)
         {
+            DB.Whistle W = UpdateWhistle;
             using (var db = new DB.DBEntity())
             {
                 var result = db.Whistle.SingleOrDefault(b => b.WhistleID == UpdateWhistle.WhistleID);
                 if (result != null)
                 {
-                    result.About = UpdateWhistle.About;
-                    result.LawyerID = UpdateWhistle.LawyerID;
+                    result.About = W.About;
+                    result.LawyerID = DBHandler.LawyerIDByName(W.CurrentStatus);
                     db.SaveChanges();
                 }
             }
