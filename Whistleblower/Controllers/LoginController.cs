@@ -136,7 +136,7 @@ namespace Whistleblower.Controllers
             }
             else
             {
-                reportStatusViewModel.SafeBox = true;
+                reportStatusViewModel.SafeBox = false;
             }
             return View(reportStatusViewModel);
         }
