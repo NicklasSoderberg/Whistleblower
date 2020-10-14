@@ -18,9 +18,24 @@ using System;
 public partial class Conversation
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public Conversation()
+    {
+
+        this.MessageConversation = new HashSet<MessageConversation>();
+
+    }
+
+
     public int ConversationID { get; set; }
 
     public int WhistleID { get; set; }
+
+
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<MessageConversation> MessageConversation { get; set; }
 
 }
 

@@ -18,9 +18,17 @@ using System;
 public partial class MessageConversation
 {
 
+    public int ID { get; set; }
+
     public int MessageID { get; set; }
 
     public int ConversationID { get; set; }
+
+
+
+    public virtual Conversation Conversation { get; set; }
+
+    public virtual Message Message { get; set; }
 
 }
 

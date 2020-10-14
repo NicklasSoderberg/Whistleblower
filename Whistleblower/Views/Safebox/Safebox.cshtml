@@ -1,66 +1,130 @@
 ﻿@model Whistleblower.ViewModels.SafeboxViewmodel
-@{
-    ViewBag.Title = "Safebox";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+@{ ViewBag.Title = "Safebox";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 <h2 style="text-align:center;"><b>Din Safebox</b></h2>
-    <div id="wrapper-safebox">
-        <div id="MessageList" style="width:500px; overflow-y:scroll; max-height:500px; max-width:350px; border:solid; border-width:2px; ">
-            @foreach (Whistleblower.Models.Mail m in Model._MailList)
+@if (Session["LoggedInAsLawyer"].ToString() == "1")
+{
+<button class="btn btn-danger" id="GoBackLawyer" style="float:right;">Gå tillbaka</button> }
+            else
             {
-
-                <div class="safebox" onclick="RespondButtonVisibilty('@m.MailSenderType', '@m.Message',@m.MailId);"*@>
-                    <div id="@m.MailSenderType" class="safeboxmail">
-
-                        @if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
-                        {
-                            <p>Skickat</p>
-                        }
-                        else if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer)
-                        {
-                            <p>Mottagit</p>
-                        }
-                        else
-                        {
-                            <p>Fil</p>
-                        }
-                    </div>
-                </div>
-
-
-
+                <button class="btn btn-danger" id="GoBackWhistler" style="float:right;">Gå tillbaka</button>
             }
-        </div>
 
-        <div id="messageview" style=" width:700px; margin-left:10px; ">
-            <div id="MessageWindow" style="border-style:solid; position:relative; border-width:2px; border-color:gray; height:400px;">
-                <p id="MessageText" style="text-wrap:normal;"></p>
-            </div>
-            <div style=" width:100%;">
-                <input type="button" id="RespondBtn" style="display:none;" value="Svara" onclick="location.href='#SendMailForm'" />
-                <input type="button" id="RespondBtn" style="display:none;" value="Svara" onclick="" />
-            </div>
+<div id="wrapper-safebox" style="display:block;">
+    <div id="MessageList">
+        @foreach (Whistleblower.Models.Mail m in Model._MailList)
+        {
 
-        </div>
+<div class="safebox">
+    <div id="@m.MailSenderType" class="safeboxmail">
+        @if (Session["LoggedInAsLawyer"].ToString() == "1")
+        {
+            if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
+            {
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h3 class="panel-title">Mottagit</h3>
+        <p><b>Datum/Tid skickad:</b></p>
+        <p>@m.DateSent</p>
+    </div>
+    <div class="panel-body">
+        <p><b>Meddelande:</b></p>
+        <p>@m.Message</p>
+    </div>
+</div> }
+else if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer)
+{
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">Skickat</h3>
+        <p><b>Datum/Tid skickad:</b></p>
+        <p>@m.DateSent</p>
+    </div>
+    <div class="panel-body">
+        <p><b>Meddelande:</b></p>
+        <p>@m.Message</p>
+    </div>
+</div> }
+
+}
+else if (Session["LoggedInAsLawyer"].ToString() == "0")
+{
+if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
+{
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">Skickat</h3>
+        <p><b>Datum/Tid skickad:</b></p>
+        <p>@m.DateSent</p>
+    </div>
+    <div class="panel-body">
+        <p><b>Meddelande:</b></p>
+        <p>@m.Message</p>
+    </div>
+</div> }
+else if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer)
+{
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h3 class="panel-title">Mottagit</h3>
+        <p><b>Datum/Tid skickad:</b></p>
+        <p>@m.DateSent</p>
+    </div>
+    <div class="panel-body">
+        <p><b>Meddelande:</b></p>
+        <p>@m.Message</p>
+    </div>
+</div>}
+}
+    </div>
+</div>      }
 
     </div>
 
-<div id="SendMailForm">
+    <div style=" width:100%;">
+        @if (Session["LoggedInAsLawyer"].ToString() == "1" || Whistleblower.ViewModels.SafeboxViewmodel.LastMessageType == 1)
+        {
+            if (Session["LoggedInAsLawyer"].ToString() == "1")
+            {
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Skapa meddelande
+</button> }
+else if (Whistleblower.ViewModels.SafeboxViewmodel.LastMessageType == 1)
+{
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Svara
+</button>}
+}
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     @using (Html.BeginForm("SendMail" + "/" + Model.WhistleId, "Safebox"))
     {
-        <h1 style=" text-align:center">Svar</h1>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.Mail.Message)
-            @Html.TextAreaFor(m => m.Mail.Message, new { @class = "form-control", @required = "required", @style = "margin:0 auto; resize:none; height:200px;" })
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Skicka meddelande</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <input type="file" style="margin:0 auto;" multiple />
-        <button type="submit" class="btn btn-primary">Skicka</button>
-        <input type="button" class="btn btn-danger" value="Avbryt" onclick="location.href='#'" />
-
-    }
+        <div class="modal-body">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Mail.Message)
+                @Html.TextAreaFor(m => m.Mail.Message, new { @class = "form-control", @required = "required", @style = "margin:0 auto; resize:none; height:200px;" })
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Skicka</button>
+            <input type="button" class="btn btn-danger" value="Avbryt" data-dismiss="modal" />
+        </div>
+    </div>
+</div>}
 </div>
+
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
     function RespondButtonVisibilty(SenderType, message,id) {
@@ -68,10 +132,7 @@
                         document.getElementById('RespondBtn').style.display = 'none';
                     } else if (SenderType == "Lawyer" ) {
                         document.getElementById('RespondBtn').style.display = 'block';
-                    }// else if (RespondedToBool == true){
-                    //    document.getElementById('RespondBtn').style.display = 'none';
-                    //}
-                    document.getElementById('MessageText').innerHTML = message;
+                    }
 
                     jQuery.ajax({
                     type: "POST",
@@ -88,4 +149,18 @@
                     });
     }
 </script>
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
 
+    <script>
+        $("#GoBackLawyer").click(function () {
+        window.location.href = '@Url.Action("Whistle/" + Model.WhistleId, "Lawyer")'
+    });
+    </script>
+    <script>
+        $("#GoBackWhistler").click(function () {
+        window.location.href = '@Url.Action("ReportStatus", "Login")'
+    });
+    </script>
+
+}

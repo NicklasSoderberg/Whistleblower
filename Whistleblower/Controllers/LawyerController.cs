@@ -5,53 +5,85 @@ using System.Web;
 using System.Web.Mvc;
 using Whistleblower.Custom;
 using Whistleblower.Models;
+using Whistleblower.ViewModels;
 
 namespace Whistleblower.Controllers
 {
     public class LawyerController : Controller
     {
-
-        public static string currentUser { get; set; }
-        // GET: Lawyer
         public ActionResult Login()
         {
+            if (Session["UserID"] != null)
+            {
+                return RedirectToAction("WhistleHandler");
+            }
             return View();
         }
         [HttpPost]
-        public ActionResult Login(LawyerModel formLawyer)
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LawyerModel objUser)
         {
-            LawyerModel loginlawyer = new LawyerModel();
             if (ModelState.IsValid)
             {
-                if (loginlawyer.Username == formLawyer.Username && loginlawyer.Password == formLawyer.Password)
+                using (var db = new DB.DBEntity())
                 {
-                    currentUser = "Lawyer";
-                    return RedirectToAction("WhistleHandler");
-                }
-                else
-                {
-                    ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
+                    var obj = db.Lawyer.Where(a => a.Username.Equals(objUser.Username) && a.Password.Equals(objUser.Password)).FirstOrDefault();
+                    if (obj != null)
+                    {
+                        Session["UserID"] = obj.LawyerID.ToString();
+                        Session["LoggedInAsLawyer"] = "1";
+                        LawyerViewmodel.LoggedinID = obj.LawyerID;
+                        return RedirectToAction("WhistleHandler");
+                    }
                 }
             }
-            return View(formLawyer);
+            ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
+            return View(objUser);
         }
+        //public ActionResult Logout()
+        //{
+            
+        //}
 
-        public ActionResult WhistleHandler()
+        public ActionResult LogOutUser()
         {
-            LawyerModel model = new LawyerModel();
-
-            return View(model);
+            Session.Remove("UserID");
+            Session.Remove("LoggedInAsLawyer");
+            LawyerViewmodel.LoggedinID = 0;
+            return RedirectToAction("Login");
         }
-        
+
+        public ActionResult WhistleHandler(string sortBy)
+        {
+            if(LawyerViewmodel.LoggedinID > 0)
+            {
+            LawyerViewmodel model = new LawyerViewmodel(sortBy);
+            return View(model);
+            }
+            else
+            {
+              return  RedirectToAction("Login");
+            }
+        }
+
         public ActionResult Whistle(string id)
         {
-            LawyerModel model = new LawyerModel();
+            if (LawyerViewmodel.LoggedinID > 0 && id != null)
+            {
 
-        model.SelectedWhistle = model.Whistles.FirstOrDefault(m => m.WhistleID == int.Parse(id));
-            return View(model);
+                LawyerViewmodel model = new LawyerViewmodel("");
+
+                model.SelectedWhistle = model.Whistles.FirstOrDefault(m => m.WhistleID == int.Parse(id));
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
+
         [HttpPost]
-        public ActionResult test(string id, LawyerModel model)
+        public ActionResult HandleWhistleChange(string id, LawyerViewmodel model)
         {
             model.SelectedWhistle.WhistleID = int.Parse(id);
             DBHandler.Put(model.SelectedWhistle);

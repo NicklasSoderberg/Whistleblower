@@ -20,22 +20,24 @@ namespace Whistleblower.Controllers
         
         public ActionResult Safebox(int Id)
         {
-            SafeboxViewmodel viewmodel = new SafeboxViewmodel();
-            if (LawyerController.currentUser == "Lawyer")
+            SafeboxViewmodel viewmodel = new SafeboxViewmodel(Id);
+            using (var db = new DB.DBEntity())
             {
-                viewmodel.CurrentUser = "Lawyer";
-            }else 
-            {
-                viewmodel.CurrentUser = "Whistler";
-            }
-            
-            viewmodel.WhistleId = Id;
+                if (db.Lawyer.FirstOrDefault(l => l.LawyerID == LawyerViewmodel.LoggedinID) != null)
 
-            if(SafeboxViewmodel.MailList.Count == 0)
-            {
-                Mail m1 = new Mail {  MailId = 1,MailSenderType = SafeboxViewmodel.MailSenders.Lawyer,  Message = "Hello my friend what happened?" };       
-                SafeboxViewmodel.MailList.Add(m1);
+                {
+
+                    viewmodel.CurrentUser = "Lawyer";
+
+                }
+                else
+                {
+
+                    viewmodel.CurrentUser = "Whistler";
+
+                }
             }
+            viewmodel.WhistleId = Id;
 
            
             return View(viewmodel);
@@ -52,16 +54,27 @@ namespace Whistleblower.Controllers
         public ActionResult SendMail(Mail mail, int id)
         {
             //current user
-            mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
-            //SafeboxViewmodel.MailList.FirstOrDefault(m => m.MailId == SafeboxViewmodel._TempMailId).ResponedToMail = true;
-            SafeboxViewmodel.MailList.Add(mail);
+            using (var db = new DB.DBEntity())
+            {
+                if (Session["LoggedInAsLawyer"].ToString() == "1")
+
+                {
+
+                    mail.MailSenderType = SafeboxViewmodel.MailSenders.Lawyer;
+
+                }
+
+                else
+
+                {
+
+                    mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
+
+                }
+            }
+            DBHandler.PostMail(mail,id);
 
             return RedirectToAction($"Safebox/{id}", "Safebox");
-        }
-
-        public ActionResult MailSent()
-        {
-            return View();
         }
     }
 }

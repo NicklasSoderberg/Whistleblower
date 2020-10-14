@@ -36,6 +36,7 @@
           <Property Name="LawyerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -44,14 +45,13 @@
           <Property Name="MessageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Sender" Type="int" Nullable="false" />
+          <Property Name="DateSent" Type="datetime" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="MessageConversation">
           <Key>
-            <PropertyRef Name="MessageID" />
-            <PropertyRef Name="ConversationID" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MessageID" Type="int" Nullable="false" />
           <Property Name="ConversationID" Type="int" Nullable="false" />
         </EntityType>
@@ -59,10 +59,10 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UniqueID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UniqueID" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="WhistleID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Whistle">
           <Key>
@@ -73,26 +73,54 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Property Name="About" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="_When" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="_Where" Type="nvarchar" MaxLength="280" Nullable="false" />
-          <Property Name="CurrentStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="Description_OtherEmployees" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="UploadID" Type="int" />
+          <Property Name="CurrentStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK_MessageConversation_Conversation">
+          <End Role="Conversation" Type="Self.Conversation" Multiplicity="1" />
+          <End Role="MessageConversation" Type="Self.MessageConversation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conversation">
+              <PropertyRef Name="ConversationID" />
+            </Principal>
+            <Dependent Role="MessageConversation">
+              <PropertyRef Name="ConversationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageConversation_Message">
+          <End Role="Message" Type="Self.Message" Multiplicity="1" />
+          <End Role="MessageConversation" Type="Self.MessageConversation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Message">
+              <PropertyRef Name="MessageID" />
+            </Principal>
+            <Dependent Role="MessageConversation">
+              <PropertyRef Name="MessageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="WhistleDBModelStoreContainer">
           <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Conversation" EntityType="Self.Conversation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="File" EntityType="Self.File" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lawyer" EntityType="Self.Lawyer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Message" EntityType="Self.Message" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MessageConversation" EntityType="Self.MessageConversation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Whistle" EntityType="Self.Whistle" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="MessageConversation" EntityType="Self.MessageConversation" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [MessageConversation].[MessageID] AS [MessageID], 
-    [MessageConversation].[ConversationID] AS [ConversationID]
-    FROM [dbo].[MessageConversation] AS [MessageConversation]</DefiningQuery>
-          </EntitySet>
+          <AssociationSet Name="FK_MessageConversation_Conversation" Association="Self.FK_MessageConversation_Conversation">
+            <End Role="Conversation" EntitySet="Conversation" />
+            <End Role="MessageConversation" EntitySet="MessageConversation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageConversation_Message" Association="Self.FK_MessageConversation_Message">
+            <End Role="Message" EntitySet="Message" />
+            <End Role="MessageConversation" EntitySet="MessageConversation" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -112,6 +140,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           </Key>
           <Property Name="ConversationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="WhistleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MessageConversation" Relationship="WhistleDBModel.FK_MessageConversation_Conversation" FromRole="Conversation" ToRole="MessageConversation" />
         </EntityType>
         <EntityType Name="File">
           <Key>
@@ -129,6 +158,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Property Name="LawyerID" Type="Int32" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -137,6 +167,8 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Property Name="MessageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Message1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Sender" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MessageConversation" Relationship="WhistleDBModel.FK_MessageConversation_Message" FromRole="Message" ToRole="MessageConversation" />
+          <Property Name="DateSent" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="Whistle">
           <Key>
@@ -151,21 +183,24 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <Property Name="Description_OtherEmployees" Type="String" MaxLength="280" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UploadID" Type="Int32" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
-          <Property Name="CurrentStatus" Type="String" Nullable="false" />
+          <Property Name="CurrentStatus" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="MessageConversation">
           <Key>
-            <PropertyRef Name="MessageID" />
-            <PropertyRef Name="ConversationID" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
           <Property Name="MessageID" Type="Int32" Nullable="false" />
           <Property Name="ConversationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Conversation" Relationship="WhistleDBModel.FK_MessageConversation_Conversation" FromRole="MessageConversation" ToRole="Conversation" />
+          <NavigationProperty Name="Message" Relationship="WhistleDBModel.FK_MessageConversation_Message" FromRole="MessageConversation" ToRole="Message" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="UniqueID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UniqueID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="WhistleID" Type="Int32" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
@@ -179,7 +214,39 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <EntitySet Name="Whistle" EntityType="Self.Whistle" />
           <EntitySet Name="MessageConversation" EntityType="Self.MessageConversation" />
           <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK_MessageConversation_Conversation" Association="WhistleDBModel.FK_MessageConversation_Conversation">
+            <End Role="Conversation" EntitySet="Conversation" />
+            <End Role="MessageConversation" EntitySet="MessageConversation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageConversation_Message" Association="WhistleDBModel.FK_MessageConversation_Message">
+            <End Role="Message" EntitySet="Message" />
+            <End Role="MessageConversation" EntitySet="MessageConversation" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_MessageConversation_Conversation">
+          <End Type="WhistleDBModel.Conversation" Role="Conversation" Multiplicity="1" />
+          <End Type="WhistleDBModel.MessageConversation" Role="MessageConversation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conversation">
+              <PropertyRef Name="ConversationID" />
+            </Principal>
+            <Dependent Role="MessageConversation">
+              <PropertyRef Name="ConversationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageConversation_Message">
+          <End Type="WhistleDBModel.Message" Role="Message" Multiplicity="1" />
+          <End Type="WhistleDBModel.MessageConversation" Role="MessageConversation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Message">
+              <PropertyRef Name="MessageID" />
+            </Principal>
+            <Dependent Role="MessageConversation">
+              <PropertyRef Name="MessageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -216,6 +283,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <EntitySetMapping Name="Lawyer">
             <EntityTypeMapping TypeName="WhistleDBModel.Lawyer">
               <MappingFragment StoreEntitySet="Lawyer">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="LawyerID" ColumnName="LawyerID" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
@@ -225,6 +293,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <EntitySetMapping Name="Message">
             <EntityTypeMapping TypeName="WhistleDBModel.Message">
               <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="DateSent" ColumnName="DateSent" />
                 <ScalarProperty Name="MessageID" ColumnName="MessageID" />
                 <ScalarProperty Name="Message1" ColumnName="Message" />
                 <ScalarProperty Name="Sender" ColumnName="Sender" />
@@ -234,6 +303,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <EntitySetMapping Name="Whistle">
             <EntityTypeMapping TypeName="WhistleDBModel.Whistle">
               <MappingFragment StoreEntitySet="Whistle">
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="WhistleID" ColumnName="WhistleID" />
                 <ScalarProperty Name="LawyerID" ColumnName="LawyerID" />
                 <ScalarProperty Name="About" ColumnName="About" />
@@ -250,6 +320,7 @@ warning 6002: The table/view 'WhistleDB.dbo.MessageConversation' does not have a
           <EntitySetMapping Name="MessageConversation">
             <EntityTypeMapping TypeName="WhistleDBModel.MessageConversation">
               <MappingFragment StoreEntitySet="MessageConversation">
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="MessageID" ColumnName="MessageID" />
                 <ScalarProperty Name="ConversationID" ColumnName="ConversationID" />
               </MappingFragment>

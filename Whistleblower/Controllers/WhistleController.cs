@@ -59,7 +59,7 @@ namespace Whistleblower.Controllers
                 case "skicka":
                     WhistleModel UWM = whistleInput;
                     var result = DBHandler.PostWhistle(new DB.Whistle
-                    {                        
+                    {
                         LawyerID = 0,
                         About = whistleInput.About,
                         C_When = whistleInput.When,
@@ -68,8 +68,16 @@ namespace Whistleblower.Controllers
                         Description_OtherEmployees = whistleInput.Description_OtherEmployees,
                         isActive = true,
                         CurrentStatus = "Aktiv",
+                        DateCreated = DateTime.Now,
                         UploadID = 2
                     });
+
+                    DBHandler.CreateConversation(
+                        new DB.Conversation
+                        {
+                            WhistleID = result.WhistleID
+
+                        });
                     UWM.user = DBHandler.PostUser(new DB.User
                     {                        
                         UniqueID = AutoGenerateID(false),

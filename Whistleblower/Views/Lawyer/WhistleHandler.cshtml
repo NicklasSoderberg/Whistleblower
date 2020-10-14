@@ -1,13 +1,11 @@
-﻿@model Whistleblower.Models.LawyerModel
-@{
-    ViewBag.Title = "WhistleHandler";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@model Whistleblower.ViewModels.LawyerViewmodel
+@{ ViewBag.Title = "WhistleHandler";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 @Html.AntiForgeryToken()
 <div class="form-horizontal">
     <div class="text-right">
-        <button type="button" class="btn btn-danger text-right">Logout</button>
+        <button type="button" id="logout" class="btn btn-danger text-right">Logout</button>
 
     </div>
 </div>
@@ -15,8 +13,6 @@
 <div class="form-titel">
     <img src="~/images/omegapoint.png">
     <h2>Ärenden:</h2>
-
-
 </div>
 <hr />
 
@@ -24,54 +20,50 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th scope="col">Status</th>
-            <th scope="col">Ärende</th>
-            <th scope="col">Typ</th>
+            <th scope="col">@Html.ActionLink("Status", "WhistleHandler", new { Sortby = "CurrentStatus" })</th>
+            <th scope="col">@Html.ActionLink("Ärende", "WhistleHandler", new { Sortby = "Description" })</th>
+            <th scope="col">@Html.ActionLink("Typ", "WhistleHandler", new { Sortby = "About" })</th>
         </tr>
     </thead>
     <tbody>
-        @if(Model.Whistles.Count() > 0) { 
-        foreach (Whistleblower.Models.WhistleModel w in Model.Whistles)
+        @if (Model.Whistles.Count() > 0)
         {
-
-       
-        <tr class="table-active">
-            @using (Html.BeginForm("Whistle" + "/" + w.WhistleID.ToString(), "Lawyer", FormMethod.Post, w.WhistleID))
+            foreach (Whistleblower.Models.WhistleModel w in Model.Whistles)
             {
-                switch (w.CurrentStatus)
-                {
-                    case "Aktiv":
-                        <th scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-success" })</th>
-                        break;
-                    case "Hanteras":
-                        <th scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-warning" })</th>
-                        break;
-                    case "Avslutad":
-                        <th scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-danger" })</th>
-                        break;
-                }
+<tr class="table-active">
+    @using (Html.BeginForm("Whistle" + "/" + w.WhistleID.ToString(), "Lawyer", FormMethod.Post, w.WhistleID))
+    {
+        switch (w.CurrentStatus)
+        {
+            case "Aktiv":
+<th scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-success" })</th> break;
+                            case "Hanteras":
+<th scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-warning" })</th> break;
+                            case "Avslutad":
+<th scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-danger" })</th> break;
+                        }
 
-                <td>@Html.Label(w.Description)</td>
-                <td>@Html.Label(w.About)</td>
-                <td><button class="btn btn-success btn-xs">Välj</button></td>
+<td>@Html.Label(w.Description)</td>
+                        <td>@Html.Label(w.About)</td>
+                                                <td><button class="btn btn-success btn-xs">Välj</button></td>}
+</tr> }
             }
-        </tr>
-        }
-        }
-        else
+            else
             {
-            <tr><td>Du har inga aktiva ärenden just nu.</td></tr>
+<tr><td>Du har inga aktiva ärenden just nu.</td></tr>
         }
 </table>
-@section Scripts{
-                @Scripts.Render("~/bundles/jquery")
 
-                <script>
-        $(".btn").click(function () {
-                    window.location.href = '@Url.Action("LogOut", "Login")'
-        console.log("test")
+
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+
+    <script>
+        $("#logout").click(function () {
+        window.location.href = '@Url.Action("LogOutUser", "Lawyer")'
     });
     </script>
-}
 
+}
 

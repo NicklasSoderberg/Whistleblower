@@ -1,18 +1,21 @@
-﻿@model Whistleblower.Models.LawyerModel
+﻿@model Whistleblower.ViewModels.LawyerViewmodel
 @{ ViewBag.Title = "Whistle";
                 Layout = "~/Views/Shared/_Layout.cshtml"; }
 
-
+@if(Model.SelectedWhistle.WhistleID == 0)
+{
+    Url.Action("WhistleHandler");
+}
 <div class="form-titel">
     <img src="~/images/omegapoint.png">
     <h2 style="text-align:center;">Ärende: @Model.SelectedWhistle.WhistleID</h2>
 </div>
-@using (Html.BeginForm("test/" + Model.SelectedWhistle.WhistleID, "Lawyer", FormMethod.Post))
+@using (Html.BeginForm("HandleWhistleChange/" + Model.SelectedWhistle.WhistleID, "Lawyer", FormMethod.Post, Model))
 {
-<div style="text-align:center;">
-    <h4>Status</h4>
-    @Html.DropDownListFor(m => m.SelectedWhistle.CurrentStatus, new SelectList(Model.WhistleStatuses))
-</div>
+    <div style="text-align:center;">
+         <h4>Status</h4>
+         @Html.DropDownListFor(m => m.SelectedWhistle.CurrentStatus, new SelectList(Model.WhistleStatuses))
+    </div>
                 <div style="text-align:center;">
                     <div>
                         @Html.LabelFor(m => m.SelectedWhistle.About)
@@ -41,7 +44,7 @@
 
                     <div class="form-group">
                         <a class="btn btn-danger" href="@Url.Action("WhistleHandler")">Gå tillbaka</a>
-                        <button type="submit" class="btn btn-success">Spara</button>
+                        <input type="submit" class="btn btn-success" value="Spara"/>
                         <a class="btn btn-primary" href="@Url.Action("Safebox" + "/" + Model.SelectedWhistle.WhistleID, "Safebox")">Gå till Safeboxen</a>
                     </div>
 

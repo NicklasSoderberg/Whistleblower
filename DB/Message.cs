@@ -18,11 +18,28 @@ using System;
 public partial class Message
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public Message()
+    {
+
+        this.MessageConversation = new HashSet<MessageConversation>();
+
+    }
+
+
     public int MessageID { get; set; }
 
     public string Message1 { get; set; }
 
     public int Sender { get; set; }
+
+    public System.DateTime DateSent { get; set; }
+
+
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<MessageConversation> MessageConversation { get; set; }
 
 }
 

@@ -38,6 +38,8 @@ public partial class Whistle
 
     public string CurrentStatus { get; set; }
 
+    public System.DateTime DateCreated { get; set; }
+
 }
 
 }
