@@ -206,7 +206,7 @@ namespace Whistleblower.Custom
                 {
                     sender = 0;
                 }
-                DB.Message Message = new Message {MessageID = mail.MailId,Message1 = mail.Message, Sender = sender };
+                DB.Message Message = new Message {MessageID = mail.MailId,Message1 = mail.Message, Sender = sender,DateSent= DateTime.Now };
                 db.Message.Add(Message);
                 var conversation = db.Conversation.FirstOrDefault(m => m.WhistleID == whistleId);
                 MessageConversation messageCon = new MessageConversation { ConversationID = conversation.ConversationID, MessageID = Message.MessageID };
@@ -242,7 +242,7 @@ namespace Whistleblower.Custom
                         sender = SafeboxViewmodel.MailSenders.Whistler;
 
                     }
-                    Mail mail = new Mail {MailId = w.MessageID,Message = w.Message1,MailSenderType = sender};
+                    Mail mail = new Mail {MailId = w.MessageID,Message = w.Message1,MailSenderType = sender, DateSent = w.DateSent};
                     MailList.Add(mail);
                 }
                 return MailList;

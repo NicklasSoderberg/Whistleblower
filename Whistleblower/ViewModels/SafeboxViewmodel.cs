@@ -22,7 +22,8 @@ namespace Whistleblower.ViewModels
         {
             _MailList = DBHandler.GetMessages(Id);
             int temp = _MailList.Count();
-            if(_MailList[temp-1].MailSenderType == MailSenders.Lawyer)
+            if(temp > 0) { 
+            if(_MailList[temp - 1].MailSenderType == MailSenders.Lawyer)
             {
              LastMessageType = 1;
             }
@@ -30,7 +31,8 @@ namespace Whistleblower.ViewModels
             {
                 LastMessageType = 0;
             }
-          
+            }
+
         }
     }
 }
