@@ -40,8 +40,12 @@ namespace Whistleblower.Controllers
             ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
             return View(objUser);
         }
-        [HttpPost]
-        public ActionResult Logout()
+        //public ActionResult Logout()
+        //{
+            
+        //}
+
+        public ActionResult LogOutUser()
         {
             Session.Remove("UserID");
             Session.Remove("LoggedInAsLawyer");
