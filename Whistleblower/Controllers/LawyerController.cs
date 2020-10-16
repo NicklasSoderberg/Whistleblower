@@ -40,10 +40,6 @@ namespace Whistleblower.Controllers
             ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
             return View(objUser);
         }
-        //public ActionResult Logout()
-        //{
-            
-        //}
 
         public ActionResult LogOutUser()
         {
@@ -53,12 +49,12 @@ namespace Whistleblower.Controllers
             return RedirectToAction("Login");
         }
 
-        public ActionResult WhistleHandler(string sortBy)
+        public ActionResult WhistleHandler()
         {
             if(LawyerViewmodel.LoggedinID > 0)
             {
-            LawyerViewmodel model = new LawyerViewmodel(sortBy);
-            return View(model);
+            LawyerViewmodel model = new LawyerViewmodel();
+              return View(model);
             }
             else
             {
@@ -71,7 +67,7 @@ namespace Whistleblower.Controllers
             if (LawyerViewmodel.LoggedinID > 0 && id != null)
             {
 
-                LawyerViewmodel model = new LawyerViewmodel("");
+                LawyerViewmodel model = new LawyerViewmodel();
 
                 model.SelectedWhistle = model.Whistles.FirstOrDefault(m => m.WhistleID == int.Parse(id));
                 return View(model);
