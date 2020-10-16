@@ -20,7 +20,7 @@ namespace Whistleblower.Controllers
     {
         public ActionResult Dashboard(string SortBy)
         {
-            List<DB.Whistle> Whistles = DBHandler.GetAllWhistles().OrderBy(l => l.LawyerID).ToList(); ;
+            List<DB.Whistle> Whistles = DBHandler.GetAllWhistles().OrderBy(l => l.LawyerID).ToList();
             return View(Whistles);
         }
         public ActionResult EditWhistle(DB.Whistle EditWhistle, string button)
