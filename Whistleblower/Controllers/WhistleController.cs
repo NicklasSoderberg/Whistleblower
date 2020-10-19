@@ -13,6 +13,8 @@ using Whistleblower.ViewModels;
 using System.Web.Services;
 using Whistleblower.Custom;
 using System.Xml.XPath;
+using Whistleblower.Encryption;
+using System.Security.Cryptography;
 
 namespace Whistleblower.Controllers
 {
@@ -50,7 +52,7 @@ namespace Whistleblower.Controllers
         }
 
         public ActionResult WhistleConfirm(WhistleModel whistleInput, string button)
-        {
+        {            
             switch (button?.ToLower())
             {
                 case "tillbaka":
@@ -78,13 +80,17 @@ namespace Whistleblower.Controllers
                             WhistleID = result.WhistleID
 
                         });
+
+                    var uniqueid = AutoGenerateID(false);
+                    var password = AutoGenerateID(true);
+
                     UWM.user = DBHandler.PostUser(new DB.User
                     {                        
-                        UniqueID = AutoGenerateID(false),
-                        Password = AutoGenerateID(true),
+                        UniqueID = uniqueid,
+                        Password = password,
                         WhistleID = result.WhistleID
                     });
-                    
+                    UWM.user.Password = password;
                     return View(UWM);
 
                 default:
