@@ -27,7 +27,7 @@ namespace Whistleblower.ViewModels
             };
             if (LoggedinID > 0)
             {
-                Whistles = DBHandler.GetWhistles(true);
+                Whistles = SortWhistlesLawyerTable(DBHandler.GetWhistles(true).OrderBy(c => c.CurrentStatus).ToList(), WhistleStatuses);
             }
             else
             {
@@ -35,36 +35,19 @@ namespace Whistleblower.ViewModels
 
             }
         }
-        public LawyerViewmodel(string sortBy)
-        {
-            WhistleStatuses = new List<string>
-            {
-                "Aktiv",
-                "Hanteras",
-                "Avslutad"
-            };
-            if(LoggedinID > 0) { 
-            Whistles = DBHandler.GetWhistles(true);
-                switch (sortBy?.ToLower())
-                {
-                    case "currentstatus":
-                            Whistles = Whistles.OrderBy(l => l.CurrentStatus).ToList();
-                        break;
-                    case "description":
-                        Whistles = Whistles.OrderBy(l => l.Description).ToList();
-                        break;
-                    case "about":
-                        Whistles = Whistles.OrderBy(l => l.About).ToList();              
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                Whistles = new List<WhistleModel>();
 
-            }
+        //Sorts whistles in the order of the List<string> array starting with[0] -> 
+        public static List<WhistleModel> SortWhistlesLawyerTable(List<WhistleModel> edit, List<string> Statuses)
+        {
+            List<WhistleModel> temp = edit;
+            List<WhistleModel> returnThis = new List<WhistleModel>();
+
+            foreach (string s in Statuses)
+                for (int i = 0; i < temp.Count; i++)
+                    if (temp[i].CurrentStatus == s)
+                        returnThis.Add(temp[i]);
+
+            return returnThis;
         }
     }
 }
