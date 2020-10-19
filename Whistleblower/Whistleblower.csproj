@@ -204,6 +204,7 @@
     <Compile Include="Controllers\WhistleController.cs" />
     <Compile Include="Custom\DBHandler.cs" />
     <Compile Include="Custom\RequiredLabel.cs" />
+    <Compile Include="Encryption\Helper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

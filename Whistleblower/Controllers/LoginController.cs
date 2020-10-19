@@ -13,6 +13,8 @@ using Whistleblower.ViewModels;
 using System.Web.Services;
 using Whistleblower.Custom;
 using DB;
+using Whistleblower.Encryption;
+using System.Security.Cryptography;
 
 namespace Whistleblower.Controllers
 {
@@ -99,21 +101,29 @@ namespace Whistleblower.Controllers
             {
                 using (var db = new DB.DBEntity())
                 {
-                    var obj = db.User.Where(a => a.UniqueID.Equals(formModel.UserName) && a.Password.Equals(formModel.Password)).FirstOrDefault();
+                    var obj = db.User.Where(a => a.UniqueID.Equals(formModel.UserName)).FirstOrDefault();
                     if (obj != null)
                     {
-                        var whistleobj = db.Whistle.Where(w => w.WhistleID == obj.WhistleID).FirstOrDefault();
-                        if (whistleobj.isActive == true)
+                        var hashCode = obj.VCode;
+
+                        var encodingPasswordString = Helper.EncodePassword(formModel.Password, hashCode);
+
+                        var query = db.User.Where(s => s.UniqueID.Equals(formModel.UserName) && s.Password.Equals(encodingPasswordString)).FirstOrDefault();
+                        if (query != null)
                         {
-                            Session["UserID"] = obj.ID.ToString();
-                            Session["UserName"] = obj.UniqueID;
-                            Session["WhistleId"] = obj.WhistleID;
-                            Session["LoggedInAsLawyer"] = "0";
-                            return RedirectToAction("ReportStatus");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("LogOnError", "Ärendet är avslutat.");
+                            var whistleobj = db.Whistle.Where(w => w.WhistleID == obj.WhistleID).FirstOrDefault();
+                            if (whistleobj.isActive == true)
+                            {
+                                Session["UserID"] = obj.ID.ToString();
+                                Session["UserName"] = obj.UniqueID;
+                                Session["WhistleId"] = obj.WhistleID;
+                                Session["LoggedInAsLawyer"] = "0";
+                                return RedirectToAction("ReportStatus");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("LogOnError", "Ärendet är avslutat.");
+                            }
                         }
                     }                    
                 }

@@ -60,9 +60,10 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="UniqueID" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="Password" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
           <Property Name="WhistleID" Type="int" Nullable="false" />
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Whistle">
           <Key>
@@ -201,9 +202,10 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="UniqueID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="WhistleID" Type="Int32" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="VCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="DBEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Admin" EntityType="Self.Admin" />
@@ -329,6 +331,7 @@
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="WhistleDBModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="VCode" ColumnName="VCode" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="WhistleID" ColumnName="WhistleID" />
                 <ScalarProperty Name="UniqueID" ColumnName="UniqueID" />

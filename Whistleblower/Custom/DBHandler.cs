@@ -5,6 +5,7 @@ using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Whistleblower.Encryption;
 using Whistleblower.Models;
 using Whistleblower.ViewModels;
 
@@ -25,6 +26,11 @@ namespace Whistleblower.Custom
         {
             using (var db = new DB.DBEntity())
             {
+                var keyNew = Helper.GeneratePassword(10);
+                var password = Helper.EncodePassword(user.Password, keyNew);
+                user.VCode = keyNew;
+                user.Password = password;
+
                 db.User.Add(user);
                 db.SaveChanges();
                 return user;
