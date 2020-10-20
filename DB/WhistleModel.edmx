@@ -25,7 +25,7 @@
           <Key>
             <PropertyRef Name="FileID" />
           </Key>
-          <Property Name="FileID" Type="int" Nullable="false" />
+          <Property Name="FileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Base64" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Extension" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="WhistleID" Type="int" Nullable="false" />

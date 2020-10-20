@@ -15,6 +15,7 @@ using Whistleblower.Custom;
 using System.Xml.XPath;
 using Whistleblower.Encryption;
 using System.Security.Cryptography;
+using System.Drawing;
 
 namespace Whistleblower.Controllers
 {
@@ -29,76 +30,75 @@ namespace Whistleblower.Controllers
         public ActionResult Whistle()
         {
             ViewBag.Message = "Fyll i formulï¿½ret";
-            WhistleModel WM = new WhistleModel();
+            WhistleViewModel WM = new WhistleViewModel();
+            if (TempData["Form"] != null)
+            {
+                WM = (WhistleViewModel)TempData["Form"];
+            }
             return View(WM);
         }
 
-        [HttpPost]
-        public ActionResult Whistle(WhistleModel formData)
+        public ActionResult WhistleConfirm(WhistleViewModel formData, string button, IEnumerable<HttpPostedFileBase> fileUpload)
         {
-            return RedirectToAction("WhistleConfirm", "Whistle", formData);
-        }
-
-        public ActionResult WhistleBack(WhistleModel formData)
-        {
-            ViewBag.Message = "Fyll i formulï¿½ret";
-            return View("Whistle", formData);
-        }
-
-        [HttpPost]
-        public ActionResult WhistleBack(WhistleModel formData, string button)
-        {
-            return RedirectToAction("WhistleConfirm", "Whistle", formData);
-        }
-
-        public ActionResult WhistleConfirm(WhistleModel whistleInput, string button)
-        {            
             switch (button?.ToLower())
             {
                 case "tillbaka":
-                    return RedirectToAction("WhistleBack", "Whistle", whistleInput);
+                    TempData["Form"] = formData;
+                    return RedirectToAction("Whistle", "Whistle");
 
                 case "skicka":
-                    WhistleModel UWM = whistleInput;
+                    WhistleViewModel UWM = (WhistleViewModel)TempData["Form"];
+                    UWM.FileUpload = fileUpload;
+
                     var result = DBHandler.PostWhistle(new DB.Whistle
                     {
                         LawyerID = 0,
-                        About = whistleInput.About,
-                        C_When = whistleInput.When,
-                        C_Where = whistleInput.Where,
-                        Description = whistleInput.Description,
-                        Description_OtherEmployees = whistleInput.Description_OtherEmployees,
+                        About = UWM.Whistle.About,
+                        C_When = UWM.Whistle.When,
+                        C_Where = UWM.Whistle.Where,
+                        Description = UWM.Whistle.Description,
+                        Description_OtherEmployees = UWM.Whistle.Description_OtherEmployees,
                         isActive = true,
                         CurrentStatus = "Aktiv",
                         DateCreated = DateTime.Now,
-                        UploadID = 2
+                        UploadID = 0
                     });
+
+                    foreach (HttpPostedFileBase f in UWM.FileUpload)
+                    {
+                        DBHandler.PostFile(new DB.File
+                        {
+                            Base64 = Base64Handler.FileToBase64(f),
+                            Extension = f.ContentType,
+                            WhistleID = result.WhistleID
+                        });
+                    }
 
                     DBHandler.CreateConversation(
                         new DB.Conversation
                         {
                             WhistleID = result.WhistleID
-
                         });
 
                     var uniqueid = AutoGenerateID(false);
                     var password = AutoGenerateID(true);
 
-                    UWM.user = DBHandler.PostUser(new DB.User
+                    UWM.Whistle.user = DBHandler.PostUser(new DB.User
                     {                        
                         UniqueID = uniqueid,
                         Password = password,
                         WhistleID = result.WhistleID
                     });
-                    UWM.user.Password = password;
+                    UWM.Whistle.user.Password = password;
+                    TempData["Form"] = null;
                     return View(UWM);
 
                 default:
+                    TempData["Form"] = formData;
                     break;
             }
             ViewBag.Message = "Kontrollera din information";
-            WhistleModel WM = whistleInput;
-            return View(WM);
+            return View(formData);
         }
         public string AutoGenerateID(bool isPassword)
         {
