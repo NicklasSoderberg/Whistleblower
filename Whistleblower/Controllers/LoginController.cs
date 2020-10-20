@@ -15,6 +15,8 @@ using Whistleblower.Custom;
 using DB;
 using Whistleblower.Encryption;
 using System.Security.Cryptography;
+using System.Net.Http;
+using System.Net;
 
 namespace Whistleblower.Controllers
 {
@@ -149,6 +151,6 @@ namespace Whistleblower.Controllers
                 reportStatusViewModel.SafeBox = false;
             }
             return View(reportStatusViewModel);
-        }
+        }        
     }
 }
