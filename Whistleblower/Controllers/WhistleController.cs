@@ -66,6 +66,8 @@ namespace Whistleblower.Controllers
 
                     foreach (HttpPostedFileBase f in UWM.FileUpload)
                     {
+                        if (f == null)
+                            break;
                         DBHandler.PostFile(new DB.File
                         {
                             Base64 = Base64Handler.FileToBase64(f),

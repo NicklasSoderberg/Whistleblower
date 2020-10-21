@@ -23,12 +23,22 @@ namespace Whistleblower.Custom
             }            
         }
 
-        public static string GetFileFromID(int id)
+        public static string GetFileFromFileID(int id)
         {
             using (var db = new DB.DBEntity())
             {
                 DB.File foo = db.File.First(m => m.FileID == id);
                 return foo.Base64;
+            }
+        }
+
+        public static List<DB.File> GetFilesFromWhistleID(int id)
+        {
+            List<DB.File> temp = new List<DB.File>();
+            using (var db = new DB.DBEntity())
+            {
+                temp = db.File.Where(f => f.WhistleID == id).ToList();
+                return temp;
             }
         }
 
