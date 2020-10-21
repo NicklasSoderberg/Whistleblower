@@ -11,11 +11,11 @@ using System.Web.Http;
 using System.Web.Http.Filters;
 using System.Web.Http.Results;
 using System.Web.Mvc;
-using AuthorizeAttribute = System.Web.Http.AuthorizeAttribute;
+
 
 namespace Whistleblower.Encryption
 {
-    public class CustomAuthenticationFilter : AuthorizeAttribute, IAuthenticationFilter
+    public class CustomAuthenticationFilter : System.Web.Mvc.AuthorizeAttribute, IAuthenticationFilter
     {
         public bool AllowMultiple 
         { 

@@ -17,6 +17,9 @@ using Whistleblower.Encryption;
 using System.Security.Cryptography;
 using System.Net.Http;
 using System.Net;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using System.Runtime.Remoting.Messaging;
 
 namespace Whistleblower.Controllers
 {
@@ -127,7 +130,7 @@ namespace Whistleblower.Controllers
                                 ModelState.AddModelError("LogOnError", "Ärendet är avslutat.");
                             }
                         }
-                    }                    
+                    }
                 }
             }
             ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");
@@ -138,19 +141,61 @@ namespace Whistleblower.Controllers
         {
             var id = (int)Session["WhistleId"];
             ReportStatusViewModel reportStatusViewModel = new ReportStatusViewModel();
-            
+
             reportStatusViewModel.Whistle = DBHandler.GetWhistles(false).FirstOrDefault(x => x.WhistleID == id);
             var messages = DBHandler.GetMessages(id);
 
             if (messages.Count > 0)
             {
-                reportStatusViewModel.SafeBox = true;                
+                reportStatusViewModel.SafeBox = true;
             }
             else
             {
                 reportStatusViewModel.SafeBox = false;
             }
             return View(reportStatusViewModel);
-        }        
+        }
+
+        public async Task<ActionResult> Test()
+        {
+            var tokenBased = string.Empty;
+            string WebString = "http://localhost:52160/";
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Clear();
+                client.BaseAddress = new Uri(WebString);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var responseMessage = await client.GetAsync("Account1/ValidLogin?userName=admin&Password=admin");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var resultMessage = responseMessage.ReasonPhrase;
+                    Session["TokenNumber"] = resultMessage;
+                    return Content(resultMessage);
+                }
+                return Content("");
+            }
+        }
+
+        public async Task<ActionResult> GetEmployee()
+        {
+            string ReturnMessage = string.Empty;
+            string WebString = "http://localhost:52160/";
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Clear();
+                client.BaseAddress = new Uri(WebString);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+                    Session["TokenNumber"].ToString());
+                var responseMessage = await client.GetAsync("Account1/GetEmployee");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var resultMessage = responseMessage.Content.ReadAsStringAsync().Result;
+                    ReturnMessage = JsonConvert.DeserializeObject<string>(resultMessage);
+                }
+            }
+
+            return Content(ReturnMessage);
+        }
     }
 }
