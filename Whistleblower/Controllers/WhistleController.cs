@@ -106,7 +106,6 @@ namespace Whistleblower.Controllers
         {
             Random r = new Random();
             string generatedID = "";
-
             for (int i = 0; i < 9; i++)
             {
                 if (i == 3 || i == 4 || i == 8)
@@ -119,11 +118,12 @@ namespace Whistleblower.Controllers
                     generatedID += r.Next(0, 9).ToString();
                 }
             }
+
             if (!isPassword)
             {
                 using (var db = new DB.DBEntity())
                 {
-                    var test = db.User.Where(X => X.UniqueID == generatedID);
+                    List<DB.User> test = db.User.Where(X => X.UniqueID == generatedID).ToList();
                     if (test.Count() != 0)
                     {
                         AutoGenerateID(false);
