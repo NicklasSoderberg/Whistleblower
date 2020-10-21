@@ -37,14 +37,15 @@
                             switch (w.CurrentStatus)
                             {
                                 case "Aktiv":
-                                    if (TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
+                                    if (TempList.Count() > 0 && TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
                                     {
                                 <td scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-success" }) <img src="~/images/285px-Chat_icon_new_message.svg.png" style="width:45px; height:40px; margin-left:50px;" /></td>
                                     }
                                     else {<td scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-success" }) </td> }
                                     break;
                                 case "Hanteras":
-                                if (TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
+
+                                if (TempList.Count() > 0 && TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
                                 {
                                     <td scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-warning" }) <img src="~/images/285px-Chat_icon_new_message.svg.png" style="width:45px; height:40px; margin-left:50px;" /></td>
                                 }
@@ -54,7 +55,7 @@
                                 }
                                 break;
                             case "Avslutad":
-                                if (TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
+                                if (TempList.Count() > 0 && TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
                                 {
                                     <td scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-danger" }) <img src="~/images/285px-Chat_icon_new_message.svg.png" style="width:45px; height:40px; margin-left:50px;" /></td>
                                 }
