@@ -22,12 +22,16 @@ namespace Whistleblower.Encryption
         public static string GeneratePassword(int length) //length of salt    
         {
             const string allowedChars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
-            var randNum = new Random();
+            Random randNum = new Random();
             var chars = new char[length];
             var allowedCharCount = allowedChars.Length;
+            int tempIndex;
             for (var i = 0; i <= length - 1; i++)
             {
-                chars[i] = allowedChars[Convert.ToInt32((allowedChars.Length) * randNum.NextDouble())];
+                tempIndex = Convert.ToInt32((allowedChars.Length) * randNum.NextDouble()) - 1;
+                if (tempIndex < 0)
+                    tempIndex = 0;
+                chars[i] = allowedChars[tempIndex];
             }
             return new string(chars);
         }
