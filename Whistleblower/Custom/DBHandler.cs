@@ -22,6 +22,40 @@ namespace Whistleblower.Custom
                 return whistle;
             }            
         }
+
+        public static string GetFileFromFileID(int id)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                DB.File foo = db.File.First(m => m.FileID == id);
+                return foo.Base64;
+            }
+        }
+
+        public static List<DB.File> GetFilesFromWhistleID(int id)
+        {
+            List<DB.File> temp = new List<DB.File>();
+            using (var db = new DB.DBEntity())
+            {
+                temp = db.File.Where(f => f.WhistleID == id).ToList();
+                return temp;
+            }
+        }
+
+        public static void PostFile(DB.File file)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                db.File.Add(new File
+                {
+                    WhistleID = file.WhistleID,
+                    Base64 = file.Base64,
+                    Extension = file.Extension
+                });
+                db.SaveChanges();
+            }
+        }
+
         public static DB.User PostUser(DB.User user)
         {
             using (var db = new DB.DBEntity())

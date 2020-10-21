@@ -228,6 +228,7 @@
     <Compile Include="Controllers\SafeboxController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\WhistleController.cs" />
+    <Compile Include="Custom\Base64Handler.cs" />
     <Compile Include="Custom\DBHandler.cs" />
     <Compile Include="Custom\RequiredLabel.cs" />
     <Compile Include="Encryption\CustomAuthenticationFilter.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="Models\LoginAdmin.cs" />
     <Compile Include="Models\LawyerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\WhistleViewModel.cs" />
     <Compile Include="ViewModels\LawyerViewmodel.cs" />
     <Compile Include="ViewModels\ReportStatusViewModel.cs" />
     <Compile Include="ViewModels\SafeboxViewmodel.cs" />
