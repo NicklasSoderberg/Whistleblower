@@ -17,6 +17,7 @@ namespace Whistleblower.ViewModels
         public List<WhistleModel> Whistles { get; set; }
         public WhistleModel SelectedWhistle { get; set; }
         public static int LoggedinID { get; set; }
+        public List<DB.File> Files { get => DBHandler.GetFilesFromWhistleID(SelectedWhistle.WhistleID); set { Files = value; } }
         public LawyerViewmodel()
         {
             WhistleStatuses = new List<string>
@@ -32,7 +33,6 @@ namespace Whistleblower.ViewModels
             else
             {
                 Whistles = new List<WhistleModel>();
-
             }
         }
 

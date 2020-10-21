@@ -34,6 +34,8 @@ namespace Whistleblower.Custom
 
         public static List<DB.File> GetFilesFromWhistleID(int id)
         {
+            if (id == 0)
+                return new List<DB.File>();
             List<DB.File> temp = new List<DB.File>();
             using (var db = new DB.DBEntity())
             {
