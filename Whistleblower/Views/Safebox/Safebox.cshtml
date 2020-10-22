@@ -3,21 +3,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 <h2 style="text-align:center;"><b>Din Safebox</b></h2>
-@if (Session["LoggedInAsLawyer"].ToString() == "1")
-{
-    <button class="btn btn-danger" id="GoBackLawyer" style="float:right;">Gå tillbaka</button> }
-else
-{
-    <button class="btn btn-danger" id="GoBackWhistler" style="float:right;">Gå tillbaka</button>
-}
 
-<div id="wrapper-safebox" style="display:block;">
-    <div id="MessageList">
+    <div class="panel panel-default" style="overflow-y:scroll; max-height:700px;">
+    <div class="panel-body container" >
         @foreach (Whistleblower.Models.Mail m in Model._MailList)
         {
-
-            <div class="safebox">
-                <div id="@m.MailSenderType" class="safeboxmail">
+            <div class="row" style="height:140px; margin-bottom:20px;">
+        @{string Sender = (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer) ? "float:left;" : "float:right;";}  
+                <div class="col-sm-3" style="@Sender">
                     @if (Session["LoggedInAsLawyer"].ToString() == "1")
                     {
                         if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
@@ -58,9 +51,9 @@ else
                                     <p><b>Datum/Tid skickad:</b></p>
                                     <p>@m.DateSent</p>
                                 </div>
-                                <div class="panel-body">
+                                <div class="panel-body" style="overflow-wrap: break-word;" >
                                     <p><b>Meddelande:</b></p>
-                                    <p>@m.Message</p>
+                                    <p >@m.Message</p>
                                 </div>
                             </div> }
                         else if (m.MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer)
@@ -71,9 +64,9 @@ else
                                     <p><b>Datum/Tid skickad:</b></p>
                                     <p>@m.DateSent</p>
                                 </div>
-                                <div class="panel-body">
+                                <div class="panel-body" style="overflow-wrap: break-word;">
                                     <p><b>Meddelande:</b></p>
-                                    <p>@m.Message</p>
+                                    <p  >@m.Message</p>
                                 </div>
                             </div>}
                     }
@@ -81,10 +74,13 @@ else
             </div>}
 
     </div>
+        </div>
 
-    <div style=" width:100%;">
+    <div id="buttonsend" style=" width:100%;">
+       <p>@Session["LoggedInAsLawyer"].ToString()</p>
         @if (Session["LoggedInAsLawyer"].ToString() == "1" || Whistleblower.ViewModels.SafeboxViewmodel.LastMessageType == 1)
         {
+            
             if (Session["LoggedInAsLawyer"].ToString() == "1")
             {
                 <button type="button" class="btn btn-primary center-block" data-toggle="modal" data-target="#exampleModalCenter">
@@ -96,6 +92,13 @@ else
                     Svara
                 </button>}
         }
+        @if (Session["LoggedInAsLawyer"].ToString() == "1")
+{
+    <button class="btn btn-danger" id="GoBackLawyer" style="float:right;">Gå tillbaka</button> }
+else
+{
+    <button class="btn btn-danger" id="GoBackWhistler" style="float:right;">Gå tillbaka</button>
+}
     </div>
 
     <div class="row text-center">
@@ -116,7 +119,6 @@ else
 
 
     </div>
-</div>
 
 <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="img">

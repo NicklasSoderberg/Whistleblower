@@ -263,7 +263,6 @@
     <Content Include="Views\Whistle\Whistle.cshtml" />
     <Content Include="Views\Whistle\WhistleConfirm.cshtml" />
     <Content Include="Views\Safebox\Safebox.cshtml" />
-    <Content Include="Views\Safebox\SentMail.cshtml" />
     <Content Include="Views\Whistle\Index.cshtml" />
     <Content Include="Views\Lawyer\WhistleHandler.cshtml" />
     <Content Include="Views\Lawyer\Whistle.cshtml" />
