@@ -25,22 +25,40 @@ namespace WebApiJWT
             string authParameter = string.Empty;
             HttpRequestMessage request = context.Request;
             AuthenticationHeaderValue authorization = request.Headers.Authorization;
+
+            string[] TokenAndUser = null;
+
             if (authorization == null)
             {
                 context.ErrorResult = new AuthenticationFailureResult("Missing Authorization Header", request);
+                return;
             }
 
             if (authorization.Scheme != "Bearer")
             {
                 context.ErrorResult = new AuthenticationFailureResult("Invalid Authorization Schema", request);
+                return;
             }
 
-            if (String.IsNullOrEmpty(authorization.Parameter))
+            TokenAndUser = authorization.Parameter.Split(':');
+
+            string Token = TokenAndUser[0];
+            string userName = TokenAndUser[1];
+
+            if (String.IsNullOrEmpty(Token))
             {
                 context.ErrorResult = new AuthenticationFailureResult("Missing Token", request);
+                return;
             }
 
-            context.Principal = TokenManager.GetPrincipal(authorization.Parameter);
+            string ValidUserName = TokenManager.ValidateToken(Token);
+            if (userName != ValidUserName)
+            {
+                context.ErrorResult = new AuthenticationFailureResult("Invalid Token for User", request);
+                return;
+            }
+
+            context.Principal = TokenManager.GetPrincipal(Token);
         }
 
         public async Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)

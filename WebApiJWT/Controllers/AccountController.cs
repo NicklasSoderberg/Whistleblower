@@ -21,5 +21,12 @@ namespace WebApiJWT.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadGateway, "Username and password is invalid");
             }
         }
+
+        [HttpGet]
+        [CustomAuthenticationFilter]
+        public HttpResponseMessage GetEmployee()
+        {
+            return Request.CreateErrorResponse(HttpStatusCode.OK, "Succesfully Valid");
+        }
     }
 }

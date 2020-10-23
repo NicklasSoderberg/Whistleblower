@@ -15,11 +15,16 @@ using Whistleblower.Custom;
 using DB;
 using Whistleblower.Encryption;
 using System.Security.Cryptography;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using System.Runtime.Remoting.Messaging;
 
 namespace Whistleblower.Controllers
 {
     public class LoginController : Controller
     {
+        private static string WebAPIURL = "https://localhost:44332/";
         //public ActionResult LoginAdmin()
         //{
         //    return View();
@@ -149,6 +154,50 @@ namespace Whistleblower.Controllers
                 reportStatusViewModel.SafeBox = false;
             }
             return View(reportStatusViewModel);
+        }
+
+
+        // Test Method for JWTToken
+        public async Task<ActionResult> Test()
+        {
+            var tokenBased = string.Empty;
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Clear();
+                client.BaseAddress = new Uri(WebAPIURL);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var responseMessage = await client.GetAsync("Account/ValidLogin?userName=admin&userPassword=admin");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var resultMessage = responseMessage.Content.ReadAsStringAsync().Result;
+                    tokenBased = JsonConvert.DeserializeObject<string>(resultMessage);
+                    Session["TokenNumber"] = tokenBased;
+                    Session["UserName"] = "admin";
+                }
+            }
+            return Content(tokenBased);
+        }
+
+        // Test Method for JWTToken
+        public async Task<ActionResult> GetEmployee()
+        {
+            string ReturnMessage = string.Empty;
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Clear();
+                client.BaseAddress = new Uri(WebAPIURL);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+                    Session["TokenNumber"].ToString() + ":" + Session["UserName"]);
+                var responseMessage = await client.GetAsync("Account/GetEmployee");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var resultMessage = responseMessage.Content.ReadAsStringAsync().Result;
+                    ReturnMessage = resultMessage;
+                }
+            }
+
+            return Content(ReturnMessage);
         }
     }
 }
