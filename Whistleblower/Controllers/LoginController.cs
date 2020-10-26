@@ -25,27 +25,7 @@ namespace Whistleblower.Controllers
     public class LoginController : Controller
     {
         private static string WebAPIURL = "https://localhost:44332/";
-        //public ActionResult LoginAdmin()
-        //{
-        //    return View();
-        //}
-        //[HttpPost]
-        //public ActionResult LoginAdmin(LoginAdmin formAdmin)
-        //{
-        //    LoginAdmin loginadmin = new LoginAdmin();
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (loginadmin.Username == formAdmin.Username && loginadmin.Password == formAdmin.Password)
-        //        {
-        //            return RedirectToAction("Safebox");
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
-        //        }
-        //    }
-        //    return View(formAdmin);
-        //}
+
         public ActionResult LoginAdmin()
         {
             if (Session["UserID"] != null)
