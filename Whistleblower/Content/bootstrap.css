@@ -7088,53 +7088,6 @@ a.list-group-item-danger.active:focus {
     margin: auto;
     width: auto;
 }
-
-#SendMailForm {
-    height: 40%;
-    width: 25%;
-    margin: 0 auto;
-    position: relative;
-    z-index: 10;
-    display: none;
-    border-radius: 10px;
-}
-
-    #SendMailForm:target, #SendMailForm:target + #cover {
-        display: block;
-        opacity: 2;
-        margin: 0 auto;
-        position: fixed;
-        left:0;
-        right:0;
-        top:250px;
-        bottom:0;
-        background-color:gray;
-        text-align:center;
-    }
-
-.safebox {
-    width: 100%;
-    height: 140px;
-    margin-bottom: 20px;
-}
-.safeboxmail {
-   width:33%;
-    max-height: 70px;
-    margin-bottom: 20px;
-    font-size:80%;
-}
-#Lawyer {
-
-    float: left;
-}
-#Whistler {
-
-    float: right;
-}
-#wrapper-safebox {
-    display:flex;
-    justify-content:center;
-}
 #MessageList {
     margin: 0 auto;
     width: 70%;

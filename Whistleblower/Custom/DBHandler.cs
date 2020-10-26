@@ -276,13 +276,17 @@ namespace Whistleblower.Custom
                 foreach (DB.Message w in DbMessages)
                 {
                     SafeboxViewmodel.MailSenders sender = SafeboxViewmodel.MailSenders.Lawyer;
-                    if(w.Sender == 2)
+                    switch (w.Sender)
                     {
-                        sender = SafeboxViewmodel.MailSenders.Lawyer;
-                    }else if(w.Sender == 0)
-                    {
-                        sender = SafeboxViewmodel.MailSenders.Whistler;
-
+                        case 0:
+                            sender = SafeboxViewmodel.MailSenders.Lawyer;
+                            break;
+                        case 1:
+                            sender = SafeboxViewmodel.MailSenders.File;
+                            break;
+                        case 2:
+                            sender = SafeboxViewmodel.MailSenders.Whistler;
+                            break;
                     }
                     Mail mail = new Mail {MailId = w.MessageID,Message = w.Message1,MailSenderType = sender, DateSent = w.DateSent};
                     MailList.Add(mail);
