@@ -20,25 +20,40 @@ namespace Whistleblower.Controllers
     {
         public ActionResult Dashboard(string SortBy)
         {
-            List<DB.Whistle> Whistles = DBHandler.GetAllWhistles().OrderBy(l => l.LawyerID).ToList();
-            return View(Whistles);
-        }
-        public ActionResult EditWhistle(DB.Whistle EditWhistle, string button)
-        {
-            switch (button?.ToLower())
+            if (Session["UserID"] != null)
             {
-                case "tillbaka":
-                    return RedirectToAction("Dashboard", "Admin");
 
-                case "spara":
-                    DBHandler.UpdateAdminWhistle(EditWhistle);
-                    return RedirectToAction("Dashboard", "Admin");
-
-                default:
-                    break;
+                List<DB.Whistle> Whistles = DBHandler.GetAllWhistles().OrderBy(l => l.LawyerID).ToList();
+                return View(Whistles);
             }
+            else
+            {
+                return HttpNotFound();
+            }
+        }
+            public ActionResult EditWhistle(DB.Whistle EditWhistle, string button)
+        {
+            if (Session["UserID"] != null)
+            {
+                switch (button?.ToLower())
+                {
+                    case "tillbaka":
+                        return RedirectToAction("Dashboard", "Admin");
 
-            return View(EditWhistle);
+                    case "spara":
+                        DBHandler.UpdateAdminWhistle(EditWhistle);
+                        return RedirectToAction("Dashboard", "Admin");
+
+                    default:
+                        break;
+                }
+
+                return View(EditWhistle);
+            }
+            else
+            {
+                return HttpNotFound();
+            }
         }
 
     }
