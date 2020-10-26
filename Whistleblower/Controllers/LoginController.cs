@@ -15,11 +15,16 @@ using Whistleblower.Custom;
 using DB;
 using Whistleblower.Encryption;
 using System.Security.Cryptography;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace Whistleblower.Controllers
 {
     public class LoginController : Controller
     {
+        private static string WebAPIURL = "https://localhost:44324/Api";
+
         public ActionResult LoginAdmin()
         {
             if (Session["UserID"] != null)
@@ -127,6 +132,33 @@ namespace Whistleblower.Controllers
                 reportStatusViewModel.SafeBox = false;
             }
             return View(reportStatusViewModel);
+        }
+
+        public async Task<ActionResult> Test()
+        {
+            var tokenBased = string.Empty;
+            using (var client = new HttpClient())
+            {
+                //client.DefaultRequestHeaders.Clear();
+                //client.BaseAddress = new Uri(WebAPIURL);
+                //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var result = await client.GetAsync("https://localhost:44358/api/values");
+                var responseMessage = await client.GetAsync("https://localhost:44358/api/RequestToken/Get?username=codeadda&password=abc123");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var resultMessage = responseMessage.Content.ReadAsStringAsync().Result;
+                    tokenBased = JsonConvert.DeserializeObject<string>(resultMessage);
+                    Session["TokenNumber"] = tokenBased;
+                    Session["UserName"] = "admin";
+
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
+                    Session["TokenNumber"].ToString());
+
+                    var result1 = await client.GetAsync("https://localhost:44358/api/values");
+                }
+            }
+
+            return Content(tokenBased);
         }
     }
 }
