@@ -32,6 +32,7 @@ namespace Whistleblower.Custom
             }
         }
 
+
         public static string GetFileExtFromFileID(int id)
         {
             using (var db = new DB.DBEntity())
@@ -302,6 +303,27 @@ namespace Whistleblower.Custom
                     MailList.Add(mail);
                 }
                 return MailList;
+            }
+        }
+
+        public static string CreateUser(string username, string name)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                var pw = Helper.GeneratePassword1(10);
+                var key = Helper.GeneratePassword(10);
+                Lawyer lawyer = new Lawyer {
+                    Name = name,
+                    Username = username,
+                    Password = pw,
+                    VCode = Helper.EncodePassword(pw,key)
+                };
+
+                db.Lawyer.Add(lawyer);
+                db.SaveChanges();
+
+                return pw;
+
             }
         }
     }

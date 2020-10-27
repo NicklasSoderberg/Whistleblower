@@ -24,6 +24,7 @@ namespace Whistleblower
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/custom-css.css",
                       "~/Content/site.css"));
         }
     }
