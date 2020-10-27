@@ -52,32 +52,36 @@
             <div class="modal-dialog modal-lg" role="img">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <button type="button" class="close"  data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <img src="" class="imagepreview img-responsive" style="width:auto; height:auto;">
                     </div>
                 </div>
             </div>
         </div>
-            <div class="row">
+        <div class="row">
 
-                @if (Model.Files.Count() > 0)
+            @if (Model.Files.Count() > 0)
+            {
+                foreach (DB.File f in Model.Files)
                 {
-                    foreach (DB.File f in Model.Files)
-                    {
-                        <div class="col-xs-12 col-md-3">
-                            <div class="row">
-                                <img src="@String.Format("data:" + f.Extension + ";base64,{0}", f.Base64)" class="pop" style="height:45%; width:45%;" />
-                                
-                            </div>
-                            <div class="row">
-                                <a>Download</a>
-                            </div>
+                    <div class="col-xs-12 col-md-3">
+                        <div class="row" style="margin-top: 25px">
+                            <img src="@String.Format("data:" + f.Extension + ";base64,{0}", f.Base64)" class="pop" style="height: 100px; width: 100px;" />
+
                         </div>
-                    }
+                        <div class="row">
+                            @Html.ActionLink("Download", "DownloadFile/" + f.FileID, "Lawyer")
+                        </div>
+                    </div>
                 }
+            }
 
 
-            </div>
+        </div>
+        @if (Model.Files.Count > 1)
+        {
+            @Html.ActionLink("Download all as .zip", "DownloadZip/" + Model.SelectedWhistle.WhistleID, "Lawyer")
+        }
     </div>
 }
 @section Scripts {

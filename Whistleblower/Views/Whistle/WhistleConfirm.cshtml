@@ -60,8 +60,8 @@
             </div>
             <div class="form-group">
                 <div class="col-md-12">
-                    <label>Image files or .PDF</label>
-                    <input type="file" name="FileUpload" id="FileUpload" accept="image/*,.pdf" multiple />
+                    <label>Image files</label>
+                    <input type="file" name="FileUpload" id="FileUpload" accept="image/*" multiple />
                 </div>
             </div>
             <div class="form-group">
@@ -105,12 +105,23 @@
     @Scripts.Render("~/bundles/jqueryval")
 <script>
     var uploadField = document.getElementById("FileUpload");
-
+    var fileName;
+    var extFile
+    var acceptFiles = ["jpg", "jpeg", "png"];
     uploadField.onchange = function () {
         for (var i = 0; i < this.files.length; i++) {
             console.log(i);
             if (this.files[i].size > 2200000) {
                 alert(this.files[i].name + " is over the 2mb limit!\n\nPlease try again..");
+                this.value = "";
+                break;
+            };
+            fileName = this.files[i].name;
+            console.log(fileName);
+            console.log(fileName.substr(fileName.length - 3));
+            extFile = fileName.substr(fileName.length - 3);
+            if (!acceptFiles.includes(extFile)) {
+                alert(extFile + " is not an supported filetype!\n\nPlease try again..");
                 this.value = "";
                 break;
             };
