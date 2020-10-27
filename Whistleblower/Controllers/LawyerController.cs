@@ -51,14 +51,14 @@ namespace Whistleblower.Controllers
 
         public ActionResult WhistleHandler()
         {
-            if(LawyerViewmodel.LoggedinID > 0)
+            if (LawyerViewmodel.LoggedinID > 0)
             {
-            LawyerViewmodel model = new LawyerViewmodel();
-              return View(model);
+                LawyerViewmodel model = new LawyerViewmodel();
+                return View(model);
             }
             else
             {
-              return  RedirectToAction("Login");
+                return RedirectToAction("Login");
             }
         }
 
@@ -85,5 +85,22 @@ namespace Whistleblower.Controllers
             DBHandler.Put(model.SelectedWhistle);
             return RedirectToAction("Whistle" + "/" + id);
         }
+
+        public FileResult DownloadFile(int id)
+        {
+            if(id > 0)
+            {
+                using (var db = new DB.DBEntity())
+                {
+
+                    DB.File file = db.File.First(f => f.FileID == id);
+                    byte[] imageBytes = Convert.FromBase64String(file.Base64);
+                    string ext = file.Extension.Substring(file.Extension.IndexOf("/") + 1);
+                    return File(imageBytes, file.Extension, file.FileID.ToString() + "." + ext.Trim());
+                }
+            }
+            return null;
+        }
+        
     }
 }
