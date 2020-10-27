@@ -103,7 +103,7 @@ namespace Whistleblower.Controllers
                                 ModelState.AddModelError("LogOnError", "Ärendet är avslutat.");
                             }
                         }
-                    }                    
+                    }
                 }
             }
             ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");
@@ -112,21 +112,28 @@ namespace Whistleblower.Controllers
 
         public ActionResult ReportStatus()
         {
-            var id = (int)Session["WhistleId"];
-            ReportStatusViewModel reportStatusViewModel = new ReportStatusViewModel();
-            
-            reportStatusViewModel.Whistle = DBHandler.GetWhistles(false).FirstOrDefault(x => x.WhistleID == id);
-            var messages = DBHandler.GetMessages(id);
-
-            if (messages.Count > 0)
+            if (Session["UserName"] != null && Session["WhistleId"] != null)
             {
-                reportStatusViewModel.SafeBox = true;                
+                var id = (int)Session["WhistleId"];
+                ReportStatusViewModel reportStatusViewModel = new ReportStatusViewModel();
+
+                reportStatusViewModel.Whistle = DBHandler.GetWhistles(false).FirstOrDefault(x => x.WhistleID == id);
+                var messages = DBHandler.GetMessages(id);
+
+                if (messages.Count > 0)
+                {
+                    reportStatusViewModel.SafeBox = true;
+                }
+                else
+                {
+                    reportStatusViewModel.SafeBox = false;
+                }
+                return View(reportStatusViewModel);
             }
             else
             {
-                reportStatusViewModel.SafeBox = false;
+                return View("UserLogin");
             }
-            return View(reportStatusViewModel);
         }
     }
 }
