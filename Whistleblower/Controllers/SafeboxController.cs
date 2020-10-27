@@ -76,5 +76,21 @@ namespace Whistleblower.Controllers
 
             return RedirectToAction($"Safebox/{id}", "Safebox");
         }
+
+        public FileResult DownloadFile(int id)
+        {
+            if (id > 0)
+            {
+                using (var db = new DB.DBEntity())
+                {
+
+                    DB.File file = db.File.First(f => f.FileID == id);
+                    byte[] imageBytes = Convert.FromBase64String(file.Base64);
+                    string ext = file.Extension.Substring(file.Extension.IndexOf("/") + 1);
+                    return File(imageBytes, file.Extension, file.FileID.ToString() + "." + ext.Trim());
+                }
+            }
+            return null;
+        }
     }
 }

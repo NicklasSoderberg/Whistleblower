@@ -157,7 +157,7 @@ else
                     <img src="@String.Format("data:" + f.Extension + ";base64,{0}", f.Base64)" class="pop" style="height:45%; width:45%;" />
                 </div>
                 <div class="row">
-                    <a>Download</a>
+                    @Html.ActionLink("Download", "DownloadFile/" + f.FileID, "Lawyer")
                 </div>
             </div>
         }
