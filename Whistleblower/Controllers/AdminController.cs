@@ -28,7 +28,7 @@ namespace Whistleblower.Controllers
             }
             else
             {
-                return HttpNotFound();
+                return RedirectToAction("Loginadmin", "Login");
             }
         }
             public ActionResult EditWhistle(DB.Whistle EditWhistle, string button)
