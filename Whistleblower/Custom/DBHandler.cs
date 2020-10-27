@@ -32,6 +32,15 @@ namespace Whistleblower.Custom
             }
         }
 
+        public static string GetFileExtFromFileID(int id)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                DB.File foo = db.File.First(m => m.FileID == id);
+                return foo.Extension;
+            }
+        }
+
         public static List<DB.File> GetFilesFromWhistleID(int id)
         {
             if (id == 0)
@@ -44,17 +53,14 @@ namespace Whistleblower.Custom
             }
         }
 
-        public static void PostFile(DB.File file)
+        public static DB.File PostFile(DB.File file)
         {
             using (var db = new DB.DBEntity())
             {
-                db.File.Add(new File
-                {
-                    WhistleID = file.WhistleID,
-                    Base64 = file.Base64,
-                    Extension = file.Extension
-                });
+                DB.File tempFile = file;
+                db.File.Add(tempFile);
                 db.SaveChanges();
+                return tempFile;
             }
         }
 
@@ -236,7 +242,7 @@ namespace Whistleblower.Custom
         }
 
 
-        public static void PostMail(Mail mail,int whistleId)
+        public static void PostMail(Mail mail, int whistleId, bool isFile = false)
         {
             using (var db = new DB.DBEntity())
             {
@@ -248,7 +254,11 @@ namespace Whistleblower.Custom
                 {
                     sender = 0;
                 }
-                DB.Message Message = new Message {MessageID = mail.MailId,Message1 = mail.Message, Sender = sender,DateSent= DateTime.Now };
+                if (isFile)
+                {
+                    sender = 1;
+                }
+                DB.Message Message = new Message {MessageID = mail.MailId,Message1 = mail.Message, Sender = sender,DateSent= DateTime.Now};
                 db.Message.Add(Message);
                 var conversation = db.Conversation.FirstOrDefault(m => m.WhistleID == whistleId);
                 MessageConversation messageCon = new MessageConversation { ConversationID = conversation.ConversationID, MessageID = Message.MessageID };

@@ -17,7 +17,7 @@ else
 
             </div>
         </div>
-        <div class="panel-body pre-scrollable" style="max-height: 700px">
+        <div class="panel-body pre-scrollable" id="scrollThis" style="max-height: 700px">
             @{string Sender = ""; string RowString = "";}
             @foreach (Whistleblower.Models.Mail m in Model._MailList)
             {
@@ -74,16 +74,16 @@ else
                                             <p><b>Datum/Tid skickad:</b></p>
                                             <p>@m.DateSent</p>
                                         </div>
-                                        <div class="panel-body">
-                                            @* Fil *@
+                                        <div class="panel-body text-center">
+                                            <img src="@String.Format("data:" + DBHandler.GetFileExtFromFileID(Convert.ToInt32(m.Message)) + ";base64,{0}", DBHandler.GetFileFromFileID(Convert.ToInt32(m.Message)))" class="pop" style="height: 100px; width: 100px;" />
+                                        </div>
+                                        <div class="row text-center">
+                                                @Html.ActionLink("Download", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
                                         </div>
                                     </div>
                                     break;
 
                             }
-
-
-
                         }
                         else if (Session["LoggedInAsLawyer"].ToString() == "0")
                         {
@@ -116,6 +116,19 @@ else
                                     </div>
                                     break;
                                 case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.File:
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Fil</h3>
+                                            <p><b>Datum/Tid skickad:</b></p>
+                                            <p>@m.DateSent</p>
+                                        </div>
+                                        <div class="panel-body text-center">
+                                            <img src="@String.Format("data:" + DBHandler.GetFileExtFromFileID(Convert.ToInt32(m.Message)) + ";base64,{0}", DBHandler.GetFileFromFileID(Convert.ToInt32(m.Message)))" class="pop" style="height: 100px; width: 100px;" />
+                                            <div class="row text-center">
+                                                @Html.ActionLink("Download", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
+                                            </div>
+                                        </div>
+                                    </div>
                                     break;
 
                             }
@@ -128,9 +141,7 @@ else
     </div>
 </div>
 
-
 <div id="buttonsend" style=" width:100%;">
-    <p>@Session["LoggedInAsLawyer"].ToString()</p>
     @if (Session["LoggedInAsLawyer"].ToString() == "1" || Whistleblower.ViewModels.SafeboxViewmodel.LastMessageType == 1)
     {
 
@@ -153,8 +164,8 @@ else
         foreach (DB.File f in Model.Files)
         {
             <div class="col-xs-3 col-md-3">
-                <div class="row">
-                    <img src="@String.Format("data:" + f.Extension + ";base64,{0}", f.Base64)" class="pop" style="height:45%; width:45%;" />
+                <div class="row" style="margin-top: 25px">
+                    <img src="@String.Format("data:" + f.Extension + ";base64,{0}", f.Base64)" class="pop" style="height: 100px; width: 100px;" />
                 </div>
                 <div class="row">
                     @Html.ActionLink("Download", "DownloadFile/" + f.FileID, "Lawyer")
@@ -162,8 +173,13 @@ else
             </div>
         }
     }
+</div>
 
-
+<div class="row text-center">
+    @if (Model.Files.Count > 1)
+    {
+        @Html.ActionLink("Download all as .zip", "DownloadZip/" + Model.WhistleId, "Lawyer")
+    }
 </div>
 
 <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -179,7 +195,7 @@ else
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    @using (Html.BeginForm("SendMail" + "/" + Model.WhistleId, "Safebox"))
+    @using (Html.BeginForm("SendMail" + "/" + Model.WhistleId, "Safebox", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -193,6 +209,12 @@ else
                     <div class="form-group">
                         @Html.LabelFor(m => m.Mail.Message)
                         @Html.TextAreaFor(m => m.Mail.Message, new { @class = "form-control", @required = "required", @style = "margin:0 auto; resize:none; height:200px;" })
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label>Image files</label>
+                            <input type="file" name="FileUpload" id="FileUpload" accept="image/*" />
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -248,6 +270,9 @@ else
         $("#GoBackWhistler").click(function () {
         window.location.href = '@Url.Action("ReportStatus", "Login")'
     });
+    </script>
+    <script>
+        $('#scrollThis').scrollTop($('#scrollThis')[0].scrollHeight);
     </script>
 
 }
