@@ -78,7 +78,7 @@ else
                                             <img src="@String.Format("data:" + DBHandler.GetFileExtFromFileID(Convert.ToInt32(m.Message)) + ";base64,{0}", DBHandler.GetFileFromFileID(Convert.ToInt32(m.Message)))" class="pop" style="height: 100px; width: 100px;" />
                                         </div>
                                         <div class="row text-center">
-                                                @Html.ActionLink("Download", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
+                                            @Html.ActionLink("Download", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
                                         </div>
                                     </div>
                                     break;
@@ -135,9 +135,9 @@ else
                         }
                     </div>
                 </div>
-                }
-                
-            </div>
+            }
+
+        </div>
     </div>
 </div>
 
@@ -274,5 +274,29 @@ else
     <script>
         $('#scrollThis').scrollTop($('#scrollThis')[0].scrollHeight);
     </script>
-
+    <script>
+        var uploadField = document.getElementById("FileUpload");
+        var fileName;
+        var extFile
+        var acceptFiles = ["jpg", "jpeg", "png"];
+        uploadField.onchange = function () {
+            for (var i = 0; i < this.files.length; i++) {
+                console.log(i);
+                if (this.files[i].size > 2200000) {
+                    alert(this.files[i].name + " is over the 2mb limit!\n\nPlease try again..");
+                    this.value = "";
+                    break;
+                };
+                fileName = this.files[i].name;
+                console.log(fileName);
+                console.log(fileName.substr(fileName.length - 3));
+                extFile = fileName.substr(fileName.length - 3);
+                if (!acceptFiles.includes(extFile)) {
+                    alert(extFile + " is not an supported filetype!\n\nPlease try again..");
+                    this.value = "";
+                    break;
+                };
+            };
+        };
+    </script>
 }
