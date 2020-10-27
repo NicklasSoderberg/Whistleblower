@@ -14,7 +14,7 @@ namespace Whistleblower.Models
         //public bool RespondedToMail { get; set; }
         [Required]
         [StringLength(180)]
-        public string Message { get; set; }
+        public string Message { get; set; } 
         public DateTime DateSent { get; set; }
         public Mail()
         {
