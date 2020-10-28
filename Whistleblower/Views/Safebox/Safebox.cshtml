@@ -30,11 +30,11 @@ else
                         Sender = "float:right;";
                         switch (Session["LoggedInAsLawyer"].ToString())
                         {
-                            case "0": 
+                            case "1": 
                                 PanelString = "panel-danger";
                                 PanelTitle = "Mottagit";
                                 break;
-                            case "1": 
+                            case "0": 
                                 PanelString = "panel-success";
                                 PanelTitle = "Skickat";
                                 break;
@@ -44,11 +44,11 @@ else
                         Sender = "float:left;";
                         switch (Session["LoggedInAsLawyer"].ToString())
                         {
-                            case "1": 
+                            case "0": 
                                 PanelString = "panel-danger";
                                 PanelTitle = "Mottagit";
                                 break;
-                            case "0": 
+                            case "1": 
                                 PanelString = "panel-success";
                                 PanelTitle = "Skickat";
                                 break;
