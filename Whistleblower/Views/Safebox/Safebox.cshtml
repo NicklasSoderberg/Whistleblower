@@ -18,18 +18,41 @@ else
             </div>
         </div>
         <div class="panel-body pre-scrollable" id="scrollThis" style="max-height: 700px">
-            @{string Sender = ""; string RowString = "";}
+            @{string Sender = ""; string RowString = ""; string PanelString = ""; string PanelTitle = "";}
             @foreach (Whistleblower.Models.Mail m in Model._MailList)
             {
                 Sender = "";
                 RowString = "";
+
                 switch (m.MailSenderType)
                 {
                     case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
                         Sender = "float:right;";
+                        switch (Session["LoggedInAsLawyer"].ToString())
+                        {
+                            case "1": 
+                                PanelString = "panel-danger";
+                                PanelTitle = "Mottagit";
+                                break;
+                            case "0": 
+                                PanelString = "panel-success";
+                                PanelTitle = "Skickat";
+                                break;
+                        }
                         break;
                     case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
                         Sender = "float:left;";
+                        switch (Session["LoggedInAsLawyer"].ToString())
+                        {
+                            case "0": 
+                                PanelString = "panel-danger";
+                                PanelTitle = "Mottagit";
+                                break;
+                            case "1": 
+                                PanelString = "panel-success";
+                                PanelTitle = "Skickat";
+                                break;
+                        }
                         break;
                     case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.File:
                         RowString = "justify-content: center; display: flex;";
@@ -37,101 +60,49 @@ else
                 }
                 <div class="row" style="@RowString">
                     <div class="col-sm-3" style="@Sender">
-                        @if (Session["LoggedInAsLawyer"].ToString() == "1")
+                        @switch (m.MailSenderType)
                         {
-                            switch (m.MailSenderType)
-                            {
-                                case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
-                                    <div class="panel panel-danger">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Mottagit</h3>
-                                            <p><b>Datum/Tid skickad:</b></p>
-                                            <p>@m.DateSent</p>
-                                        </div>
-                                        <div class="panel-body">
-                                            <p><b>Meddelande:</b></p>
-                                            <p style="word-break: break-all">@m.Message</p>
-                                        </div>
+                            case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
+                                <div class="panel @PanelString">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">@PanelTitle</h3>
+                                        <p><b>Datum/Tid skickad:</b></p>
+                                        <p>@m.DateSent</p>
                                     </div>
-                                    break;
-                                case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
-                                    <div class="panel panel-success">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Skickat</h3>
-                                            <p><b>Datum/Tid skickad:</b></p>
-                                            <p>@m.DateSent</p>
-                                        </div>
-                                        <div class="panel-body">
-                                            <p><b>Meddelande:</b></p>
-                                            <p style="word-break: break-all">@m.Message</p>
-                                        </div>
+                                    <div class="panel-body">
+                                        <p><b>Meddelande:</b></p>
+                                        <p style="word-break: break-all">@m.Message</p>
                                     </div>
-                                    break;
-                                case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.File:
-                                    <div class="panel panel-info">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Fil</h3>
-                                            <p><b>Datum/Tid skickad:</b></p>
-                                            <p>@m.DateSent</p>
-                                        </div>
-                                        <div class="panel-body text-center">
-                                            <img src="@String.Format("data:" + DBHandler.GetFileExtFromFileID(Convert.ToInt32(m.Message)) + ";base64,{0}", DBHandler.GetFileFromFileID(Convert.ToInt32(m.Message)))" class="pop" style="height: 100px; width: 100px;" />
-                                        </div>
-                                        <div class="row text-center">
-                                            @Html.ActionLink("Download", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
-                                        </div>
+                                </div>
+                                break;
+                            case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
+                                <div class="panel @PanelString">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">@PanelTitle</h3>
+                                        <p><b>Datum/Tid skickad:</b></p>
+                                        <p>@m.DateSent</p>
                                     </div>
-                                    break;
-
-                            }
-                        }
-                        else if (Session["LoggedInAsLawyer"].ToString() == "0")
-                        {
-                            switch (m.MailSenderType)
-                            {
-                                case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
-                                    <div class="panel panel-success">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Skickat</h3>
-                                            <p><b>Datum/Tid skickad:</b></p>
-                                            <p>@m.DateSent</p>
-                                        </div>
-                                        <div class="panel-body" style="overflow-wrap: break-word;">
-                                            <p><b>Meddelande:</b></p>
-                                            <p>@m.Message</p>
-                                        </div>
+                                    <div class="panel-body">
+                                        <p><b>Meddelande:</b></p>
+                                        <p style="word-break: break-all">@m.Message</p>
                                     </div>
-                                    break;
-                                case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
-                                    <div class="panel panel-danger">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Mottagit</h3>
-                                            <p><b>Datum/Tid skickad:</b></p>
-                                            <p>@m.DateSent</p>
-                                        </div>
-                                        <div class="panel-body" style="overflow-wrap: break-word;">
-                                            <p><b>Meddelande:</b></p>
-                                            <p>@m.Message</p>
-                                        </div>
+                                </div>
+                                break;
+                            case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.File:
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Fil</h3>
+                                        <p><b>Datum/Tid skickad:</b></p>
+                                        <p>@m.DateSent</p>
                                     </div>
-                                    break;
-                                case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.File:
-                                    <div class="panel panel-info">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Fil</h3>
-                                            <p><b>Datum/Tid skickad:</b></p>
-                                            <p>@m.DateSent</p>
-                                        </div>
-                                        <div class="panel-body text-center">
-                                            <img src="@String.Format("data:" + DBHandler.GetFileExtFromFileID(Convert.ToInt32(m.Message)) + ";base64,{0}", DBHandler.GetFileFromFileID(Convert.ToInt32(m.Message)))" class="pop" style="height: 100px; width: 100px;" />
-                                            <div class="row text-center">
-                                                @Html.ActionLink("Download", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
-                                            </div>
-                                        </div>
+                                    <div class="panel-body text-center">
+                                        <img src="@String.Format("data:" + DBHandler.GetFileExtFromFileID(Convert.ToInt32(m.Message)) + ";base64,{0}", DBHandler.GetFileFromFileID(Convert.ToInt32(m.Message)))" class="pop" style="height: 100px; width: 100px;" />
                                     </div>
-                                    break;
-
-                            }
+                                    <div class="row text-center">
+                                        @Html.ActionLink("Download", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
+                                    </div>
+                                </div>
+                                break;
                         }
                     </div>
                 </div>
@@ -158,7 +129,7 @@ else
     }
 </div>
 
-<div class="row text-center">
+<div class="clearfix text-center">
     @if (Model.Files.Count() > 0)
     {
         foreach (DB.File f in Model.Files)
@@ -175,7 +146,7 @@ else
     }
 </div>
 
-<div class="row text-center">
+<div class="text-center">
     @if (Model.Files.Count > 1)
     {
         @Html.ActionLink("Download all as .zip", "DownloadZip/" + Model.WhistleId, "Lawyer")

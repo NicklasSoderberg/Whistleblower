@@ -288,13 +288,13 @@ namespace Whistleblower.Custom
                     SafeboxViewmodel.MailSenders sender = SafeboxViewmodel.MailSenders.Lawyer;
                     switch (w.Sender)
                     {
-                        case 0:
+                        case 2:
                             sender = SafeboxViewmodel.MailSenders.Lawyer;
                             break;
                         case 1:
                             sender = SafeboxViewmodel.MailSenders.File;
                             break;
-                        case 2:
+                        case 0:
                             sender = SafeboxViewmodel.MailSenders.Whistler;
                             break;
                     }

@@ -68,9 +68,7 @@ namespace Whistleblower.Controllers
         {
             if (LawyerViewmodel.LoggedinID > 0 && id != null)
             {
-
                 LawyerViewmodel model = new LawyerViewmodel();
-
                 model.SelectedWhistle = model.Whistles.FirstOrDefault(m => m.WhistleID == int.Parse(id));
                 return View(model);
             }
