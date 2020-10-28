@@ -18,18 +18,41 @@ else
             </div>
         </div>
         <div class="panel-body pre-scrollable" id="scrollThis" style="max-height: 700px">
-            @{string Sender = ""; string RowString = "";}
+            @{string Sender = ""; string RowString = ""; string PanelString = ""; string PanelTitle = "";}
             @foreach (Whistleblower.Models.Mail m in Model._MailList)
             {
                 Sender = "";
                 RowString = "";
+
                 switch (m.MailSenderType)
                 {
                     case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
                         Sender = "float:right;";
+                        switch (Session["LoggedInAsLawyer"].ToString())
+                        {
+                            case "0": 
+                                PanelString = "panel-danger";
+                                PanelTitle = "Mottagit";
+                                break;
+                            case "1": 
+                                PanelString = "panel-success";
+                                PanelTitle = "Skickat";
+                                break;
+                        }
                         break;
                     case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
                         Sender = "float:left;";
+                        switch (Session["LoggedInAsLawyer"].ToString())
+                        {
+                            case "1": 
+                                PanelString = "panel-danger";
+                                PanelTitle = "Mottagit";
+                                break;
+                            case "0": 
+                                PanelString = "panel-success";
+                                PanelTitle = "Skickat";
+                                break;
+                        }
                         break;
                     case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.File:
                         RowString = "justify-content: center; display: flex;";
@@ -37,19 +60,6 @@ else
                 }
                 <div class="row" style="@RowString">
                     <div class="col-sm-3" style="@Sender">
-                        @{string PanelString = ""; string PanelTitle = ""; }
-                        @switch (Session["LoggedInAsLawyer"].ToString())
-                        {
-                            case "1": //Lawyer
-                                PanelString = "panel-danger";
-                                PanelTitle = "Mottagit";
-                                break;
-                            case "0": //User
-                                PanelString = "panel-success";
-                                PanelTitle = "Skickat";
-                                break;
-                        }
-
                         @switch (m.MailSenderType)
                         {
                             case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
@@ -119,7 +129,7 @@ else
     }
 </div>
 
-<div class="row text-center">
+<div class="clearfix text-center">
     @if (Model.Files.Count() > 0)
     {
         foreach (DB.File f in Model.Files)
@@ -136,7 +146,7 @@ else
     }
 </div>
 
-<div class="row text-center">
+<div class="text-center">
     @if (Model.Files.Count > 1)
     {
         @Html.ActionLink("Download all as .zip", "DownloadZip/" + Model.WhistleId, "Lawyer")
