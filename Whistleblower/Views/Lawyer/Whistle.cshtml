@@ -1,8 +1,8 @@
 ﻿@model Whistleblower.ViewModels.LawyerViewmodel
 @{ ViewBag.Title = "Whistle";
-                Layout = "~/Views/Shared/_Layout.cshtml"; }
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
 
-@if(Model.SelectedWhistle.WhistleID == 0)
+@if (Model.SelectedWhistle.WhistleID == 0)
 {
     Url.Action("WhistleHandler");
 }
@@ -13,40 +13,96 @@
 @using (Html.BeginForm("HandleWhistleChange/" + Model.SelectedWhistle.WhistleID, "Lawyer", FormMethod.Post, Model))
 {
     <div style="text-align:center;">
-         <h4>Status</h4>
-         @Html.DropDownListFor(m => m.SelectedWhistle.CurrentStatus, new SelectList(Model.WhistleStatuses))
+        <h4>Status</h4>
+        @Html.DropDownListFor(m => m.SelectedWhistle.CurrentStatus, new SelectList(Model.WhistleStatuses))
     </div>
-                <div style="text-align:center;">
-                    <div>
-                        @Html.LabelFor(m => m.SelectedWhistle.About)
-                    </div>
-                    <div>
-                        <label>@Model.SelectedWhistle.About</label>
-                    </div>
-                    <div>
-                        @Html.LabelFor(m => m.SelectedWhistle.Description)
-                    </div>
-                    <div>
-                        <label>@Model.SelectedWhistle.Description</label>
-                    </div>
-                    <div>
-                        @Html.LabelFor(m => m.SelectedWhistle.When)
-                    </div>
-                    <div>
-                        <label>@Model.SelectedWhistle.When</label>
-                    </div>
-                    <div>
-                        @Html.LabelFor(m => m.SelectedWhistle.Where)
-                    </div>
-                    <div>
-                        <label>@Model.SelectedWhistle.Where</label>
-                    </div>
+    <div style="text-align:center;">
+        <div class="">
+            @Html.LabelFor(m => m.SelectedWhistle.About, new { @class = "label label-info" })
+        </div>
+        <div>
+            <label>@Model.SelectedWhistle.About</label>
+        </div>
+        <div>
+            @Html.LabelFor(m => m.SelectedWhistle.Description, new { @class = "label label-info" })
+        </div>
+        <div>
+            <label>@Model.SelectedWhistle.Description</label>
+        </div>
+        <div>
+            @Html.LabelFor(m => m.SelectedWhistle.When, new { @class = "label label-info" })
+        </div>
+        <div>
+            <label>@Model.SelectedWhistle.When</label>
+        </div>
+        <div>
+            @Html.LabelFor(m => m.SelectedWhistle.Where, new { @class = "label label-info" })
+        </div>
+        <div>
+            <label>@Model.SelectedWhistle.Where</label>
+        </div>
 
-                    <div class="form-group">
-                        <a class="btn btn-danger" href="@Url.Action("WhistleHandler")">Gå tillbaka</a>
-                        <input type="submit" class="btn btn-success" value="Spara"/>
-                        <a class="btn btn-primary" href="@Url.Action("Safebox" + "/" + Model.SelectedWhistle.WhistleID, "Safebox")">Gå till Safeboxen</a>
-                    </div>
+        <div class="form-group">
+            <a class="btn btn-danger" href="@Url.Action("WhistleHandler")">Gå tillbaka</a>
+            <input type="submit" class="btn btn-success" value="Spara" />
+            <a class="btn btn-primary" href="@Url.Action("Safebox" + "/" + Model.SelectedWhistle.WhistleID, "Safebox")">Gå till Safeboxen</a>
+        </div>
 
+        <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="img">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <img src="" class="imagepreview img-responsive" style="width:auto; height:auto;">
+                    </div>
                 </div>
+            </div>
+        </div>
+        <div class="clearfix">
+
+            @if (Model.Files.Count() > 0)
+            {
+                foreach (DB.File f in Model.Files)
+                {
+                    <div class="col-xs-12 col-md-3">
+                        <div class="row" style="margin-top: 25px">
+                            <img src="@String.Format("data:" + f.Extension + ";base64,{0}", f.Base64)" class="pop" style="height: 100px; width: 100px;" />
+
+                        </div>
+                        <div class="row">
+                            @Html.ActionLink("Download", "DownloadFile/" + f.FileID, "Lawyer")
+                        </div>
+                    </div>
+                }
+            }
+
+
+        </div>
+        @if (Model.Files.Count > 1)
+        {
+            @Html.ActionLink("Download all as .zip", "DownloadZip/" + Model.SelectedWhistle.WhistleID, "Lawyer")
+        }
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $('.pop').on('click', function () {
+                console.log(this);
+                console.log($(this).attr("src"));
+                $('.imagepreview').attr('src', $(this).attr('src'));
+                $('#imagemodal').modal('show');
+            });
+        });
+    </script>
+    <script>
+        function downloadBase64File(contentType, base64Data, fileName) {
+            const linkSource = `data:${contentType};base64,${base64Data}`;
+            const downloadLink = document.createElement("a");
+            downloadLink.href = linkSource;
+            downloadLink.download = fileName;
+            downloadLink.click();
+        }
+    </script>
 }

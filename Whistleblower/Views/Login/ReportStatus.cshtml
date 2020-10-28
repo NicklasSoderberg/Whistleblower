@@ -57,7 +57,15 @@
         </div>
         @if (Model.SafeBox == true)
         {
-            <button type="button" class="btn btn-info" id="goToSafeBox">Safepostbox</button>
+            List<Whistleblower.Models.Mail> TempList = DBHandler.GetMessages(Model.Whistle.WhistleID);
+            if (TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer)
+            {
+                <button type="button" class="btn btn-info" id="goToSafeBox">Safepostbox</button><img src="~/images/285px-Chat_icon_new_message.svg.png" style="width:35px; height:30px; margin-left:15px;" />
+            }
+            else
+            {
+                <button type="button" class="btn btn-info" id="goToSafeBox">Safepostbox</button>
+            }
         }
     </div>
 </div>

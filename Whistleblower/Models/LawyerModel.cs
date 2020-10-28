@@ -19,6 +19,8 @@ namespace Whistleblower.Models
         [DataType(DataType.Password)]
         [Display(Name = "Lösenord*:")]
         public string Password { get; set; }
+        public string VCode { get; set; }
+
         public LawyerModel()
         {
             //test

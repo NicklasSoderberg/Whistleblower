@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.14.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.14.0\lib\net40\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -202,8 +205,10 @@
     <Compile Include="Controllers\SafeboxController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\WhistleController.cs" />
+    <Compile Include="Custom\Base64Handler.cs" />
     <Compile Include="Custom\DBHandler.cs" />
     <Compile Include="Custom\RequiredLabel.cs" />
+    <Compile Include="Encryption\Helper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -213,6 +218,7 @@
     <Compile Include="Models\LoginAdmin.cs" />
     <Compile Include="Models\LawyerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\WhistleViewModel.cs" />
     <Compile Include="ViewModels\LawyerViewmodel.cs" />
     <Compile Include="ViewModels\ReportStatusViewModel.cs" />
     <Compile Include="ViewModels\SafeboxViewmodel.cs" />
@@ -228,6 +234,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="images\omegapoint.png" />
+    <Content Include="images\285px-Chat_icon_new_message.svg.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -259,7 +266,6 @@
     <Content Include="Views\Whistle\Whistle.cshtml" />
     <Content Include="Views\Whistle\WhistleConfirm.cshtml" />
     <Content Include="Views\Safebox\Safebox.cshtml" />
-    <Content Include="Views\Safebox\SentMail.cshtml" />
     <Content Include="Views\Whistle\Index.cshtml" />
     <Content Include="Views\Lawyer\WhistleHandler.cshtml" />
     <Content Include="Views\Lawyer\Whistle.cshtml" />

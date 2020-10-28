@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Ionic.Zip;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -40,10 +42,6 @@ namespace Whistleblower.Controllers
             ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
             return View(objUser);
         }
-        //public ActionResult Logout()
-        //{
-            
-        //}
 
         public ActionResult LogOutUser()
         {
@@ -53,16 +51,16 @@ namespace Whistleblower.Controllers
             return RedirectToAction("Login");
         }
 
-        public ActionResult WhistleHandler(string sortBy)
+        public ActionResult WhistleHandler()
         {
-            if(LawyerViewmodel.LoggedinID > 0)
+            if (LawyerViewmodel.LoggedinID > 0)
             {
-            LawyerViewmodel model = new LawyerViewmodel(sortBy);
-            return View(model);
+                LawyerViewmodel model = new LawyerViewmodel();
+                return View(model);
             }
             else
             {
-              return  RedirectToAction("Login");
+                return RedirectToAction("Login");
             }
         }
 
@@ -70,9 +68,7 @@ namespace Whistleblower.Controllers
         {
             if (LawyerViewmodel.LoggedinID > 0 && id != null)
             {
-
-                LawyerViewmodel model = new LawyerViewmodel("");
-
+                LawyerViewmodel model = new LawyerViewmodel();
                 model.SelectedWhistle = model.Whistles.FirstOrDefault(m => m.WhistleID == int.Parse(id));
                 return View(model);
             }
@@ -89,5 +85,42 @@ namespace Whistleblower.Controllers
             DBHandler.Put(model.SelectedWhistle);
             return RedirectToAction("Whistle" + "/" + id);
         }
+
+        public FileResult DownloadFile(int id)
+        {
+            if(id > 0)
+            {
+                using (var db = new DB.DBEntity())
+                {
+
+                    DB.File file = db.File.First(f => f.FileID == id);
+                    byte[] imageBytes = Convert.FromBase64String(file.Base64);
+                    string ext = file.Extension.Substring(file.Extension.IndexOf("/") + 1);
+                    return File(imageBytes, file.Extension, file.FileID.ToString() + "." + ext.Trim());
+                }
+            }
+            return null;
+        }
+
+        public FileResult DownloadZip(int id)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                List<DB.File> files = db.File.Where(f => f.WhistleID == id).ToList();
+                using (ZipFile zip = new ZipFile())
+                {
+                    foreach (DB.File f in files)
+                    {
+                        string ext = f.Extension.Substring(f.Extension.IndexOf("/") + 1);
+                        zip.AddEntry(f.FileID.ToString() + "." + f.Extension.Substring(f.Extension.IndexOf("/") + 1).Trim(), Convert.FromBase64String(f.Base64));
+                    }
+                    using (MemoryStream output = new MemoryStream())
+                    {
+                        zip.Save(output);
+                        return File(output.ToArray(), "application/zip", id.ToString() + ".zip");
+                    }
+                }       
+            }
+        } 
     }
 }

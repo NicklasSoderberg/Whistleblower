@@ -16,11 +16,12 @@ namespace Whistleblower.ViewModels
         public static int LastMessageType { get; set; }
         public enum MailSenders { Whistler = 0, File = 1, Lawyer = 2 };
         public List<Mail> _MailList { get { return MailList; } set { MailList = value; } }
-
+        public List<DB.File> Files;
         public int WhistleId { get; set; }
-        public SafeboxViewmodel(int Id)
+        public SafeboxViewmodel(int id)
         {
-            _MailList = DBHandler.GetMessages(Id);
+            Files = DBHandler.GetFilesFromWhistleID(id);
+            _MailList = DBHandler.GetMessages(id);
             int temp = _MailList.Count();
             if(temp > 0) { 
             if(_MailList[temp - 1].MailSenderType == MailSenders.Lawyer)

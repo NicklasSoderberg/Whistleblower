@@ -5,6 +5,7 @@ using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Whistleblower.Encryption;
 using Whistleblower.Models;
 using Whistleblower.ViewModels;
 
@@ -21,10 +22,57 @@ namespace Whistleblower.Custom
                 return whistle;
             }            
         }
+
+        public static string GetFileFromFileID(int id)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                DB.File foo = db.File.First(m => m.FileID == id);
+                return foo.Base64;
+            }
+        }
+
+        public static string GetFileExtFromFileID(int id)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                DB.File foo = db.File.First(m => m.FileID == id);
+                return foo.Extension;
+            }
+        }
+
+        public static List<DB.File> GetFilesFromWhistleID(int id)
+        {
+            if (id == 0)
+                return new List<DB.File>();
+            List<DB.File> temp = new List<DB.File>();
+            using (var db = new DB.DBEntity())
+            {
+                temp = db.File.Where(f => f.WhistleID == id).ToList();
+                return temp;
+            }
+        }
+
+        public static DB.File PostFile(DB.File file)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                DB.File tempFile = file;
+                db.File.Add(tempFile);
+                db.SaveChanges();
+                return tempFile;
+            }
+        }
+
         public static DB.User PostUser(DB.User user)
         {
             using (var db = new DB.DBEntity())
             {
+                var keyNew = Helper.GeneratePassword(10);
+                var password = Helper.EncodePassword(user.Password, keyNew);
+                user.VCode = keyNew;
+                user.Password = password;
+
                 db.User.Add(user);
                 db.SaveChanges();
                 return user;
@@ -194,7 +242,7 @@ namespace Whistleblower.Custom
         }
 
 
-        public static void PostMail(Mail mail,int whistleId)
+        public static void PostMail(Mail mail, int whistleId, bool isFile = false)
         {
             using (var db = new DB.DBEntity())
             {
@@ -206,7 +254,11 @@ namespace Whistleblower.Custom
                 {
                     sender = 0;
                 }
-                DB.Message Message = new Message {MessageID = mail.MailId,Message1 = mail.Message, Sender = sender,DateSent= DateTime.Now };
+                if (isFile)
+                {
+                    sender = 1;
+                }
+                DB.Message Message = new Message {MessageID = mail.MailId,Message1 = mail.Message, Sender = sender,DateSent= DateTime.Now};
                 db.Message.Add(Message);
                 var conversation = db.Conversation.FirstOrDefault(m => m.WhistleID == whistleId);
                 MessageConversation messageCon = new MessageConversation { ConversationID = conversation.ConversationID, MessageID = Message.MessageID };
@@ -234,13 +286,17 @@ namespace Whistleblower.Custom
                 foreach (DB.Message w in DbMessages)
                 {
                     SafeboxViewmodel.MailSenders sender = SafeboxViewmodel.MailSenders.Lawyer;
-                    if(w.Sender == 2)
+                    switch (w.Sender)
                     {
-                        sender = SafeboxViewmodel.MailSenders.Lawyer;
-                    }else if(w.Sender == 0)
-                    {
-                        sender = SafeboxViewmodel.MailSenders.Whistler;
-
+                        case 2:
+                            sender = SafeboxViewmodel.MailSenders.Lawyer;
+                            break;
+                        case 1:
+                            sender = SafeboxViewmodel.MailSenders.File;
+                            break;
+                        case 0:
+                            sender = SafeboxViewmodel.MailSenders.Whistler;
+                            break;
                     }
                     Mail mail = new Mail {MailId = w.MessageID,Message = w.Message1,MailSenderType = sender, DateSent = w.DateSent};
                     MailList.Add(mail);

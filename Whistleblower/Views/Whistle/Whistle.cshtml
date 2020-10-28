@@ -1,17 +1,17 @@
-﻿@model Whistleblower.Models.WhistleModel
+﻿@model Whistleblower.ViewModels.WhistleViewModel
 
 @{
     ViewBag.Title = "Whistle";
 }
 
 
-@using (Html.BeginForm())
-{
+
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
         <div class="form-titel">
             <img src="~/images/omegapoint.png">
+            @*<img src="@String.Format("data:image/png;base64,{0}", DBHandler.GetFileFromID(44))" />*@
             <h4>Beskriv ditt ärende</h4>
             <p>Tänk på att beskriva ditt ärende så noggrant som möjligt för att underlätta vår utredning.</p>
         </div>
@@ -20,54 +20,47 @@
             <div class="form-body">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                @using (Html.BeginForm("Whistle", "Home", FormMethod.Post))
+                @using (Html.BeginForm("WhistleConfirm", "Whistle", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    @Html.RequiredLabelFor(model => model.About, htmlAttributes: new { @class = "" })
+                    @Html.RequiredLabelFor(model => model.Whistle.About, htmlAttributes: new { @class = "" })
                     <div class="form-group">
                         <div class="col-md-12">
-                            @Html.DropDownListFor(m => m.About, new SelectList(Model.Subjects), "", new { htmlAttributes = new { @class = "combobox" } })
-                            @Html.ValidationMessageFor(model => model.About, "", new { @class = "text-danger" })
+                            @Html.DropDownListFor(m => m.Whistle.About, new SelectList(Model.Whistle.Subjects), "", new { htmlAttributes = new { @class = "combobox" } })
+                            @Html.ValidationMessageFor(model => model.Whistle.About, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
-                    @Html.RequiredLabelFor(model => model.When, htmlAttributes: new { @class = "" })
+                    @Html.RequiredLabelFor(model => model.Whistle.When, htmlAttributes: new { @class = "" })
                     <div class="form-group">
                         <div class="col-md-12">
-                            @Html.EditorFor(model => model.When, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.When, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.Whistle.When, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Whistle.When, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
-                    @Html.RequiredLabelFor(model => model.Where, htmlAttributes: new { @class = "" })
+                    @Html.RequiredLabelFor(model => model.Whistle.Where, htmlAttributes: new { @class = "" })
                     <div class="form-group">
                         <div class="col-md-12">
-                            @Html.EditorFor(model => model.Where, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Where, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.Whistle.Where, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Whistle.Where, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
-                    @Html.RequiredLabelFor(model => model.Description, htmlAttributes: new { @class = "" })
+                    @Html.RequiredLabelFor(model => model.Whistle.Description, htmlAttributes: new { @class = "" })
                     <div class="form-group">
                         <div class="col-md-12">
-                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.Whistle.Description, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Whistle.Description, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
-                    @Html.RequiredLabelFor(model => model.Description_OtherEmployees, htmlAttributes: new { @class = "" })
+                    @Html.RequiredLabelFor(model => model.Whistle.Description_OtherEmployees, htmlAttributes: new { @class = "" })
                     <div class="form-group">
                         <div class="col-md-12">
-                            @Html.EditorFor(model => model.Description_OtherEmployees, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Description_OtherEmployees, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.Whistle.Description_OtherEmployees, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Whistle.Description_OtherEmployees, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <input type="file" name="files" multiple />
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <div class="col-md-offset-5">
                             <input type="submit" name="button" value="Nästa" class="btn btn-default" />
@@ -78,10 +71,11 @@
             </div>
             </div>
     </div>
-}
+
 
 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
 }

@@ -12,6 +12,7 @@
           <Property Name="AdminID" Type="int" Nullable="false" />
           <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="VCode" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Conversation">
           <Key>
@@ -24,7 +25,7 @@
           <Key>
             <PropertyRef Name="FileID" />
           </Key>
-          <Property Name="FileID" Type="int" Nullable="false" />
+          <Property Name="FileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Base64" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Extension" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="WhistleID" Type="int" Nullable="false" />
@@ -37,6 +38,7 @@
           <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="VCode" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -60,9 +62,10 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="UniqueID" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="Password" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
           <Property Name="WhistleID" Type="int" Nullable="false" />
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Whistle">
           <Key>
@@ -133,6 +136,7 @@
           <Property Name="AdminID" Type="Int32" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VCode" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Conversation">
           <Key>
@@ -159,6 +163,7 @@
           <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VCode" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -201,9 +206,10 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="UniqueID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="WhistleID" Type="Int32" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="VCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="DBEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Admin" EntityType="Self.Admin" />
@@ -256,6 +262,7 @@
           <EntitySetMapping Name="Admin">
             <EntityTypeMapping TypeName="WhistleDBModel.Admin">
               <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="VCode" ColumnName="VCode" />
                 <ScalarProperty Name="AdminID" ColumnName="AdminID" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
@@ -283,6 +290,7 @@
           <EntitySetMapping Name="Lawyer">
             <EntityTypeMapping TypeName="WhistleDBModel.Lawyer">
               <MappingFragment StoreEntitySet="Lawyer">
+                <ScalarProperty Name="VCode" ColumnName="VCode" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="LawyerID" ColumnName="LawyerID" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
@@ -329,6 +337,7 @@
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="WhistleDBModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="VCode" ColumnName="VCode" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="WhistleID" ColumnName="WhistleID" />
                 <ScalarProperty Name="UniqueID" ColumnName="UniqueID" />
