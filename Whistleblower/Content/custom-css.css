@@ -1,0 +1,8 @@
+﻿
+@media (max-width: 768px) {
+    .modal-body.adding-lawyer > .row > .col-sm-12 {
+    }
+        .modal-body.adding-lawyer > .row > .col-xs-12 > input {
+            margin-bottom: 10px;
+        }
+}

@@ -135,5 +135,14 @@ namespace Whistleblower.Controllers
                 return View("UserLogin");
             }
         }
+
+        [HttpPost]
+        public JsonResult CreateLawyerLogin(string username, string name)
+        {
+            var DBhandler = new DBHandler();
+            var pass = DBHandler.CreateUser(username, name);
+
+            return Json(pass, "application/json");
+        }
     }
 }

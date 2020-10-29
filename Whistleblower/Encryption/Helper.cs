@@ -35,6 +35,23 @@ namespace Whistleblower.Encryption
             }
             return new string(chars);
         }
+
+        public static string GeneratePassword1(int length) //length of salt    
+        {
+            const string allowedChars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
+            Random randNum = new Random();
+            var chars = new char[length];
+            var allowedCharCount = allowedChars.Length;
+            int tempIndex;
+            for (var i = 0; i <= length - 1; i++)
+            {
+                tempIndex = Convert.ToInt32((allowedChars.Length) * randNum.NextDouble()) - 1;
+                if (tempIndex < 0)
+                    tempIndex = 0;
+                chars[i] = allowedChars[tempIndex];
+            }
+            return new string(chars);
+        }
         public static string EncodePassword(string pass, string salt) //encrypt password    
         {
             byte[] bytes = Encoding.Unicode.GetBytes(pass);
