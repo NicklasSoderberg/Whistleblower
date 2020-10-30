@@ -15,6 +15,9 @@ using Whistleblower.Custom;
 using DB;
 using Whistleblower.Encryption;
 using System.Security.Cryptography;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 
 namespace Whistleblower.Controllers
 {
@@ -75,39 +78,58 @@ namespace Whistleblower.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UserLogin(LoginModel formModel)
         {
+            //if (ModelState.IsValid)
+            //{
+            //    using (var db = new DB.DBEntity())
+            //    {
+            //        var obj = db.User.Where(a => a.UniqueID.Equals(formModel.UserName)).FirstOrDefault();
+            //        if (obj != null)
+            //        {
+            //            var hashCode = obj.VCode;
+
+            //            var encodingPasswordString = Helper.EncodePassword(formModel.Password, hashCode);
+
+            //            var query = db.User.Where(s => s.UniqueID.Equals(formModel.UserName) && s.Password.Equals(encodingPasswordString)).FirstOrDefault();
+            //            if (query != null)
+            //            {
+            //                var whistleobj = db.Whistle.Where(w => w.WhistleID == obj.WhistleID).FirstOrDefault();
+            //                if (whistleobj.isActive == true)
+            //                {
+            //                    Session["UserID"] = obj.ID.ToString();
+            //                    Session["UserName"] = obj.UniqueID;
+            //                    Session["WhistleId"] = obj.WhistleID;
+            //                    Session["LoggedInAsLawyer"] = "0";
+            //                    return RedirectToAction("ReportStatus");
+            //                }
+            //                else
+            //                {
+            //                    ModelState.AddModelError("LogOnError", "Ärendet är avslutat.");
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");
+            //return View(formModel);
+
             if (ModelState.IsValid)
             {
-                using (var db = new DB.DBEntity())
+                var userManager = HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
+                var authManager = HttpContext.GetOwinContext().Authentication;
+
+                AppUser user = userManager.Find(formModel.UserName, formModel.Password);
+                if (user != null)
                 {
-                    var obj = db.User.Where(a => a.UniqueID.Equals(formModel.UserName)).FirstOrDefault();
-                    if (obj != null)
-                    {
-                        var hashCode = obj.VCode;
-
-                        var encodingPasswordString = Helper.EncodePassword(formModel.Password, hashCode);
-
-                        var query = db.User.Where(s => s.UniqueID.Equals(formModel.UserName) && s.Password.Equals(encodingPasswordString)).FirstOrDefault();
-                        if (query != null)
-                        {
-                            var whistleobj = db.Whistle.Where(w => w.WhistleID == obj.WhistleID).FirstOrDefault();
-                            if (whistleobj.isActive == true)
-                            {
-                                Session["UserID"] = obj.ID.ToString();
-                                Session["UserName"] = obj.UniqueID;
-                                Session["WhistleId"] = obj.WhistleID;
-                                Session["LoggedInAsLawyer"] = "0";
-                                return RedirectToAction("ReportStatus");
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("LogOnError", "Ärendet är avslutat.");
-                            }
-                        }
-                    }
+                    var ident = userManager.CreateIdentity(user,
+                        DefaultAuthenticationTypes.ApplicationCookie);
+                    //use the instance that has been created. 
+                    authManager.SignIn(
+                        new AuthenticationProperties { IsPersistent = false }, ident);
+                    return Redirect(Url.Action("ReportStatus", "Login"));
                 }
             }
-            ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");
-            return View(formModel);
+            ModelState.AddModelError("", "Invalid username or password");
+            return View("UserLogin");
         }
 
         public ActionResult ReportStatus()
