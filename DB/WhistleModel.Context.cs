@@ -33,5 +33,10 @@ namespace DB
         public virtual DbSet<Whistle> Whistle { get; set; }
         public virtual DbSet<MessageConversation> MessageConversation { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<C_MigrationHistory> C_MigrationHistory { get; set; }
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
     }
 }
