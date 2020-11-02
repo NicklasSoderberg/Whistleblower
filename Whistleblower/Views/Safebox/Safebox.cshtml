@@ -2,31 +2,34 @@
 @{ ViewBag.Title = "Safebox";
     Layout = "~/Views/Shared/_Layout.cshtml"; }
 
+@if (Session["LoggedInAsLawyer"].ToString() == "1")
+{
+    <div class="form-horizontal">
+        <div class="text-right">
+            <button type="button" id="logoutLawyer" class="btn btn-danger text-right">Logout</button>
+        </div>
+    </div>
+    <nav class="navbar text-center">
+        <img src="~/images/omegapoint.png" width="250" height="100" class="">
+        @Html.ActionLink("ALLA ÄRENDE", "WhistleHandler", "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
+        @Html.ActionLink("ÄRENDE: " + @Model.WhistleId, "Whistle/" + @Model.WhistleId, "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
+        @Html.ActionLink("SAFEBOX", "Safebox/" + @Model.WhistleId, "Safebox", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
+    </nav>
+    <hr />
+}
+else
+{
     <div class="form-horizontal">
         <div class="text-right">
             <button type="button" id="logout" class="btn btn-danger text-right">Logout</button>
         </div>
     </div>
 
-@if (Session["LoggedInAsLawyer"].ToString() == "1")
-{
-    <script>
-        $("#logout").click(function () {
-        window.location.href = '@Url.Action("LogOutUser", "Lawyer")'
-    });
-    </script>
-
     <nav class="navbar text-center">
         <img src="~/images/omegapoint.png" width="250" height="100" class="">
-        @Html.ActionLink("ALLA ÄRENDE", "WhistleHandler", "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
-        @Html.ActionLink("Ärende: " + @Model.WhistleId, "Whistle/" + @Model.WhistleId, "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
-        @Html.ActionLink("Safebox", "Safebox/" + @Model.WhistleId, "Safebox", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
+        @Html.ActionLink("MITT ÄRENDE", "ReportStatus", "Login", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
+        @Html.ActionLink("SAFEBOX", "Safebox/" + @Model.WhistleId, "Safebox", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
     </nav>
-    <hr />
-}
-else
-{
-    <button class="btn btn-danger" id="GoBackWhistler">Gå tillbaka</button>
 }
 <div class="container">
     <div class="panel panel-default">
@@ -288,5 +291,10 @@ else
                 };
             };
         };
+    </script>
+    <script>
+        $("#logoutLawyer").click(function () {
+        window.location.href = '@Url.Action("LogOutUser", "Lawyer")'
+    });
     </script>
 }
