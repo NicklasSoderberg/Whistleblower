@@ -8,12 +8,14 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    <nav class="navbar text-center">
+            <img src="~/images/omegapoint.png" width="250" height="100" class="">
+            @Html.ActionLink("SKAPA ÄRENDE", "Whistle", "Whistle", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px" })
+            @Html.ActionLink("FÖLJ UPP ÄRENDE", "UserLogin", "Login", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px" })
+    </nav>
 
+    <hr />
     <div class="form-horizontal">
-        <div class="form-titel">
-            <img src="~/images/omegapoint.png">
-        </div>
-        <hr />
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -69,7 +71,7 @@
                                 <input type="button" class="btn btn-info navtofollowup" value="Följ upp ärende" />
                             </div>
                         </div>
-                        
+
                         <p style="margin-top: 30px;">Tack för ditt engagemang!</p>
                     </div>
                 </div>

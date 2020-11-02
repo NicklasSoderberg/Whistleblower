@@ -10,22 +10,32 @@
 
 @Html.AntiForgeryToken()
 
-    
 
-
-<div class="form-titel">
-    <img src="~/images/omegapoint.png">
-</div>
-<hr />
-
-
-<div class="container">
-    <div class="form-body pull-right">
-        <div class="pull-right">
-            <button type="button" class="btn btn-primary" id="LogOut">Logout</button>
-        </div>
+<div class="form-horizontal">
+    <div class="text-right">
+        <button type="button" id="logout" class="btn btn-danger text-right">Logout</button>
     </div>
 </div>
+
+<nav class="navbar text-center">
+    <img src="~/images/omegapoint.png" width="250" height="100" class="">
+    @Html.ActionLink("MITT ÄRENDE", "ReportStatus", "Login", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
+    @if (Model.SafeBox == true)
+    {
+        List<Whistleblower.Models.Mail> TempList = DBHandler.GetMessages(Model.Whistle.WhistleID);
+        if (TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer)
+        {
+            <a href="#" id="goToSafeBox" class="btn" style="color: black; font-size: 15px; text-decoration: underline;">Safebox<span class="glyphicon glyphicon-envelope" style="color: red;"></span></a>
+        }
+        else
+        {
+            <a href="#" id="goToSafeBox" class="btn" style="color: black; font-size: 15px; text-decoration: underline;">Safebox</a>
+        }
+    }
+</nav>
+
+<hr />
+
 
 <div class="container">
     <div class="form-body">
@@ -55,18 +65,6 @@
             @Html.LabelFor(m => m.Whistle.Where, new { @class = "h5", style = "font-weight: bold" })
             <div>@Html.DisplayFor(model => model.Whistle.Where)</div>
         </div>
-        @if (Model.SafeBox == true)
-        {
-            List<Whistleblower.Models.Mail> TempList = DBHandler.GetMessages(Model.Whistle.WhistleID);
-            if (TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer)
-            {
-                <button type="button" class="btn btn-info" id="goToSafeBox">Safepostbox</button><img src="~/images/285px-Chat_icon_new_message.svg.png" style="width:35px; height:30px; margin-left:15px;" />
-            }
-            else
-            {
-                <button type="button" class="btn btn-info" id="goToSafeBox">Safepostbox</button>
-            }
-        }
     </div>
 </div>
 
@@ -74,7 +72,7 @@
     @Scripts.Render("~/bundles/jquery")
 
     <script>
-        $("#LogOut").click(function () {
+        $("#logout").click(function () {
         window.location.href = '@Url.Action("LogOutUser", "Login")'
     });
     </script>

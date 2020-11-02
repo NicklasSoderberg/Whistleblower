@@ -12,12 +12,12 @@ namespace Whistleblower.Models
     {
         public int LawyerID { get; set; }
         [Required(ErrorMessage = "Var vänlig ange ett användarnamn")]
-        [Display(Name = "Användarnamn*:")]
+        [Display(Name = "Användarnamn")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Var vänlig ange ett lösenord")]
         [DataType(DataType.Password)]
-        [Display(Name = "Lösenord*:")]
+        [Display(Name = "Lösenord")]
         public string Password { get; set; }
         public string VCode { get; set; }
 
