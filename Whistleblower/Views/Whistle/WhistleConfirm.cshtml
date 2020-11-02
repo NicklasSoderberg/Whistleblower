@@ -7,13 +7,17 @@
 
 
 @Html.AntiForgeryToken()
+<nav class="navbar text-center">
+    <img src="~/images/omegapoint.png" width="250" height="100" class="">
+    @Html.ActionLink("SKAPA ÄRENDE", "Whistle", "Whistle", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
+    @Html.ActionLink("FÖLJ UPP ÄRENDE", "UserLogin", "Login", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
+</nav>
 
+<hr />
 <div class="form-horizontal">
     <div class="form-titel">
-        <img src="~/images/omegapoint.png">
         <h4>Kontrollera ditt ärende</h4>
     </div>
-    <hr />
     <div class="form-body">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -103,31 +107,31 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
-    var uploadField = document.getElementById("FileUpload");
-    var fileName;
-    var extFile
-    var acceptFiles = ["jpg", "jpeg", "png"];
-    uploadField.onchange = function () {
-        for (var i = 0; i < this.files.length; i++) {
-            console.log(i);
-            if (this.files[i].size > 2200000) {
-                alert(this.files[i].name + " is over the 2mb limit!\n\nPlease try again..");
-                this.value = "";
-                break;
-            };
-            fileName = this.files[i].name;
-            console.log(fileName);
-            console.log(fileName.substr(fileName.length - 3));
-            extFile = fileName.substr(fileName.length - 3);
-            if (!acceptFiles.includes(extFile)) {
-                alert(extFile + " is not an supported filetype!\n\nPlease try again..");
-                this.value = "";
-                break;
+    <script>
+        var uploadField = document.getElementById("FileUpload");
+        var fileName;
+        var extFile
+        var acceptFiles = ["jpg", "jpeg", "png"];
+        uploadField.onchange = function () {
+            for (var i = 0; i < this.files.length; i++) {
+                console.log(i);
+                if (this.files[i].size > 2200000) {
+                    alert(this.files[i].name + " is over the 2mb limit!\n\nPlease try again..");
+                    this.value = "";
+                    break;
+                };
+                fileName = this.files[i].name;
+                console.log(fileName);
+                console.log(fileName.substr(fileName.length - 3));
+                extFile = fileName.substr(fileName.length - 3);
+                if (!acceptFiles.includes(extFile)) {
+                    alert(extFile + " is not an supported filetype!\n\nPlease try again..");
+                    this.value = "";
+                    break;
+                };
             };
         };
-    };
-</script>
+    </script>
     @if (Model.Whistle.user != null)
     {
         <script>
@@ -144,6 +148,7 @@
                 console.dir(this.value);
                 console.dir(this.files[0])
             })
-        </script>  
+        </script>
+
     }
 }
