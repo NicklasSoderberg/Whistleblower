@@ -21,7 +21,7 @@ else
 {
     <div class="form-horizontal">
         <div class="text-right">
-            <button type="button" id="logout" class="btn btn-danger text-right">Logout</button>
+            <button type="button" id="logoutUser" class="btn btn-danger text-right">Logout</button>
         </div>
     </div>
 
@@ -295,6 +295,11 @@ else
     <script>
         $("#logoutLawyer").click(function () {
         window.location.href = '@Url.Action("LogOutUser", "Lawyer")'
+    });
+    </script>
+    <script>
+        $("#logoutUser").click(function () {
+        window.location.href = '@Url.Action("LogOutUser", "Login")'
     });
     </script>
 }
