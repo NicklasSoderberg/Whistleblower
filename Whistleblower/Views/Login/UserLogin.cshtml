@@ -9,12 +9,11 @@
 @using (Html.BeginForm("UserLogin", "Login", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <div class="form-titel">
-            <img src="~/images/omegapoint.png">
-        </div>
-    </div>
+    <nav class="navbar text-center">
+        <a href="@Url.Action("Index", "Whistle")"><img src="~/images/omegapoint.png" width="250" height="100" class=""></a>
+        @Html.ActionLink("SKAPA ÄRENDE", "Whistle", "Whistle", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px" })
+        @Html.ActionLink("FÖLJ UPP ÄRENDE", "UserLogin", "Login", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
+    </nav>
 
     <hr />
 
@@ -56,7 +55,7 @@
                     @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                     <input type="checkbox" onclick="myFunction()"> Visa lösenord
 
-                    <div class="form-group ">
+                    <div class="form-group text-center">
                         <p id="text" style="display:none">WARNING! Caps lock is ON.</p>
 
                         @Html.ValidationMessage("LogOnError", new { @class = "text-danger" })
@@ -67,7 +66,7 @@
         </div>
 
 
-            
+
 
 
     </div>

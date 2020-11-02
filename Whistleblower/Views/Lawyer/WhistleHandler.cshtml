@@ -10,10 +10,11 @@
     </div>
 </div>
 
-<div class="form-titel">
-    <img src="~/images/omegapoint.png">
-    <h2>Ärenden:</h2>
-</div>
+<nav class="navbar text-center">
+    <img src="~/images/omegapoint.png" width="250" height="100" class="">
+    @Html.ActionLink("ALLA ÄRENDE", "WhistleHandler", "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
+</nav>
+
 <hr />
 
 <input type="text" class="pull-left" id="myInput" onkeyup="filterFunc()" placeholder="Search..">

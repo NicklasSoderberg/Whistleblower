@@ -8,7 +8,7 @@
 
 @Html.AntiForgeryToken()
 <nav class="navbar text-center">
-    <img src="~/images/omegapoint.png" width="250" height="100" class="">
+    <a href="@Url.Action("Index", "Whistle")"><img src="~/images/omegapoint.png" width="250" height="100" class=""></a>
     @Html.ActionLink("SKAPA ÄRENDE", "Whistle", "Whistle", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
     @Html.ActionLink("FÖLJ UPP ÄRENDE", "UserLogin", "Login", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
 </nav>
