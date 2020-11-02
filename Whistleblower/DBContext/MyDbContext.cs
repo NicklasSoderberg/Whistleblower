@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -10,10 +11,20 @@ namespace Whistleblower.DBContext
 {
     public class MyDbContext : IdentityDbContext<AppUser>
     {
-        // Other part of codes still same 
-        // You don't need to add AppUser and AppRole 
-        // since automatically added by inheriting form IdentityDbContext<AppUser>
+        public MyDbContext()
+            : base("DBEntity")
+        {
+        }
 
-        public DbSet<LoginModel> LoginModel { get; set; }
-    }  
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Change the name of the table to be Users instead of AspNetUsers
+            modelBuilder.Entity<IdentityUser>()
+                .ToTable("Users");
+            modelBuilder.Entity<AppUser>()
+                .ToTable("Users");
+        }
+    }
 }
