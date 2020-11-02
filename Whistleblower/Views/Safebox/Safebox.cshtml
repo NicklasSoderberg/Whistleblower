@@ -86,7 +86,7 @@ else
                         {
                             case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
                                 <div style="display:block">
-                                    
+
                                     <div style=" border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px; display:block;">
                                         <img src="~/images/Whistler-icon.jpg" alt="Whistler" style="width:100%; max-width: 30px; float:right; ">
                                         <p style="word-break: break-all;">@m.Message</p>
@@ -96,7 +96,7 @@ else
                                 break;
                             case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
                                 <div style="display:block">
-                                    
+
                                     <div style=" border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px;">
                                         <img src="~/images/Lawyer-icon.png" alt="Lawyer" style="width:100%; max-width: 30px; float:left;">
                                         <p style="word-break: break-all;">@m.Message</p>
@@ -184,27 +184,27 @@ else
     {
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Skicka meddelande</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="overflow:hidden">
+                        <span aria-hidden="true" style="font-size: 40px;">&times;</span>
                     </button>
+                    <h3 class="modal-title" id="exampleModalLongTitle">Nytt meddelande</h3>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Mail.Message)
-                        @Html.TextAreaFor(m => m.Mail.Message, new { @class = "form-control", @required = "required", @style = "margin:0 auto; resize:none; height:200px;" })
+                    <div class="form-group text-center">
+                        <h4>@Html.LabelFor(m => m.Mail.Message)</h4>
                     </div>
+                    @Html.TextAreaFor(m => m.Mail.Message, new { @class = "form-control", @required = "required", @style = "margin:0 auto; resize:none; height:300px; max-width: 500px" })
                     <div class="form-group">
-                        <div class="col-md-12">
-                            <label>Image files</label>
-                            <input type="file" name="FileUpload" id="FileUpload" accept="image/*" />
+                        <div class="row">
+                            <label class="">Image files</label>
+                            <input type="file" class="" name="FileUpload" id="FileUpload" accept="image/*" />
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Skicka</button>
+                            <input type="button" class="btn btn-danger" value="Avbryt" data-dismiss="modal" />
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Skicka</button>
-                    <input type="button" class="btn btn-danger" value="Avbryt" data-dismiss="modal" />
                 </div>
             </div>
         </div>}
