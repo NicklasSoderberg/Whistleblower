@@ -9,7 +9,7 @@ else
 {
     <button class="btn btn-danger" id="GoBackWhistler">Gå tillbaka</button>
 }
-<div class="container">
+<div class="container" style="width:500px;">
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="row">
@@ -17,7 +17,7 @@ else
 
             </div>
         </div>
-        <div class="panel-body pre-scrollable" id="scrollThis" style="max-height: 700px">
+        <div class="panel-body pre-scrollable" id="scrollThis" style="margin:auto; max-height: 700px; max-width:500px;">
             @{string Sender = ""; string RowString = ""; string PanelString = ""; string PanelTitle = "";}
             @foreach (Whistleblower.Models.Mail m in Model._MailList)
             {
@@ -59,47 +59,39 @@ else
                         break;
                 }
                 <div class="row" style="@RowString">
-                    <div class="col-sm-3" style="@Sender">
+                    <div class="col-sm-7" style="@Sender">
                         @switch (m.MailSenderType)
                         {
                             case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
-                                <div class="panel @PanelString">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">@PanelTitle</h3>
-                                        <p><b>Datum/Tid skickad:</b></p>
-                                        <p>@m.DateSent</p>
-                                    </div>
-                                    <div class="panel-body">
-                                        <p><b>Meddelande:</b></p>
-                                        <p style="word-break: break-all">@m.Message</p>
+                                <div style="display:block">
+                                    
+                                    <div style=" border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px; display:block;">
+                                        <img src="~/images/Whistler-icon.jpg" alt="Whistler" style="width:100%; max-width: 30px; float:right; ">
+                                        <p style="word-break: break-all;">@m.Message</p>
+                                        <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
                                     </div>
                                 </div>
                                 break;
                             case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
-                                <div class="panel @PanelString">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">@PanelTitle</h3>
-                                        <p><b>Datum/Tid skickad:</b></p>
-                                        <p>@m.DateSent</p>
-                                    </div>
-                                    <div class="panel-body">
-                                        <p><b>Meddelande:</b></p>
-                                        <p style="word-break: break-all">@m.Message</p>
+                                <div style="display:block">
+                                    
+                                    <div style=" border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px;">
+                                        <img src="~/images/Lawyer-icon.png" alt="Lawyer" style="width:100%; max-width: 30px; float:left;">
+                                        <p style="word-break: break-all;">@m.Message</p>
+                                        <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
                                     </div>
                                 </div>
                                 break;
                             case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.File:
-                                <div class="panel panel-info">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Fil</h3>
-                                        <p><b>Datum/Tid skickad:</b></p>
-                                        <p>@m.DateSent</p>
-                                    </div>
-                                    <div class="panel-body text-center">
-                                        <img src="@String.Format("data:" + DBHandler.GetFileExtFromFileID(Convert.ToInt32(m.Message)) + ";base64,{0}", DBHandler.GetFileFromFileID(Convert.ToInt32(m.Message)))" class="pop" style="height: 100px; width: 100px;" />
-                                    </div>
-                                    <div class="row text-center">
-                                        @Html.ActionLink("Download", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
+                                <div style="display:block">
+                                    <div style=" border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px;">
+                                        <div class=" text-center">
+                                            <img src="@String.Format("data:" + DBHandler.GetFileExtFromFileID(Convert.ToInt32(m.Message)) + ";base64,{0}", DBHandler.GetFileFromFileID(Convert.ToInt32(m.Message)))" class="pop" style="height: 100px; width: 100px;" />
+                                        </div>
+                                        <div class="row text-center">
+                                            @Html.ActionLink("Download", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
+                                        </div>
+                                        <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
                                     </div>
                                 </div>
                                 break;
@@ -273,11 +265,11 @@ else
     <!--Script references. -->
     <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
     <!--Reference the SignalR library. -->
-    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <!--<script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>-->
     <!--Reference the autogenerated SignalR hub script. -->
-    <script src="~/signalr/hubs"></script>
+    <!--<script src="~/signalr/hubs"></script>-->
     <!--SignalR script to update the chat page and send messages.-->
-    <script>
+    <!--<script>
         $(function () {
             // Reference the auto-generated proxy for the hub.
             var chat = $.connection.chatHub;
@@ -306,26 +298,10 @@ else
             var encodedValue = $('<div />').text(value).html();
             return encodedValue;
         }
-    </script>
+    </script>-->
 }
 
 
-
-
-
-
-@*@model Whistleblower.ViewModels.SafeboxViewmodel
-    @{
-        ViewBag.Title = "Safebox";
-    }*@
-<h2>Chat</h2>
-<div class="container">
-    <input type="text" id="message" />
-    <input type="button" id="sendmessage" value="Send" />
-    <input type="hidden" id="displayname" />
-    <ul id="discussion">
-    </ul>
-</div>
 
 
 
