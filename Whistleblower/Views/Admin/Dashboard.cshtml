@@ -8,6 +8,12 @@
 
 @Html.AntiForgeryToken()
 
+    <div class="form-horizontal">
+        <div class="text-right">
+            <button type="button" id="logout" class="btn btn-danger text-right">Logout</button>
+        </div>
+    </div>
+
 <div class="form-horizontal">
     <div class="form-titel">
         <img src="~/images/omegapoint.png">
@@ -17,7 +23,6 @@
         <div class="row">
             <div class="center-block">
                 <div class="row">
-                    <button id="LogOut" type="button" class="btn logout btn-primary pull-right">Logout</button>
                     <input type="text" class="pull-left" id="myInput" onkeyup="filterFunc()" placeholder="Search..">
                     <div class="text-center">
                         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addLawyerModal" aria-label="Left Align"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> New lawyer</button>
@@ -224,7 +229,7 @@
         }
     </script>
     <script>
-        $("#LogOut").click(function () {
+        $("#logout").click(function () {
         window.location.href = '@Url.Action("Logout", "Login")'
         });
 

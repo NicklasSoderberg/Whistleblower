@@ -4,10 +4,32 @@
 
 @if (Session["LoggedInAsLawyer"].ToString() == "1")
 {
-    <button class="btn btn-danger" style="float:right" id="GoBackLawyer">Gå tillbaka</button> }
+    <div class="form-horizontal">
+        <div class="text-right">
+            <button type="button" id="logoutLawyer" class="btn btn-danger text-right">Logout</button>
+        </div>
+    </div>
+    <nav class="navbar text-center">
+        <img src="~/images/omegapoint.png" width="250" height="100" class="">
+        @Html.ActionLink("ALLA ÄRENDE", "WhistleHandler", "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
+        @Html.ActionLink("ÄRENDE: " + @Model.WhistleId, "Whistle/" + @Model.WhistleId, "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
+        @Html.ActionLink("SAFEBOX", "Safebox/" + @Model.WhistleId, "Safebox", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
+    </nav>
+    <hr />
+}
 else
 {
-    <button class="btn btn-danger" id="GoBackWhistler">Gå tillbaka</button>
+    <div class="form-horizontal">
+        <div class="text-right">
+            <button type="button" id="logoutUser" class="btn btn-danger text-right">Logout</button>
+        </div>
+    </div>
+
+    <nav class="navbar text-center">
+        <img src="~/images/omegapoint.png" width="250" height="100" class="">
+        @Html.ActionLink("MITT ÄRENDE", "ReportStatus", "Login", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
+        @Html.ActionLink("SAFEBOX", "Safebox/" + @Model.WhistleId, "Safebox", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
+    </nav>
 }
 <div class="container">
     <div class="panel panel-default">
@@ -30,11 +52,11 @@ else
                         Sender = "float:right;";
                         switch (Session["LoggedInAsLawyer"].ToString())
                         {
-                            case "1": 
+                            case "1":
                                 PanelString = "panel-danger";
                                 PanelTitle = "Mottagit";
                                 break;
-                            case "0": 
+                            case "0":
                                 PanelString = "panel-success";
                                 PanelTitle = "Skickat";
                                 break;
@@ -44,11 +66,11 @@ else
                         Sender = "float:left;";
                         switch (Session["LoggedInAsLawyer"].ToString())
                         {
-                            case "0": 
+                            case "0":
                                 PanelString = "panel-danger";
                                 PanelTitle = "Mottagit";
                                 break;
-                            case "1": 
+                            case "1":
                                 PanelString = "panel-success";
                                 PanelTitle = "Skickat";
                                 break;
@@ -269,5 +291,15 @@ else
                 };
             };
         };
+    </script>
+    <script>
+        $("#logoutLawyer").click(function () {
+        window.location.href = '@Url.Action("LogOutUser", "Lawyer")'
+    });
+    </script>
+    <script>
+        $("#logoutUser").click(function () {
+        window.location.href = '@Url.Action("LogOutUser", "Login")'
+    });
     </script>
 }
