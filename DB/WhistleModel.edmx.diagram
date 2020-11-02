@@ -12,9 +12,17 @@
         <EntityTypeShape EntityType="WhistleDBModel.Message" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WhistleDBModel.Whistle" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WhistleDBModel.MessageConversation" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WhistleDBModel.User" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhistleDBModel.User" Width="1.5" PointX="7.875" PointY="8.125" IsExpanded="true" />
         <AssociationConnector Association="WhistleDBModel.FK_MessageConversation_Conversation" />
         <AssociationConnector Association="WhistleDBModel.FK_MessageConversation_Message" />
+        <EntityTypeShape EntityType="WhistleDBModel.C_MigrationHistory" Width="1.5" PointX="3.375" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhistleDBModel.AspNetRoles" Width="1.5" PointX="7.375" PointY="5.5" />
+        <EntityTypeShape EntityType="WhistleDBModel.AspNetUserClaims" Width="1.5" PointX="11.875" PointY="4" />
+        <EntityTypeShape EntityType="WhistleDBModel.AspNetUserLogins" Width="1.5" PointX="11.875" PointY="6.75" />
+        <EntityTypeShape EntityType="WhistleDBModel.AspNetUsers" Width="1.5" PointX="9.625" PointY="4.25" />
+        <AssociationConnector Association="WhistleDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="WhistleDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="WhistleDBModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
