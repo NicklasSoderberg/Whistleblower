@@ -39,7 +39,7 @@ else
     }
     @if(Model._MailList.Count() == 1)
     {
-        col = "col-lg-6";
+        col = "col-lg-8";
     }
     <div class="@offset">
         <div class="@col">
@@ -176,7 +176,7 @@ else
 
                 </div>
                 <div class="text-center">
-                    <h3>@Html.ActionLink("Download all as .zip", "DownloadZip/" + Model.WhistleId, "Lawyer")</h3>
+                    <h4>@Html.ActionLink("Download all as .zip", "DownloadZip/" + Model.WhistleId, "Lawyer")</h4>
                 </div>
             </div>}
     </div>
@@ -262,13 +262,13 @@ else
     </script>
 
     <script>
-        $("#GoBackLawyer").click(function () {
-        window.location.href = '@Url.Action("Whistle/" + Model.WhistleId, "Lawyer")'
+        $("#logoutLawyer").click(function () {
+        window.location.href = '@Url.Action("LogOutUser", "Lawyer")'
     });
     </script>
     <script>
-        $("#GoBackWhistler").click(function () {
-        window.location.href = '@Url.Action("ReportStatus", "Login")'
+        $("#logoutUser").click(function () {
+        window.location.href = '@Url.Action("LogOutUser", "Lawyer")'
     });
     </script>
     <script>

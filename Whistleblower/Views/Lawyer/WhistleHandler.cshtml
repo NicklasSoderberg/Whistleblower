@@ -21,8 +21,9 @@
         <thead>
             <tr>
                 <th onclick="sortTableText(0)" scope="col">Status</th>
-                <th onclick="sortTableText(1)" scope="col">Ärende</th>
-                <th onclick="sortTableText(2)" scope="col">Typ</th>
+                <th></th>
+                <th onclick="sortTableText(2)" scope="col">Ärende</th>
+                <th onclick="sortTableText(3)" scope="col">Typ</th>
             </tr>
         </thead>
         <tbody>
@@ -30,52 +31,42 @@
             {
                 foreach (Whistleblower.Models.WhistleModel w in Model.Whistles)
                 {
-                    <tr class="table-active">
-                        @using (Html.BeginForm("Whistle" + "/" + w.WhistleID.ToString(), "Lawyer", FormMethod.Post, w.WhistleID))
-                        {
-                            List<Whistleblower.Models.Mail> TempList = DBHandler.GetMessages(w.WhistleID);
-                            switch (w.CurrentStatus)
-                            {
-                                case "Aktiv":
-                                    if (TempList.Count() > 0 && TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
-                                    {
-                                        <td scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-success" }) <img src="~/images/285px-Chat_icon_new_message.svg.png" style="width:45px; height:40px; margin-left:50px;" /></td>
-                                    }
-                                    else
-                                    {
-                                        <td scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-success" }) </td>
-                                    }
-                                    break;
-                                case "Hanteras":
-                                    if (TempList.Count() > 0 && TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
-                                    {
-                                        <td scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-warning" }) <img src="~/images/285px-Chat_icon_new_message.svg.png" style="width:45px; height:40px; margin-left:50px;" /></td>
-                                    }
-                                    else
-                                    {
-                                        <td scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-warning" })</td>
-                                    }
-                                    break;
-                                case "Avslutad":
-                                    if (TempList.Count() > 0 && TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
-                                    {
-                                        <td scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-danger" }) <img src="~/images/285px-Chat_icon_new_message.svg.png" style="width:45px; height:40px; margin-left:50px;" /></td>
-                                    }
-                                    else
-                                    {
-                                        <td scope="row">@Html.Label(w.CurrentStatus, new { @class = "label label-danger" })</td>
-                                    }
-                                    break;
-                            }
+            <tr class="table-active">
+                @using (Html.BeginForm("Whistle" + "/" + w.WhistleID.ToString(), "Lawyer", FormMethod.Post, w.WhistleID))
+                {
+                    List<Whistleblower.Models.Mail> TempList = DBHandler.GetMessages(w.WhistleID);
+                    string labelType = "";
+                    switch (w.CurrentStatus)
+                    {
+                        case "Aktiv":
+                            labelType = "label label-success";
+                            break;
+                        case "Hanteras":
+                            labelType = "label label-warning";
+                            break;
+                        case "Avslutad":
+                            labelType = "label label label-danger";
+                            break;
+                    }
 
+                    <td scope="row">@Html.Label(w.CurrentStatus, new { @class = @labelType })</td>
 
-                            <td><label>@w.Description</label></td>
+                    if (TempList.Count() > 0 && TempList[TempList.Count() - 1].MailSenderType == Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler)
+                    {
+                        <td><span class="glyphicon glyphicon-envelope" style="color: red; font-size:12px"></span></td>
+                    }
+                    else
+                    {
+                        <td scope="row"></td>
+                    }
 
-                            <td><label>@w.About</label></td>
+                    <td><label>@w.Description</label></td>
 
-                            <td><button class="btn btn-primary btn-xs">Välj</button></td>
-                        }
-                    </tr>
+                    <td><label>@w.About</label></td>
+
+                    <td><button class="btn btn-primary btn-xs">Välj</button></td>
+                }
+            </tr>
                 }
             }
             else
@@ -140,7 +131,7 @@
             tr = table.getElementsByTagName("tr");
 
             for (i = 0; i < tr.length; i++) {
-                for (ii = 0; ii < 3; ii++) {
+                for (ii = 0; ii < 4; ii++) {
                     td = tr[i].getElementsByTagName("td")[ii];
                     if (td) {
                         txtValue = td.textContent || td.innerText;
