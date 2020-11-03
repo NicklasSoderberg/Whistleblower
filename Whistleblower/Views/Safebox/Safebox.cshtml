@@ -32,13 +32,17 @@ else
     </nav>
 }
 <div class="container" style="width:auto;">
-    @{ string offset = "row col-lg-offset-5";}
+    @{ string offset = "row col-lg-offset-5"; string col = "col-lg-4";}
     @if (Model.Files.Count() > 0)
     {
         offset = "row col-lg-offset-3";
     }
+    @if(Model._MailList.Count() == 1)
+    {
+        col = "col-lg-8";
+    }
     <div class="@offset">
-        <div class="col-lg-4">
+        <div class="@col">
             @if (Model._MailList.Count() > 0)
             {
                 <div class="panel panel-default col-lg-12 pre-scrollable" style="max-height: 700px; border-top:2px solid #e7e7e7;">
@@ -89,10 +93,10 @@ else
                                     {
                                         case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
                                             <div style="">
-                                                    <div style=" border: 2px solid #dedede; background-color: ghostwhite; border-radius: 5px; display:block;">
-                                                        <p style="word-break: break-word; margin:5px 9px 5px 5px; text-align:center">@m.Message</p>
-                                                        <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
-                                                    </div>      
+                                                <div style=" border: 2px solid #dedede; background-color: ghostwhite; border-radius: 5px; display:block;">
+                                                    <p style="word-break: break-word; margin:5px 9px 5px 5px; text-align:center">@m.Message</p>
+                                                    <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
+                                                </div>
                                             </div>
                                             break;
                                         case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
@@ -125,10 +129,10 @@ else
                     </div>
                     @*<div class="panel-footer">
 
-                    </div>*@
+                        </div>*@
                 </div>
             }
-            @if(Model._MailList.Count == 0)
+            @if (Model._MailList.Count == 0)
             {
                 <div class="text-center">
                     <h2>
@@ -172,7 +176,7 @@ else
 
                 </div>
                 <div class="text-center">
-                    @Html.ActionLink("Download all as .zip", "DownloadZip/" + Model.WhistleId, "Lawyer")
+                    <h4>@Html.ActionLink("Download all as .zip", "DownloadZip/" + Model.WhistleId, "Lawyer")</h4>
                 </div>
             </div>}
     </div>
@@ -258,13 +262,13 @@ else
     </script>
 
     <script>
-        $("#GoBackLawyer").click(function () {
-        window.location.href = '@Url.Action("Whistle/" + Model.WhistleId, "Lawyer")'
+        $("#logoutLawyer").click(function () {
+        window.location.href = '@Url.Action("LogOutUser", "Lawyer")'
     });
     </script>
     <script>
-        $("#GoBackWhistler").click(function () {
-        window.location.href = '@Url.Action("ReportStatus", "Login")'
+        $("#logoutUser").click(function () {
+        window.location.href = '@Url.Action("LogOutUser", "Lawyer")'
     });
     </script>
     <script>
