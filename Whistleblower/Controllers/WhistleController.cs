@@ -18,6 +18,9 @@ using System.Security.Cryptography;
 using System.Drawing;
 using Whistleblower.App_Start;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
+using System.Security.Claims;
+using System.Web.Security;
 
 namespace Whistleblower.Controllers
 {
@@ -126,8 +129,10 @@ namespace Whistleblower.Controllers
                     var uniqueid = AutoGenerateID(false);
                     var password = AutoGenerateID(true);
 
-                    var user = new ApplicationUser { UserName = uniqueid};
+                    var user = new ApplicationUser { UserName = uniqueid, WhistleId = 1};
                     var result1 = await UserManager.CreateAsync(user, "Test123!");
+                    var roleresult = UserManager.AddToRole(user.Id, "User");
+
 
                     UWM.Whistle.user = DBHandler.PostUser(new DB.User
                     {

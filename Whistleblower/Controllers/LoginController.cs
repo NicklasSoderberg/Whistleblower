@@ -112,6 +112,7 @@ namespace Whistleblower.Controllers
             return RedirectToAction("UserLogin");
         }
 
+        [AllowAnonymous]
         public ActionResult UserLogin()
         {
             if (Session["UserID"] != null)
@@ -177,7 +178,7 @@ namespace Whistleblower.Controllers
         }
 
         
-        [Authorize]
+        [Authorize (Roles = "Lawyer")]
         public ActionResult ReportStatus(LoginAdmin adnub)
         {
             if (Session["UserName"] != null && Session["WhistleId"] != null)

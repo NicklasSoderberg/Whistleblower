@@ -23,7 +23,7 @@ namespace Whistleblower
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/Token"),
-                AuthorizeEndpointPath = new PathString("/Account/Authorize"),
+                AuthorizeEndpointPath = new PathString("/Login/Authorize"),
                 Provider = new ApplicationOAuthProvider(PublicClientId),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
                 AllowInsecureHttp = true
@@ -46,7 +46,7 @@ namespace Whistleblower
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
+                LoginPath = new PathString("/Login/UserLogin"),
                 Provider = new CookieAuthenticationProvider
                 {
                     // Enables the application to validate the security stamp when the user logs in.
