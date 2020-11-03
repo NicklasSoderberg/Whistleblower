@@ -31,140 +31,151 @@ else
         @Html.ActionLink("SAFEBOX", "Safebox/" + @Model.WhistleId, "Safebox", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
     </nav>
 }
-<div class="container" style="width:500px;">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="row">
-                <h2 class="text-center"><b>Din Safebox</b></h2>
-
-            </div>
-        </div>
-        <div class="panel-body pre-scrollable" id="scrollThis" style="margin:auto; max-height: 700px; max-width:500px;">
-            @{string Sender = ""; string RowString = ""; string PanelString = ""; string PanelTitle = "";}
-            @foreach (Whistleblower.Models.Mail m in Model._MailList)
-            {
-                Sender = "";
-                RowString = "";
-
-                switch (m.MailSenderType)
-                {
-                    case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
-                        Sender = "float:right;";
-                        switch (Session["LoggedInAsLawyer"].ToString())
-                        {
-                            case "1":
-                                PanelString = "panel-danger";
-                                PanelTitle = "Mottagit";
-                                break;
-                            case "0":
-                                PanelString = "panel-success";
-                                PanelTitle = "Skickat";
-                                break;
-                        }
-                        break;
-                    case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
-                        Sender = "float:left;";
-                        switch (Session["LoggedInAsLawyer"].ToString())
-                        {
-                            case "0":
-                                PanelString = "panel-danger";
-                                PanelTitle = "Mottagit";
-                                break;
-                            case "1":
-                                PanelString = "panel-success";
-                                PanelTitle = "Skickat";
-                                break;
-                        }
-                        break;
-                    case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.File:
-                        RowString = "justify-content: center; display: flex;";
-                        break;
-                }
-                <div class="row" style="@RowString">
-                    <div class="col-sm-7" style="@Sender">
-                        @switch (m.MailSenderType)
-                        {
-                            case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
-                                <div style="display:block">
-
-                                    <div style=" border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px; display:block;">
-                                        <img src="~/images/Whistler-icon.jpg" alt="Whistler" style="width:100%; max-width: 30px; float:right; ">
-                                        <p style="word-break: break-all;">@m.Message</p>
-                                        <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
-                                    </div>
-                                </div>
-                                break;
-                            case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
-                                <div style="display:block">
-
-                                    <div style=" border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px;">
-                                        <img src="~/images/Lawyer-icon.png" alt="Lawyer" style="width:100%; max-width: 30px; float:left;">
-                                        <p style="word-break: break-all;">@m.Message</p>
-                                        <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
-                                    </div>
-                                </div>
-                                break;
-                            case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.File:
-                                <div style="display:block">
-                                    <div style=" border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px;">
-                                        <div class=" text-center">
-                                            <img src="@String.Format("data:" + DBHandler.GetFileExtFromFileID(Convert.ToInt32(m.Message)) + ";base64,{0}", DBHandler.GetFileFromFileID(Convert.ToInt32(m.Message)))" class="pop" style="height: 100px; width: 100px;" />
-                                        </div>
-                                        <div class="row text-center">
-                                            @Html.ActionLink("Download", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
-                                        </div>
-                                        <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
-                                    </div>
-                                </div>
-                                break;
-                        }
-                    </div>
-                </div>
-            }
-
-        </div>
-    </div>
-</div>
-
-<div id="buttonsend" style=" width:100%;">
-    @if (Session["LoggedInAsLawyer"].ToString() == "1" || Whistleblower.ViewModels.SafeboxViewmodel.LastMessageType == 1)
-    {
-
-        if (Session["LoggedInAsLawyer"].ToString() == "1")
-        {
-            <button type="button" class="btn btn-primary center-block" data-toggle="modal" data-target="#exampleModalCenter">
-                Skapa meddelande
-            </button> }
-        else if (Whistleblower.ViewModels.SafeboxViewmodel.LastMessageType == 1)
-        {
-            <button type="button" class="btn btn-primary center-block" data-toggle="modal" data-target="#exampleModalCenter">
-                Svara
-            </button>}
-    }
-</div>
-
-<div class="clearfix text-center">
+<div class="container" style="width:auto;">
+    @{ string offset = "row col-lg-offset-5";}
     @if (Model.Files.Count() > 0)
     {
-        foreach (DB.File f in Model.Files)
-        {
-            <div class="col-xs-3 col-md-3">
-                <div class="row" style="margin-top: 25px">
-                    <img src="@String.Format("data:" + f.Extension + ";base64,{0}", f.Base64)" class="pop" style="height: 100px; width: 100px;" />
-                </div>
-                <div class="row">
-                    @Html.ActionLink("Download", "DownloadFile/" + f.FileID, "Lawyer")
-                </div>
-            </div>
-        }
+        offset = "row col-lg-offset-3";
     }
-</div>
+    <div class="@offset">
+        <div class="col-lg-4">
+            @if (Model._MailList.Count() > 0)
+            {
+                <div class="panel panel-default col-lg-12 pre-scrollable" style="max-height: 700px; border-top:2px solid #e7e7e7;">
+                    <div class="panel-body" id="scrollThis" style="margin:auto;">
+                        @{string Sender = ""; string RowString = ""; string PanelString = ""; string PanelTitle = "";}
+                        @foreach (Whistleblower.Models.Mail m in Model._MailList)
+                        {
+                            Sender = "";
+                            RowString = "";
 
-<div class="text-center">
-    @if (Model.Files.Count > 1)
-    {
-        @Html.ActionLink("Download all as .zip", "DownloadZip/" + Model.WhistleId, "Lawyer")
-    }
+                            switch (m.MailSenderType)
+                            {
+                                case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
+                                    Sender = "float:right;";
+                                    switch (Session["LoggedInAsLawyer"].ToString())
+                                    {
+                                        case "1":
+                                            PanelString = "panel-danger";
+                                            PanelTitle = "Mottagit";
+                                            break;
+                                        case "0":
+                                            PanelString = "panel-success";
+                                            PanelTitle = "Skickat";
+                                            break;
+                                    }
+                                    break;
+                                case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
+                                    Sender = "float:left;";
+                                    switch (Session["LoggedInAsLawyer"].ToString())
+                                    {
+                                        case "0":
+                                            PanelString = "panel-danger";
+                                            PanelTitle = "Mottagit";
+                                            break;
+                                        case "1":
+                                            PanelString = "panel-success";
+                                            PanelTitle = "Skickat";
+                                            break;
+                                    }
+                                    break;
+                                case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.File:
+                                    RowString = "justify-content: center; display: flex;";
+                                    break;
+                            }
+                            <div class="row" style="@RowString">
+                                <div class="col-sm-7" style="@Sender">
+                                    @switch (m.MailSenderType)
+                                    {
+                                        case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
+                                            <div style="">
+                                                    <div style=" border: 2px solid #dedede; background-color: ghostwhite; border-radius: 5px; display:block;">
+                                                        <p style="word-break: break-word; margin:5px 9px 5px 5px; text-align:center">@m.Message</p>
+                                                        <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
+                                                    </div>      
+                                            </div>
+                                            break;
+                                        case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
+                                            <div style="display:block">
+
+                                                <div style=" border: 2px solid #dedede; background-color: lightsteelblue; border-radius: 5px;">
+                                                    <p style="word-break: break-all; margin:5px 9px 5px 5px; text-align:center">@m.Message</p>
+                                                    <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
+                                                </div>
+                                            </div>
+                                            break;
+                                        case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.File:
+                                            <div style="display:block">
+                                                <div style=" border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px;">
+                                                    <div class=" text-center">
+                                                        <img src="@String.Format("data:" + DBHandler.GetFileExtFromFileID(Convert.ToInt32(m.Message)) + ";base64,{0}", DBHandler.GetFileFromFileID(Convert.ToInt32(m.Message)))" class="pop" style="height: 100px; width: 100px;" />
+                                                    </div>
+                                                    <div class="row text-center">
+                                                        @Html.ActionLink("Download", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
+                                                    </div>
+                                                    <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
+                                                </div>
+                                            </div>
+                                            break;
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    @*<div class="panel-footer">
+
+                    </div>*@
+                </div>
+            }
+            @if(Model._MailList.Count == 0)
+            {
+                <div class="text-center">
+                    <h2>
+                        I detta ärende finns inget skapat meddelande.
+                    </h2>
+                </div>
+            }
+            <div id="buttonsend" style=" width:100%;">
+                @if (Session["LoggedInAsLawyer"].ToString() == "1" || Whistleblower.ViewModels.SafeboxViewmodel.LastMessageType == 1)
+                {
+
+                    if (Session["LoggedInAsLawyer"].ToString() == "1")
+                    {
+                        <button type="button" class="btn btn-primary center-block" data-toggle="modal" data-target="#exampleModalCenter">
+                            Skapa meddelande
+                        </button> }
+                    else if (Whistleblower.ViewModels.SafeboxViewmodel.LastMessageType == 1)
+                    {
+                        <button type="button" class="btn btn-primary center-block" data-toggle="modal" data-target="#exampleModalCenter">
+                            Svara
+                        </button>}
+                }
+            </div>
+        </div>
+        @if (Model.Files.Count() > 0)
+        {
+            <div class="col-lg-3">
+                <div class="clearfix text-center">
+
+                    @foreach (DB.File f in Model.Files)
+                    {
+                        <div class="col-xs-4 col-md-4">
+                            <div class="row" style="margin-top: 25px">
+                                <img src="@String.Format("data:" + f.Extension + ";base64,{0}", f.Base64)" class="pop" style="height: 100px; width: 100px;" />
+                            </div>
+                            <div class="row">
+                                @Html.ActionLink("Download", "DownloadFile/" + f.FileID, "Lawyer")
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <div class="text-center">
+                    @Html.ActionLink("Download all as .zip", "DownloadZip/" + Model.WhistleId, "Lawyer")
+                </div>
+            </div>}
+    </div>
 </div>
 
 <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
