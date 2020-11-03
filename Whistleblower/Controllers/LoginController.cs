@@ -1,28 +1,75 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Windows;
-using System.Web.Services.Description;
-using System.Windows.Input;
 using Whistleblower.Models;
 using Whistleblower.ViewModels;
-using System.Web.Services;
 using Whistleblower.Custom;
-using DB;
-using Whistleblower.Encryption;
-using System.Security.Cryptography;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Whistleblower.App_Start;
+using System.Security.Claims;
+using DB;
 
 namespace Whistleblower.Controllers
 {
+    [Authorize]
     public class LoginController : Controller
     {
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+
+        public LoginController()
+        {
+        }
+
+        public LoginController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+
+        [HttpGet]
+        public ActionResult Authorize()
+        {
+            var claims = new ClaimsPrincipal(User).Claims.ToArray();
+            var identity = new ClaimsIdentity(claims, "Bearer");
+            AuthenticationManager.SignIn(identity);
+            return new EmptyResult();
+        }
+
+
+
+
+
         public ActionResult LoginAdmin()
         {
             if (Session["UserID"] != null)
@@ -57,7 +104,7 @@ namespace Whistleblower.Controllers
             return RedirectToAction("LoginAdmin");
         }
 
-
+        [AllowAnonymous]
         public ActionResult LogOutUser()
         {
             Session.Remove("UserID");
@@ -75,8 +122,9 @@ namespace Whistleblower.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult UserLogin(LoginModel formModel)
+        public async Task<ActionResult> UserLogin(LoginModel formModel)
         {
             //if (ModelState.IsValid)
             //{
@@ -112,27 +160,25 @@ namespace Whistleblower.Controllers
             //ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");
             //return View(formModel);
 
-            if (ModelState.IsValid)
+            var result = await SignInManager.PasswordSignInAsync(formModel.UserName, formModel.Password, false, false);
+            switch (result)
             {
-                var userManager = HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
-                var authManager = HttpContext.GetOwinContext().Authentication;
-
-                AppUser user = userManager.Find(formModel.UserName, formModel.Password);
-                if (user != null)
-                {
-                    var ident = userManager.CreateIdentity(user,
-                        DefaultAuthenticationTypes.ApplicationCookie);
-                    //use the instance that has been created. 
-                    authManager.SignIn(
-                        new AuthenticationProperties { IsPersistent = false }, ident);
-                    return Redirect(Url.Action("ReportStatus", "Login"));
-                }
+                case SignInStatus.Success:
+                    return Content("Sucess");
+                case SignInStatus.LockedOut:
+                    return Content("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return Content("RequiresVerification");
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return Content("Invalid login attempt");
             }
-            ModelState.AddModelError("", "Invalid username or password");
-            return View("UserLogin");
         }
 
-        public ActionResult ReportStatus()
+        
+        [Authorize]
+        public ActionResult ReportStatus(LoginAdmin adnub)
         {
             if (Session["UserName"] != null && Session["WhistleId"] != null)
             {
@@ -166,5 +212,64 @@ namespace Whistleblower.Controllers
 
             return Json(pass, "application/json");
         }
+
+        #region Helpers
+        // Used for XSRF protection when adding external logins
+        private const string XsrfKey = "XsrfId";
+
+        private IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("UserLogin", "Login");
+        }
+
+        internal class ChallengeResult : HttpUnauthorizedResult
+        {
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
+            {
+            }
+
+            public ChallengeResult(string provider, string redirectUri, string userId)
+            {
+                LoginProvider = provider;
+                RedirectUri = redirectUri;
+                UserId = userId;
+            }
+
+            public string LoginProvider { get; set; }
+            public string RedirectUri { get; set; }
+            public string UserId { get; set; }
+
+            public override void ExecuteResult(ControllerContext context)
+            {
+                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
+                if (UserId != null)
+                {
+                    properties.Dictionary[XsrfKey] = UserId;
+                }
+                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
+            }
+        }
+        #endregion
     }
 }

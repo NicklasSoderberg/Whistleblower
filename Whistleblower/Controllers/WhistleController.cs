@@ -16,11 +16,52 @@ using System.Xml.XPath;
 using Whistleblower.Encryption;
 using System.Security.Cryptography;
 using System.Drawing;
+using Whistleblower.App_Start;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Whistleblower.Controllers
 {
     public class WhistleController : Controller
     {
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+
+        public WhistleController()
+        {
+        }
+
+        public WhistleController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+
+
         public ActionResult Index()
         {
             ViewBag.Message = "Whistleblower";
@@ -38,7 +79,7 @@ namespace Whistleblower.Controllers
             return View(WM);
         }
 
-        public ActionResult WhistleConfirm(WhistleViewModel formData, string button, IEnumerable<HttpPostedFileBase> fileUpload)
+        public async Task<ActionResult> WhistleConfirm(WhistleViewModel formData, string button, IEnumerable<HttpPostedFileBase> fileUpload)
         {
             switch (button?.ToLower())
             {
@@ -85,8 +126,11 @@ namespace Whistleblower.Controllers
                     var uniqueid = AutoGenerateID(false);
                     var password = AutoGenerateID(true);
 
+                    var user = new ApplicationUser { UserName = uniqueid};
+                    var result1 = await UserManager.CreateAsync(user, "Test123!");
+
                     UWM.Whistle.user = DBHandler.PostUser(new DB.User
-                    {                        
+                    {
                         UniqueID = uniqueid,
                         Password = password,
                         WhistleID = result.WhistleID
