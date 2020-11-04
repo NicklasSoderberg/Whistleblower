@@ -6,14 +6,14 @@
 {
     <div class="form-horizontal">
         <div class="text-right">
-            <button type="button" id="logoutLawyer" class="btn btn-danger text-right">Logout</button>
+            <button type="button" id="logoutUser" class="btn btn-danger text-right">Logout</button>
         </div>
     </div>
     <nav class="navbar text-center">
         <img src="~/images/omegapoint.png" width="250" height="100" class="">
         @Html.ActionLink("ALLA ÄRENDE", "WhistleHandler", "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
         @Html.ActionLink("ÄRENDE: " + @Model.WhistleId, "Whistle/" + @Model.WhistleId, "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
-        @Html.ActionLink("SAFEBOX", "Safebox/" + @Model.WhistleId, "Safebox", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
+        @Html.ActionLink("SAFEBOX", "Safebox/" + @Model.WhistleId, "Whistle", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
     </nav>
     <hr />
 }
@@ -27,8 +27,8 @@ else
 
     <nav class="navbar text-center">
         <img src="~/images/omegapoint.png" width="250" height="100" class="">
-        @Html.ActionLink("MITT ÄRENDE", "ReportStatus", "Login", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
-        @Html.ActionLink("SAFEBOX", "Safebox/" + @Model.WhistleId, "Safebox", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
+        @Html.ActionLink("MITT ÄRENDE", "ReportStatus", "Whistle", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
+        @Html.ActionLink("SAFEBOX", "Safebox/" + @Model.WhistleId, "Whistle", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
     </nav>
 }
 <div class="container" style="width:auto;">
@@ -194,7 +194,7 @@ else
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    @using (Html.BeginForm("SendMail" + "/" + Model.WhistleId, "Safebox", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("SendMail" + "/" + Model.WhistleId, "Whistle", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -236,40 +236,8 @@ else
             });
         });
     </script>
-    <script>
-    function RespondButtonVisibilty(SenderType, message,id) {
-                    if (SenderType == "Whistler" ) {
-                        document.getElementById('RespondBtn').style.display = 'none';
-                    } else if (SenderType == "Lawyer" ) {
-                        document.getElementById('RespondBtn').style.display = 'block';
-                    }
 
-                    jQuery.ajax({
-                    type: "POST",
-            url: "@Url.Action("SelectMail")",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({ id }),
-            success: function (data) {
-                            alert(data);
-                        },
-            failure: function (errMsg) {
-                            alert(errMsg);
-                        }
-                    });
-    }
-    </script>
 
-    <script>
-        $("#GoBackLawyer").click(function () {
-        window.location.href = '@Url.Action("Whistle/" + Model.WhistleId, "Lawyer")'
-    });
-    </script>
-    <script>
-        $("#GoBackWhistler").click(function () {
-        window.location.href = '@Url.Action("ReportStatus", "Login")'
-    });
-    </script>
     <script>
         $('#scrollThis').scrollTop($('#scrollThis')[0].scrollHeight);
     </script>
@@ -298,7 +266,11 @@ else
             };
         };
     </script>
-  
+    <script>
+        $("#logoutUser").click(function () {
+        window.location.href = '@Url.Action("LogOutUser", "Login")'
+    });
+    </script>
 }
 
 
