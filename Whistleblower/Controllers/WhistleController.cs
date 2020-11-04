@@ -129,8 +129,8 @@ namespace Whistleblower.Controllers
                     var uniqueid = AutoGenerateID(false);
                     var password = AutoGenerateID(true);
 
-                    var user = new ApplicationUser { UserName = uniqueid, WhistleId = 1};
-                    var result1 = await UserManager.CreateAsync(user, "Test123!");
+                    var user = new ApplicationUser { UserName = uniqueid, WhistleId = result.WhistleID};
+                    var result1 = await UserManager.CreateAsync(user, password);
                     var roleresult = UserManager.AddToRole(user.Id, "User");
 
 

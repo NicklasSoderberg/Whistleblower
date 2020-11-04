@@ -13,6 +13,7 @@ using Microsoft.Owin.Security;
 using Whistleblower.App_Start;
 using System.Security.Claims;
 using DB;
+using System.ComponentModel.Design;
 
 namespace Whistleblower.Controllers
 {
@@ -124,7 +125,7 @@ namespace Whistleblower.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> UserLogin(LoginModel formModel)
         {
             //if (ModelState.IsValid)
@@ -160,30 +161,51 @@ namespace Whistleblower.Controllers
             //}
             //ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");
             //return View(formModel);
+            //bool active;
+            //using (var db = new DB.DBEntity())
+            //{
+            //    var whistleobj = db.Whistle.Where(w => w.WhistleID == obj.WhistleID).FirstOrDefault();
+            //                    if (whistleobj.isActive == true)
+            //                    {
+            //        bool = active;
+            //                    }
+            //}
 
             var result = await SignInManager.PasswordSignInAsync(formModel.UserName, formModel.Password, false, false);
             switch (result)
             {
                 case SignInStatus.Success:
-                    return Content("Sucess");
+                    return RedirectToAction("ReportStatus");
                 case SignInStatus.LockedOut:
                     return Content("Lockout");
                 case SignInStatus.RequiresVerification:
                     return Content("RequiresVerification");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return Content("Invalid login attempt");
+                    ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");
+                    return View(formModel);
             }
         }
 
-        
-        [Authorize (Roles = "Lawyer")]
-        public ActionResult ReportStatus(LoginAdmin adnub)
+
+        [Authorize(Roles = "User")]
+        public ActionResult ReportStatus()
         {
-            if (Session["UserName"] != null && Session["WhistleId"] != null)
+            bool active = false;
+            int id = 0;
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            using (var db = new DB.DBEntity())
             {
-                var id = (int)Session["WhistleId"];
+                var whistleobj = db.Whistle.Where(w => w.WhistleID == user.WhistleId).FirstOrDefault();
+                if (whistleobj.isActive == true)
+                {
+                    id = user.WhistleId;
+                    active = true;
+                }
+            }
+
+            if (active)
+            {
                 ReportStatusViewModel reportStatusViewModel = new ReportStatusViewModel();
 
                 reportStatusViewModel.Whistle = DBHandler.GetWhistles(false).FirstOrDefault(x => x.WhistleID == id);
@@ -201,6 +223,7 @@ namespace Whistleblower.Controllers
             }
             else
             {
+                ModelState.AddModelError("LogOnError", "Ärendet är avslutat.");
                 return View("UserLogin");
             }
         }
