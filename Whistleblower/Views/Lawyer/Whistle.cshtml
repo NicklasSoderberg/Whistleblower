@@ -16,7 +16,7 @@
     <img src="~/images/omegapoint.png" width="250" height="100" class="">
     @Html.ActionLink("ALLA ÄRENDE", "WhistleHandler", "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
     @Html.ActionLink("Ärende: " + @Model.SelectedWhistle.WhistleID, "Whistle/" + @Model.SelectedWhistle.WhistleID, "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
-    @Html.ActionLink("Safebox", "Safebox/" + @Model.SelectedWhistle.WhistleID, "Safebox", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
+    @Html.ActionLink("Safebox", "Safebox/" + @Model.SelectedWhistle.WhistleID, "Whistle", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
 </nav>
 <hr />
 @using (Html.BeginForm("HandleWhistleChange/" + Model.SelectedWhistle.WhistleID, "Lawyer", FormMethod.Post, Model))
@@ -135,7 +135,7 @@
     </script>
     <script>
         $("#logout").click(function () {
-        window.location.href = '@Url.Action("LogOutUser", "Lawyer")'
+        window.location.href = '@Url.Action("LogOutUser", "Login")'
     });
     </script>
 }
