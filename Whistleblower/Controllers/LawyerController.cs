@@ -13,44 +13,6 @@ namespace Whistleblower.Controllers
 {
     public class LawyerController : Controller
     {
-        public ActionResult Login()
-        {
-            if (Session["UserID"] != null)
-            {
-                return RedirectToAction("WhistleHandler");
-            }
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(LawyerModel objUser)
-        {
-            if (ModelState.IsValid)
-            {
-                using (var db = new DB.DBEntity())
-                {
-                    var obj = db.Lawyer.Where(a => a.Username.Equals(objUser.Username) && a.Password.Equals(objUser.Password)).FirstOrDefault();
-                    if (obj != null)
-                    {
-                        Session["UserID"] = obj.LawyerID.ToString();
-                        Session["LoggedInAsLawyer"] = "1";
-                        LawyerViewmodel.LoggedinID = obj.LawyerID;
-                        return RedirectToAction("WhistleHandler");
-                    }
-                }
-            }
-            ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
-            return View(objUser);
-        }
-
-        public ActionResult LogOutUser()
-        {
-            Session.Remove("UserID");
-            Session.Remove("LoggedInAsLawyer");
-            LawyerViewmodel.LoggedinID = 0;
-            return RedirectToAction("Login");
-        }
-
         public ActionResult WhistleHandler()
         {
             if (LawyerViewmodel.LoggedinID > 0)

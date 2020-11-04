@@ -31,7 +31,7 @@ namespace Whistleblower.Controllers
                 return RedirectToAction("Loginadmin", "Login");
             }
         }
-            public ActionResult EditWhistle(DB.Whistle EditWhistle, string button)
+        public ActionResult EditWhistle(DB.Whistle EditWhistle, string button)
         {
             if (Session["UserID"] != null)
             {
