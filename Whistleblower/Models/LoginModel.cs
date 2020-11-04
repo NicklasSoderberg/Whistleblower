@@ -12,12 +12,11 @@ namespace Whistleblower.Models
         [Required(ErrorMessage = "Ange ID")]
         [Display(Name = "Inloggnings id")]
         public string UserName { get; set; }
-
         [Required(ErrorMessage = "Lösenord är obligatoriskt")]
         [DataType(DataType.Password)]
         [Display(Name = "Ange lösenord")]
-        public string Password { get; set; }
 
+        public string Password { get; set; }
         public string VCode { get; set; }
     }
 }

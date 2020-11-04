@@ -57,6 +57,13 @@
           <Property Name="MessageID" Type="int" Nullable="false" />
           <Property Name="ConversationID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubjectCategory" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
@@ -114,6 +121,7 @@
           <EntitySet Name="Lawyer" EntityType="Self.Lawyer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Message" EntityType="Self.Message" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MessageConversation" EntityType="Self.MessageConversation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Whistle" EntityType="Self.Whistle" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_MessageConversation_Conversation" Association="Self.FK_MessageConversation_Conversation">
@@ -228,6 +236,7 @@
             <End Role="Message" EntitySet="Message" />
             <End Role="MessageConversation" EntitySet="MessageConversation" />
           </AssociationSet>
+          <EntitySet Name="Subject" EntityType="WhistleDBModel.Subject" />
         </EntityContainer>
         <Association Name="FK_MessageConversation_Conversation">
           <End Type="WhistleDBModel.Conversation" Role="Conversation" Multiplicity="1" />
@@ -253,6 +262,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="SubjectCategory" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -342,6 +358,14 @@
                 <ScalarProperty Name="WhistleID" ColumnName="WhistleID" />
                 <ScalarProperty Name="UniqueID" ColumnName="UniqueID" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subject">
+            <EntityTypeMapping TypeName="WhistleDBModel.Subject">
+              <MappingFragment StoreEntitySet="Subject">
+                <ScalarProperty Name="SubjectCategory" ColumnName="SubjectCategory" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

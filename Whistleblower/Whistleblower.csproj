@@ -233,6 +233,7 @@
     </Compile>
     <Compile Include="Models\Mail.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\WhistleModel.cs" />
     <Compile Include="Models\LoginAdmin.cs" />
     <Compile Include="Models\LawyerModel.cs" />

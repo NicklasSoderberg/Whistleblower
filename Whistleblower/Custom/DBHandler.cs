@@ -22,7 +22,6 @@ namespace Whistleblower.Custom
                 return whistle;
             }            
         }
-
         public static string GetFileFromFileID(int id)
         {
             using (var db = new DB.DBEntity())
@@ -31,8 +30,6 @@ namespace Whistleblower.Custom
                 return foo.Base64;
             }
         }
-
-
         public static string GetFileExtFromFileID(int id)
         {
             using (var db = new DB.DBEntity())
@@ -41,7 +38,6 @@ namespace Whistleblower.Custom
                 return foo.Extension;
             }
         }
-
         public static List<DB.File> GetFilesFromWhistleID(int id)
         {
             if (id == 0)
@@ -53,7 +49,6 @@ namespace Whistleblower.Custom
                 return temp;
             }
         }
-
         public static DB.File PostFile(DB.File file)
         {
             using (var db = new DB.DBEntity())
@@ -64,7 +59,6 @@ namespace Whistleblower.Custom
                 return tempFile;
             }
         }
-
         public static DB.User PostUser(DB.User user)
         {
             using (var db = new DB.DBEntity())
@@ -88,8 +82,6 @@ namespace Whistleblower.Custom
                 return true;
             }
         }
-
-
         public static string LawyerNameByID(int id)
         {
             using (var db = new DB.DBEntity())
@@ -98,7 +90,6 @@ namespace Whistleblower.Custom
                 return lawyer.Name;
             }
         }
-
         public static int LawyerIDByName(string Name)
         {
             using (var db = new DB.DBEntity())
@@ -107,7 +98,6 @@ namespace Whistleblower.Custom
                 return (lawyer != null) ? lawyer.LawyerID : 0;
             }
         }
-
         public static List<DB.Lawyer> GetLawyers()
         {
             using (var db = new DB.DBEntity())
@@ -115,7 +105,6 @@ namespace Whistleblower.Custom
                 return db.Lawyer.ToList();
             }
         }
-
         public static void UpdateAdminWhistle(DB.Whistle UpdateWhistle)
         {
             DB.Whistle W = UpdateWhistle;
@@ -130,7 +119,6 @@ namespace Whistleblower.Custom
                 }
             }
         }
-
         public static List<string> GetSubjectList()
         {
             return new List<string> {
@@ -143,7 +131,6 @@ namespace Whistleblower.Custom
             "Personal",
             "Annat" };
         }
-
         public static List<string> GetLawyerList()
         {
             List<DB.Lawyer> lawyers = GetLawyers();
@@ -153,7 +140,6 @@ namespace Whistleblower.Custom
 
             return Names;
         }
-
         public static List<string> GetLawyerList(string removeThis)
         {
             List<DB.Lawyer> lawyers = GetLawyers();
@@ -164,7 +150,6 @@ namespace Whistleblower.Custom
             Names.Remove(removeThis);
             return Names;
         }
-
         public static List<DB.Whistle> GetAllWhistles()
         {
             using (var db = new DB.DBEntity())
@@ -223,7 +208,6 @@ namespace Whistleblower.Custom
                 return db.User.ToList();
             }
         }
-
         public static List<DB.Conversation> GetConversation()
         {
             using (var db = new DB.DBEntity())
@@ -231,7 +215,6 @@ namespace Whistleblower.Custom
                 return db.Conversation.ToList();
             }
         }
-
         public static DB.Conversation CreateConversation(DB.Conversation conversation)
         {
             using (var db = new DB.DBEntity())
@@ -241,8 +224,6 @@ namespace Whistleblower.Custom
                 return conversation;
             }
         }
-
-
         public static void PostMail(Mail mail, int whistleId, bool isFile = false)
         {
             using (var db = new DB.DBEntity())
@@ -305,7 +286,6 @@ namespace Whistleblower.Custom
                 return MailList;
             }
         }
-
         public static string CreateUser(string username, string name)
         {
             using (var db = new DB.DBEntity())
@@ -318,12 +298,20 @@ namespace Whistleblower.Custom
                     Password = pw,
                     VCode = Helper.EncodePassword(pw,key)
                 };
-
                 db.Lawyer.Add(lawyer);
                 db.SaveChanges();
-
                 return pw;
-
+            }
+        }
+        public static void CreateSubject(string subjectstring)
+        {
+            using (var db = new DB.DBEntity())
+            {
+                var subject = new DB.Subject();
+                subject.SubjectCategory = subjectstring;
+                subject.ID = 0;
+                db.Subject.Add(subject);
+                db.SaveChanges();
             }
         }
     }

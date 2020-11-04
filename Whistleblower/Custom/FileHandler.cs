@@ -17,7 +17,6 @@ namespace Whistleblower.Custom
             {
                 using (var db = new DB.DBEntity())
                 {
-
                     DB.File file = db.File.First(f => f.FileID == id);
                     byte[] imageBytes = Convert.FromBase64String(file.Base64);
                     string ext = file.Extension.Substring(file.Extension.IndexOf("/") + 1);
@@ -26,7 +25,6 @@ namespace Whistleblower.Custom
             }
             return null;
         }
-
         public FileResult DownloadZip(int id)
         {
             using (var db = new DB.DBEntity())

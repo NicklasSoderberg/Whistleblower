@@ -27,7 +27,6 @@ namespace Whistleblower.Controllers
             ViewBag.Message = "Whistleblower";
             return View();
         }
-
         public ActionResult Whistle()
         {
             ViewBag.Message = "Fyll i formulï¿½ret";
@@ -38,7 +37,6 @@ namespace Whistleblower.Controllers
             }
             return View(WM);
         }
-
         public ActionResult ReportStatus()
         {
             if (Session["UserName"] != null && Session["WhistleId"] != null)
@@ -64,7 +62,6 @@ namespace Whistleblower.Controllers
                 return View("Whistle");
             }
         }
-
         public ActionResult WhistleConfirm(WhistleViewModel formData, string button, IEnumerable<HttpPostedFileBase> fileUpload)
         {
             switch (button?.ToLower())
@@ -90,7 +87,6 @@ namespace Whistleblower.Controllers
                         DateCreated = DateTime.Now,
                         UploadID = 0
                     });
-
                     foreach (HttpPostedFileBase f in UWM.FileUpload)
                     {
                         if (f == null)
@@ -102,7 +98,6 @@ namespace Whistleblower.Controllers
                             WhistleID = result.WhistleID
                         });
                     }
-
                     DBHandler.CreateConversation(
                         new DB.Conversation
                         {
@@ -145,7 +140,6 @@ namespace Whistleblower.Controllers
                     generatedID += r.Next(0, 9).ToString();
                 }
             }
-
             if (!isPassword)
             {
                 using (var db = new DB.DBEntity())
@@ -159,7 +153,6 @@ namespace Whistleblower.Controllers
             }
             return generatedID;
         }
-
         public ActionResult Safebox(int Id)
         {
             SafeboxViewmodel viewmodel = new SafeboxViewmodel(Id);
@@ -178,7 +171,6 @@ namespace Whistleblower.Controllers
 
             return View(viewmodel);
         }
-
         [HttpPost]
         public ActionResult SendMail(Mail mail, int id, HttpPostedFileBase fileUpload)
         {
@@ -187,7 +179,5 @@ namespace Whistleblower.Controllers
 
             return RedirectToAction($"Safebox/{id}", "Whistle");
         }
-
-      
     }
 }
