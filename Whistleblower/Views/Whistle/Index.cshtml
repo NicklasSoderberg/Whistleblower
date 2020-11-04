@@ -11,7 +11,7 @@
     <nav class="navbar text-center">
             <img src="~/images/omegapoint.png" width="250" height="100" class="">
             @Html.ActionLink("SKAPA ÄRENDE", "Whistle", "Whistle", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px" })
-            @Html.ActionLink("FÖLJ UPP ÄRENDE", "UserLogin", "Login", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px" })
+            @Html.ActionLink("FÖLJ UPP ÄRENDE", "Whistle", "Login", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px" })
     </nav>
 
     <hr />
@@ -88,7 +88,7 @@
         window.location.href = '@Url.Action("Whistle", "Whistle")'
     });
     $(".navtofollowup").click(function () {
-        window.location.href = '@Url.Action("UserLogin", "Login")'
+        window.location.href = '@Url.Action("Whistle", "Login")'
     });
     </script>
 }

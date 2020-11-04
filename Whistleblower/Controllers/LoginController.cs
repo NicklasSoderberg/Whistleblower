@@ -138,20 +138,20 @@ namespace Whistleblower.Controllers
             {
                 Session.Remove("UserID");
                 Session.Remove("LoggedInAsLawyer");
-                return RedirectToAction("LoginAdmin");
+                return RedirectToAction("Admin");
             }
             else if (Session["LoggedInAsLawyer"].ToString() == "1")
             {
                 Session.Remove("UserID");
                 Session.Remove("LoggedInAsLawyer");
                 LawyerViewmodel.LoggedinID = 0;
-                return RedirectToAction("Login");
+                return RedirectToAction("Lawyer");
             }
             else
             {
                 Session.Remove("UserID");
                 Session.Remove("LoggedInAsLawyer");
-                return RedirectToAction("UserLogin");
+                return RedirectToAction("Whistle");
             }
         }
     }
