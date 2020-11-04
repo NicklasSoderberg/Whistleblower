@@ -61,7 +61,7 @@ namespace Whistleblower.Controllers
             }
             else
             {
-                return View("UserLogin");
+                return View("Whistle");
             }
         }
 
