@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using Whistleblower.Custom;
 using Whistleblower.Models;
 
@@ -34,6 +35,38 @@ namespace Whistleblower.ViewModels
             }
             }
 
+        }
+
+        public void SendMail(Mail mail, int id, HttpPostedFileBase fileUpload,string session)
+        {
+            //current user
+            using (var db = new DB.DBEntity())
+            {
+                if (session == "1")
+                {
+                    mail.MailSenderType = SafeboxViewmodel.MailSenders.Lawyer;
+                }
+                else
+                {
+                    mail.MailSenderType = SafeboxViewmodel.MailSenders.Whistler;
+                }
+            }
+            DB.File newFile;
+            Mail tempMail = mail;
+            if (fileUpload != null)
+            {
+                newFile = DBHandler.PostFile(new DB.File
+                {
+                    Base64 = Base64Handler.FileToBase64(fileUpload),
+                    Extension = fileUpload.ContentType,
+                    WhistleID = id
+                });
+                string fileID = newFile.FileID.ToString();
+                DBHandler.PostMail(new Mail { DateSent = tempMail.DateSent, MailId = tempMail.MailId, MailSenderType = tempMail.MailSenderType, Message = fileID }, id, true);
+            }
+            DBHandler.PostMail(tempMail, id);
+
+            
         }
     }
 }

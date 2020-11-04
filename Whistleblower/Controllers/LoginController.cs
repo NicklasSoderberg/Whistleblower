@@ -20,7 +20,7 @@ namespace Whistleblower.Controllers
 {
     public class LoginController : Controller
     {
-        public ActionResult LoginAdmin()
+        public ActionResult Admin()
         {
             if (Session["UserID"] != null)
             {
@@ -30,7 +30,7 @@ namespace Whistleblower.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult LoginAdmin(LoginAdmin objUser)
+        public ActionResult Admin(LoginAdmin objUser)
         {
             if (ModelState.IsValid)
             {
@@ -41,6 +41,7 @@ namespace Whistleblower.Controllers
                     {
                         Session["UserID"] = obj.AdminID.ToString();
                         Session["UserName"] = obj.Username;
+                        Session["LoggedInAsLawyer"] = "2";
                         return RedirectToAction("Dashboard", "Admin");
                     }
                 }
@@ -48,32 +49,17 @@ namespace Whistleblower.Controllers
             ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
             return View(objUser);
         }
-        public ActionResult Logout()
-        {
-            Session.Remove("UserID");
-            return RedirectToAction("LoginAdmin");
-        }
-
-
-        public ActionResult LogOutUser()
-        {
-            Session.Remove("UserID");
-            Session.Remove("LoggedInAsLawyer");
-            return RedirectToAction("UserLogin");
-        }
-
-        public ActionResult UserLogin()
+        public ActionResult Whistle()
         {
             if (Session["UserID"] != null)
             {
-                return RedirectToAction("ReportStatus");
+                return RedirectToAction("ReportStatus","Whistle");
             }
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UserLogin(LoginModel formModel)
+        public ActionResult Whistle(LoginModel formModel)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +82,7 @@ namespace Whistleblower.Controllers
                                 Session["UserName"] = obj.UniqueID;
                                 Session["WhistleId"] = obj.WhistleID;
                                 Session["LoggedInAsLawyer"] = "0";
-                                return RedirectToAction("ReportStatus");
+                                return RedirectToAction("ReportStatus","Whistle");
                             }
                             else
                             {
@@ -109,33 +95,35 @@ namespace Whistleblower.Controllers
             ModelState.AddModelError("LogOnError", "ID eller lösenord är felaktigt");
             return View(formModel);
         }
-
-        public ActionResult ReportStatus()
+        public ActionResult Lawyer()
         {
-            if (Session["UserName"] != null && Session["WhistleId"] != null)
+            if (Session["UserID"] != null)
             {
-                var id = (int)Session["WhistleId"];
-                ReportStatusViewModel reportStatusViewModel = new ReportStatusViewModel();
-
-                reportStatusViewModel.Whistle = DBHandler.GetWhistles(false).FirstOrDefault(x => x.WhistleID == id);
-                var messages = DBHandler.GetMessages(id);
-
-                if (messages.Count > 0)
-                {
-                    reportStatusViewModel.SafeBox = true;
-                }
-                else
-                {
-                    reportStatusViewModel.SafeBox = false;
-                }
-                return View(reportStatusViewModel);
+                return RedirectToAction("WhistleHandler","Lawyer");
             }
-            else
-            {
-                return View("UserLogin");
-            }
+            return View();
         }
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Lawyer(LawyerModel objUser)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var db = new DB.DBEntity())
+                {
+                    var obj = db.Lawyer.Where(a => a.Username.Equals(objUser.Username) && a.Password.Equals(objUser.Password)).FirstOrDefault();
+                    if (obj != null)
+                    {
+                        Session["UserID"] = obj.LawyerID.ToString();
+                        Session["LoggedInAsLawyer"] = "1";
+                        LawyerViewmodel.LoggedinID = obj.LawyerID;
+                        return RedirectToAction("WhistleHandler","Lawyer");
+                    }
+                }
+            }
+            ModelState.AddModelError("LogOnError", "Användarnamn och/eller lösenord matchar inte");
+            return View(objUser);
+        }
         [HttpPost]
         public JsonResult CreateLawyerLogin(string username, string name)
         {
@@ -143,6 +131,28 @@ namespace Whistleblower.Controllers
             var pass = DBHandler.CreateUser(username, name);
 
             return Json(pass, "application/json");
+        }
+        public ActionResult LogOutUser()
+        {
+            if (Session["LoggedInAsLawyer"].ToString() == "2")
+            {
+                Session.Remove("UserID");
+                Session.Remove("LoggedInAsLawyer");
+                return RedirectToAction("LoginAdmin");
+            }
+            else if (Session["LoggedInAsLawyer"].ToString() == "1")
+            {
+                Session.Remove("UserID");
+                Session.Remove("LoggedInAsLawyer");
+                LawyerViewmodel.LoggedinID = 0;
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                Session.Remove("UserID");
+                Session.Remove("LoggedInAsLawyer");
+                return RedirectToAction("UserLogin");
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ using System.Xml.XPath;
 using Whistleblower.Encryption;
 using System.Security.Cryptography;
 using System.Drawing;
+using Ionic.Zip;
 
 namespace Whistleblower.Controllers
 {
@@ -36,6 +37,32 @@ namespace Whistleblower.Controllers
                 WM = (WhistleViewModel)TempData["Form"];
             }
             return View(WM);
+        }
+
+        public ActionResult ReportStatus()
+        {
+            if (Session["UserName"] != null && Session["WhistleId"] != null)
+            {
+                var id = (int)Session["WhistleId"];
+                ReportStatusViewModel reportStatusViewModel = new ReportStatusViewModel();
+
+                reportStatusViewModel.Whistle = DBHandler.GetWhistles(false).FirstOrDefault(x => x.WhistleID == id);
+                var messages = DBHandler.GetMessages(id);
+
+                if (messages.Count > 0)
+                {
+                    reportStatusViewModel.SafeBox = true;
+                }
+                else
+                {
+                    reportStatusViewModel.SafeBox = false;
+                }
+                return View(reportStatusViewModel);
+            }
+            else
+            {
+                return View("UserLogin");
+            }
         }
 
         public ActionResult WhistleConfirm(WhistleViewModel formData, string button, IEnumerable<HttpPostedFileBase> fileUpload)
@@ -132,5 +159,35 @@ namespace Whistleblower.Controllers
             }
             return generatedID;
         }
+
+        public ActionResult Safebox(int Id)
+        {
+            SafeboxViewmodel viewmodel = new SafeboxViewmodel(Id);
+            using (var db = new DB.DBEntity())
+            {
+                if (db.Lawyer.FirstOrDefault(l => l.LawyerID == LawyerViewmodel.LoggedinID) != null)
+                {
+                    viewmodel.CurrentUser = "Lawyer";
+                }
+                else
+                {
+                    viewmodel.CurrentUser = "Whistler";
+                }
+            }
+            viewmodel.WhistleId = Id;
+
+            return View(viewmodel);
+        }
+
+        [HttpPost]
+        public ActionResult SendMail(Mail mail, int id, HttpPostedFileBase fileUpload)
+        {
+            SafeboxViewmodel viewmodel = new SafeboxViewmodel(id);
+            viewmodel.SendMail(mail, id, fileUpload, Session["LoggedInAsLawyer"].ToString());
+
+            return RedirectToAction($"Safebox/{id}", "Whistle");
+        }
+
+      
     }
 }
