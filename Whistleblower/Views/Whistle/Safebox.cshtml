@@ -1,36 +1,15 @@
 ﻿@model Whistleblower.ViewModels.SafeboxViewmodel
 @{ ViewBag.Title = "Safebox";
     Layout = "~/Views/Shared/_Layout.cshtml"; }
+
 @if (Session["LoggedInAsLawyer"].ToString() == "1")
 {
-    <div class="form-horizontal">
-        <div class="text-right">
-            <button type="button" id="logout" class="btn btn-danger text-right">Logout</button>
-        </div>
-    </div>
-    <nav class="navbar text-center">
-        <img src="~/images/omegapoint.png" width="250" height="100" class="">
-        @Html.ActionLink("ALLA ÄRENDE", "WhistleHandler", "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
-        @Html.ActionLink("ÄRENDE: " + @Model.WhistleId, "Whistle/" + @Model.WhistleId, "Lawyer", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
-        @Html.ActionLink("SAFEBOX", "Safebox/" + @Model.WhistleId, "Whistle", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
-    </nav>
-    <hr />
-}
+    <button class="btn btn-danger" style="float:right" id="GoBackLawyer">Gå tillbaka</button> }
 else
 {
-    <div class="form-horizontal">
-        <div class="text-right">
-            <button type="button" id="logoutUser" class="btn btn-danger text-right">Logout</button>
-        </div>
-    </div>
-
-    <nav class="navbar text-center">
-        <img src="~/images/omegapoint.png" width="250" height="100" class="">
-        @Html.ActionLink("MITT ÄRENDE", "ReportStatus", "Login", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px;" })
-        @Html.ActionLink("SAFEBOX", "Safebox/" + @Model.WhistleId, "Whistle", null, htmlAttributes: new { @class = "btn", style = "color: black; font-size:15px; text-decoration: underline;" })
-    </nav>
+    <button class="btn btn-danger" id="GoBackWhistler">Gå tillbaka</button>
 }
-<div class="container" style="width:500px;">
+<div class="container">
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="row">
@@ -38,7 +17,7 @@ else
 
             </div>
         </div>
-        <div class="panel-body pre-scrollable" id="scrollThis" style="margin:auto; max-height: 700px; max-width:500px;">
+        <div class="panel-body pre-scrollable" id="scrollThis" style="max-height: 700px">
             @{string Sender = ""; string RowString = ""; string PanelString = ""; string PanelTitle = "";}
             @foreach (Whistleblower.Models.Mail m in Model._MailList)
             {
@@ -80,39 +59,47 @@ else
                         break;
                 }
                 <div class="row" style="@RowString">
-                    <div class="col-sm-7" style="@Sender">
+                    <div class="col-sm-3" style="@Sender">
                         @switch (m.MailSenderType)
                         {
                             case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Whistler:
-                                <div style="display:block">
-
-                                    <div style=" border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px; display:block;">
-                                        <img src="~/images/Whistler-icon.jpg" alt="Whistler" style="width:100%; max-width: 30px; float:right; ">
-                                        <p style="word-break: break-all;">@m.Message</p>
-                                        <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
+                                <div class="panel @PanelString">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">@PanelTitle</h3>
+                                        <p><b>Datum/Tid skickad:</b></p>
+                                        <p>@m.DateSent</p>
+                                    </div>
+                                    <div class="panel-body">
+                                        <p><b>Meddelande:</b></p>
+                                        <p style="word-break: break-all">@m.Message</p>
                                     </div>
                                 </div>
                                 break;
                             case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.Lawyer:
-                                <div style="display:block">
-
-                                    <div style=" border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px;">
-                                        <img src="~/images/Lawyer-icon.png" alt="Lawyer" style="width:100%; max-width: 30px; float:left;">
-                                        <p style="word-break: break-all;">@m.Message</p>
-                                        <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
+                                <div class="panel @PanelString">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">@PanelTitle</h3>
+                                        <p><b>Datum/Tid skickad:</b></p>
+                                        <p>@m.DateSent</p>
+                                    </div>
+                                    <div class="panel-body">
+                                        <p><b>Meddelande:</b></p>
+                                        <p style="word-break: break-all">@m.Message</p>
                                     </div>
                                 </div>
                                 break;
                             case Whistleblower.ViewModels.SafeboxViewmodel.MailSenders.File:
-                                <div style="display:block">
-                                    <div style=" border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px;">
-                                        <div class=" text-center">
-                                            <img src="@String.Format("data:" + DBHandler.GetFileExtFromFileID(Convert.ToInt32(m.Message)) + ";base64,{0}", DBHandler.GetFileFromFileID(Convert.ToInt32(m.Message)))" class="pop" style="height: 100px; width: 100px;" />
-                                        </div>
-                                        <div class="row text-center">
-                                            @Html.ActionLink("Ladda ner", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
-                                        </div>
-                                        <p class="time-right" style="float:right;">@m.DateSent.ToString("H:mm")</p>
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Fil</h3>
+                                        <p><b>Datum/Tid skickad:</b></p>
+                                        <p>@m.DateSent</p>
+                                    </div>
+                                    <div class="panel-body text-center">
+                                        <img src="@String.Format("data:" + DBHandler.GetFileExtFromFileID(Convert.ToInt32(m.Message)) + ";base64,{0}", DBHandler.GetFileFromFileID(Convert.ToInt32(m.Message)))" class="pop" style="height: 100px; width: 100px;" />
+                                    </div>
+                                    <div class="row text-center">
+                                        @Html.ActionLink("Download", "DownloadFile/" + Convert.ToInt32(m.Message), "Lawyer")
                                     </div>
                                 </div>
                                 break;
@@ -179,31 +166,31 @@ else
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    @using (Html.BeginForm("SendMail" + "/" + Model.WhistleId, "Whistle", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("SendMail" + "/" + Model.WhistleId, "Safebox", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header text-center">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="overflow:hidden">
-                        <span aria-hidden="true" style="font-size: 40px;">&times;</span>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Skicka meddelande</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title" id="exampleModalLongTitle">Nytt meddelande</h3>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group text-center">
-                        <h4>@Html.LabelFor(m => m.Mail.Message)</h4>
-                    </div>
-                    @Html.TextAreaFor(m => m.Mail.Message, new { @class = "form-control", @required = "required", @style = "margin:0 auto; resize:none; height:300px; max-width: 500px" })
                     <div class="form-group">
-                        <div class="row">
-                            <label class="">Image files</label>
-                            <input type="file" class="" name="FileUpload" id="FileUpload" accept="image/*" />
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Skicka</button>
-                            <input type="button" class="btn btn-danger" value="Avbryt" data-dismiss="modal" />
+                        @Html.LabelFor(m => m.Mail.Message)
+                        @Html.TextAreaFor(m => m.Mail.Message, new { @class = "form-control", @required = "required", @style = "margin:0 auto; resize:none; height:200px;" })
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label>Image files</label>
+                            <input type="file" name="FileUpload" id="FileUpload" accept="image/*" />
                         </div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Skicka</button>
+                    <input type="button" class="btn btn-danger" value="Avbryt" data-dismiss="modal" />
                 </div>
             </div>
         </div>}
@@ -220,6 +207,40 @@ else
                 $('#imagemodal').modal('show');
             });
         });
+    </script>
+    <script>
+    function RespondButtonVisibilty(SenderType, message,id) {
+                    if (SenderType == "Whistler" ) {
+                        document.getElementById('RespondBtn').style.display = 'none';
+                    } else if (SenderType == "Lawyer" ) {
+                        document.getElementById('RespondBtn').style.display = 'block';
+                    }
+
+                    jQuery.ajax({
+                    type: "POST",
+            url: "@Url.Action("SelectMail")",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ id }),
+            success: function (data) {
+                            alert(data);
+                        },
+            failure: function (errMsg) {
+                            alert(errMsg);
+                        }
+                    });
+    }
+    </script>
+
+    <script>
+        $("#GoBackLawyer").click(function () {
+        window.location.href = '@Url.Action("Whistle/" + Model.WhistleId, "Lawyer")'
+    });
+    </script>
+    <script>
+        $("#GoBackWhistler").click(function () {
+        window.location.href = '@Url.Action("ReportStatus", "Login")'
+    });
     </script>
     <script>
         $('#scrollThis').scrollTop($('#scrollThis')[0].scrollHeight);
@@ -249,14 +270,4 @@ else
             };
         };
     </script>
-    <script>
-        $("#logout").click(function () {
-        window.location.href = '@Url.Action("LogOutUser", "Login")'
-    });
-    </script>
 }
-
-
-
-
-
