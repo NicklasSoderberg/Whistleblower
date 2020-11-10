@@ -25,7 +25,6 @@ namespace Whistleblower.Controllers
                 return RedirectToAction("Login");
             }
         }
-
         public ActionResult Whistle(string id)
         {
             if (LawyerViewmodel.LoggedinID > 0 && id != null)
@@ -39,7 +38,6 @@ namespace Whistleblower.Controllers
                 return RedirectToAction("Login");
             }
         }
-
         [HttpPost]
         public ActionResult HandleWhistleChange(string id, LawyerViewmodel model)
         {
@@ -47,7 +45,6 @@ namespace Whistleblower.Controllers
             DBHandler.Put(model.SelectedWhistle);
             return RedirectToAction("Whistle" + "/" + id);
         }
-
         public FileResult DownloadFile(int id)
         {
             if(id > 0)
@@ -63,7 +60,6 @@ namespace Whistleblower.Controllers
             }
             return null;
         }
-
         public FileResult DownloadZip(int id)
         {
             using (var db = new DB.DBEntity())

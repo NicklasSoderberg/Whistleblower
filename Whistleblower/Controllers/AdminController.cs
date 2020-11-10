@@ -47,7 +47,6 @@ namespace Whistleblower.Controllers
                     default:
                         break;
                 }
-
                 return View(EditWhistle);
             }
             else
@@ -55,8 +54,5 @@ namespace Whistleblower.Controllers
                 return HttpNotFound();
             }
         }
-
     }
-
-    
 }

@@ -132,6 +132,12 @@ namespace Whistleblower.Controllers
 
             return Json(pass, "application/json");
         }
+        public JsonResult CreateSubject(string subject)
+        {
+            var DBhandler = new DBHandler();
+            DBHandler.CreateSubject(subject);
+            return Json(subject, "application/json");
+        }
         public ActionResult LogOutUser()
         {
             if (Session["LoggedInAsLawyer"].ToString() == "2")

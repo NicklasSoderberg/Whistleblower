@@ -33,5 +33,6 @@ namespace DB
         public virtual DbSet<Whistle> Whistle { get; set; }
         public virtual DbSet<MessageConversation> MessageConversation { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<Subject> Subject { get; set; }
     }
 }

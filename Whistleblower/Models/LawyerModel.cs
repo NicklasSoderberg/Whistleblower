@@ -14,18 +14,15 @@ namespace Whistleblower.Models
         [Required(ErrorMessage = "Var vänlig ange ett användarnamn")]
         [Display(Name = "Användarnamn")]
         public string Username { get; set; }
-
         [Required(ErrorMessage = "Var vänlig ange ett lösenord")]
         [DataType(DataType.Password)]
         [Display(Name = "Lösenord")]
+
         public string Password { get; set; }
         public string VCode { get; set; }
-
         public LawyerModel()
         {
-            //test
-            Username = "1234";
-            Password = "test";
+            
         }
     }
 }

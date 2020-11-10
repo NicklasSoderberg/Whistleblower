@@ -107,6 +107,9 @@
       <DependentUpon>WhistleModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Subject.cs">
+      <DependentUpon>WhistleModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>WhistleModel.tt</DependentUpon>
     </Compile>
